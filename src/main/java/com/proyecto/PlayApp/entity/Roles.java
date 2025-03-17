@@ -9,10 +9,16 @@ public class Roles {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "user_id", nullable = false)
+    @Column(name = "usuario_id", nullable = false)
     private Long userId;
-    @Column(name = "role", nullable = false)
+    @Column(name = "rol", nullable = false)
     private  String role;
+
+    public Roles() {}
+    public Roles(Long userId, String role) {
+        this.userId = userId;
+        this.role = role;
+    }
 
     public Long getId() {
         return id;

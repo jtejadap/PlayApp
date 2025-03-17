@@ -22,7 +22,7 @@ public class Usuario {
 
     @ElementCollection(fetch = FetchType.EAGER)
     @CollectionTable(name = "roles", joinColumns = @JoinColumn(name ="usuario_id"))
-    @Column(name = "role")
+    @Column(name = "rol")
     private Set<String> roles;
 
     public Usuario() {

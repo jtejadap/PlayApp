@@ -116,31 +116,6 @@ public class BebidaController {
         return "redirect:/bebida/admin-bebidas";
     }
 
-    @GetMapping
-    public String verBebidasPorCategoria(@RequestParam(value = "tipo", required = false) TipoBebida tipo, Model model, HttpSession session) {
-        List<Bebida> bebidas;
-        if (tipo != null) {
-            bebidas = bebidaService.obtenerBebidasPorTipo(tipo);
-        } else {
-            bebidas = bebidaService.obtenerTodasLasBebidas();
-        }
-        model.addAttribute("bebidas", bebidas);
 
-        Usuario usuario = (Usuario) session.getAttribute("usuarioLogueado");
-        if (usuario != null) {
-            model.addAttribute("nombreUsuario", usuario.getNombre_completo());
-        } else {
-            model.addAttribute("nombreUsuario", "Invitado");
-        }
-
-        Carrito carrito = (Carrito) session.getAttribute("carrito");
-        if (carrito == null) {
-            carrito = new Carrito();
-            session.setAttribute("carrito", carrito);
-        }
-        model.addAttribute("carrito", carrito);
-
-        return "bebida"; // Carga el archivo bebida.html
-    }
 
 }

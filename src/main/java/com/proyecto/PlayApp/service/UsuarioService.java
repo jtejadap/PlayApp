@@ -1,8 +1,11 @@
 package com.proyecto.PlayApp.service;
 
+import com.proyecto.PlayApp.entity.Roles;
 import com.proyecto.PlayApp.entity.Usuario;
+import com.proyecto.PlayApp.repository.RolesRepository;
 import com.proyecto.PlayApp.repository.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -10,18 +13,23 @@ import java.util.Optional;
 @Service
 public class UsuarioService {
 
-    @Autowired
-    private UsuarioRepository usuarioRepository;
+    private final UsuarioRepository users;
+    private final RolesRepository roles;
+    private final PasswordEncoder passwordEncoder;
 
-    public void guardarUsuario(Usuario usuario) {
-        usuarioRepository.save(usuario);
+    public UsuarioService(UsuarioRepository usuarioRepository, RolesRepository rolesRepository, PasswordEncoder passwordEncoder) {
+        this.users = usuarioRepository;
+        this.roles = rolesRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
-    public boolean existePorCorreo(String correo) {
-        return usuarioRepository.findByCorreo(correo).isPresent();
+    public Usuario crearUsuario(Usuario formulario){
+        formulario.setPassword(passwordEncoder.encode(formulario.getPassword()));
+        Usuario newUser = users.save(formulario);
+        Roles rol = new Roles(newUser.getId(), "ROLE_USER");
+        roles.save(rol);
+        return newUser;
     }
 
-    public Optional<Usuario> buscarPorCorreo(String correo) {
-        return usuarioRepository.findByCorreo(correo);
-    }
+
 }

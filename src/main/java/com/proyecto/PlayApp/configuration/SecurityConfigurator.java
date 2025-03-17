@@ -18,11 +18,21 @@ import org.springframework.security.web.SecurityFilterChain;
 @EnableWebSecurity
 public class SecurityConfigurator {
     public String[] pathsToStaticResources = {
-            "/assets/**",
-            "/login",
-            "/home",
-            "/",
+            "/resources/**",
+            "/static/**",
+            "/css/**",
+            "/img/**",
+            "/js/**",
+            "/vendor/**",
+            "/fonts/**",
+            "/static/favicon.ico",
             "/favicon.ico"
+    };
+
+    public String[] pathstoStaticRoutes ={
+            "/login",
+            "/registro",
+            "/home"
     };
 
     @Bean
@@ -60,17 +70,20 @@ public class SecurityConfigurator {
                         passwordEncoder))
                 .build();
     }
+
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(pathsToStaticResources).permitAll()
+                        .requestMatchers(pathstoStaticRoutes).permitAll()
+                        .requestMatchers("/shop/**").permitAll()
                         .requestMatchers("/user/**").hasRole("USER")
                         .requestMatchers("/admin/**").hasRole("ADMIN")
                         .anyRequest().authenticated()
                 )
                 .formLogin(form -> form
-                        .loginPage("/login-register")
+                        .loginPage("/login")
                         .permitAll()
                 );
         return http.build();

@@ -34,6 +34,8 @@
 
     <div class="form-container">
         <!-- Mostrar mensajes de error o éxito -->
+
+        <div th:if="${loginError}" class="alert alert-danger" th:text="${error}"></div>
         <div th:if="${error}" class="alert alert-danger" th:text="${error}"></div>
         <div th:if="${registroExitoso}" class="alert alert-success" th:text="${registroExitoso}"></div>
 
@@ -44,9 +46,9 @@
 
         <div id="login" class="tabcontent" style="display: block;">
             <h2>Iniciar Sesión</h2>
-            <form th:action="@{/auth/login}" method="post" th:object="${usuario}" class="form">
-                <label for="correo">Correo electrónico</label>
-                <input type="email" id="correo" name="email" placeholder="Ingresa tu correo" required>
+            <form th:action="@{/login}" method="post" class="form">
+                <label for="email">Correo electrónico</label>
+                <input type="email" id="username" name="username" placeholder="Ingresa tu correo" required>
                 <label for="password">Contraseña</label>
                 <input type="password" id="password" name="password" placeholder="Ingresa tu contraseña" required>
                 <button type="submit">Iniciar Sesión</button>
@@ -56,7 +58,7 @@
 
         <div id="register" class="tabcontent" style="display: none;">
             <h2>Registrarse</h2>
-            <form th:action="@{/auth/registro}" method="post" th:object="${usuario}" class="form">
+            <form th:action="@{/registro}" method="post" th:object="${formulario}" class="form">
                 <label for="nombre_completo">Nombre Completo</label>
                 <input type="text" id="nombre_completo" name="nombre_completo" placeholder="Ingresa tu nombre completo" required>
                 <label for="email">Correo electrónico</label>

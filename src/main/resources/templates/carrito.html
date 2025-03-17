@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Carrito de Compras</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet"> <!-- Font Awesome -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/css/carrito.css">
+    <link rel="icon" href="/img/Logo.png" type="image/png">
+</head>
+<body>
+
+<!-- Barra de navegación -->
+<div class="container-subs">
+    <nav class="navbar navbar-expand-lg navbar-custom shadow-sm fixed-top">
+        <div class="container-fluid">
+            <a class="navbar-brand d-flex align-items-center" href="#">
+                <img th:src="@{/img/Logo.png}" alt="Logo" width="30" height="24" class="d-inline-block align-text-top">
+                <span class="ms-2 fw-bold">PlayApp</span>
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarsExample11" aria-controls="navbarsExample11" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse justify-content-center" id="navbarsExample11">
+                <ul class="navbar-nav mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <a class="nav-link text-light active" aria-current="page" href="/inicio">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-light" href="/comida">Comida</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-light" href="/bebida">Bebida</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-light" href="/servicio">Servicios</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-light" href="/contacto">Contacto</a>
+                    </li>
+                </ul>
+                <div class="d-flex align-items-center">
+                    <span class="navbar-text text-light me-3">Hola, <span th:text="${nombreUsuario}">Usuario</span></span>
+                    <a class="btn btn-outline-light me-2" href="/auth/logout">Log Out</a>
+                    <a class="nav-link text-light position-relative" href="/carrito">
+                        <i class="fa fa-shopping-cart"></i>
+                        <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" th:text="${carrito != null ? carrito.items.size() : 0}">0</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+</div>
+
+<!-- Vista del Carrito de Compras -->
+<div class="container mt-5">
+    <h2>Carrito de Compras</h2>
+    <div th:if="${carrito != null}" class="table-responsive">
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th>Producto</th>
+                <th>Cantidad</th>
+                <th>Precio</th>
+                <th>Total</th>
+                <th>Acciones</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="item : ${carrito.items}">
+                <td th:text="${item.plato != null ? item.plato.nombre : item.bebida != null ? item.bebida.nombre : item.servicio.nombre}">Nombre del Producto</td>
+                <td th:text="${item.cantidad}">0</td>
+                <td th:text="${item.plato != null ? item.plato.precio : item.bebida != null ? item.bebida.precio : item.servicio.precio}">0.00</td>
+                <td th:text="${item.cantidad * (item.plato != null ? item.plato.precio : item.bebida != null ? item.bebida.precio : item.servicio.precio)}">0.00</td>
+                <td>
+                    <form th:action="@{/carrito/eliminar/__${item.id}__}" th:method="delete">
+                        <button type="submit" class="btn btn-danger">Eliminar</button>
+                    </form>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+        <div class="d-flex justify-content-end">
+            <h4>Total:
+                <span th:text="${totalCarrito}">0.00</span>
+            </h4>
+        </div>
+        <div class="d-flex justify-content-end mt-3">
+            <form th:action="@{/carrito/realizar-compra}" method="post">
+                <button type="submit" class="btn btn-success">Realizar Pedido</button>
+            </form>
+        </div>
+    </div>
+    <div th:if="${carrito == null || carrito.items.isEmpty()}" class="alert alert-info mt-3">
+        Tu carrito está vacío.
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

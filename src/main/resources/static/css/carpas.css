@@ -1,0 +1,54 @@
+/* General: Establece la fuente y el estilo de color de fondo y texto en todo el cuerpo de la página */
+body {
+    font-family: 'Poppins', sans-serif; /* Aplica la fuente 'Poppins' a todo el contenido de la página */
+}
+
+/* Sección de Reservas de Carpas: Estilos aplicados específicamente a la sección de reservas de carpas */
+#reservas-carpas {
+    background-color: #ffffff; /* Fondo blanco para toda la sección de reservas de carpas */
+    padding: 60px 0; /* Espaciado superior e inferior en la sección */
+}
+
+#reservas-carpas .card {
+    border: none; /* Sin bordes visibles en las tarjetas de la sección */
+    border-radius: 10px; /* Bordes redondeados para las tarjetas */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Sombras sutiles para las tarjetas, que crea un efecto elevado */
+}
+
+#reservas-carpas .card-img-top {
+    border-top-left-radius: 10px; /* Bordes superiores redondeados en la imagen superior de la tarjeta */
+    border-top-right-radius: 10px; /* Bordes superiores redondeados en la imagen superior de la tarjeta */
+}
+
+#reservas-carpas .card-body {
+    padding: 20px; /* Espaciado interno de 20px dentro del cuerpo de la tarjeta */
+    text-align: center; /* Centra el texto dentro del cuerpo de la tarjeta */
+}
+
+#reservas-carpas .card-title {
+    font-weight: 500; /* Peso de fuente medio para el título de las tarjetas */
+    margin-bottom: 10px; /* Margen inferior de 10px para separar el título del contenido siguiente */
+}
+
+#reservas-carpas .btn-primary {
+    background-color: #007bff; /* Color de fondo del botón en su estado normal */
+    border: none; /* Sin borde visible en el botón */
+    padding: 10px 20px; /* Espaciado interno del botón (arriba/abajo: 10px, izquierda/derecha: 20px) */
+    border-radius: 20px; /* Bordes redondeados en el botón */
+    transition: background-color 0.3s; /* Transición suave en el cambio de color de fondo del botón */
+}
+
+#reservas-carpas .btn-primary:hover {
+    background-color: #0056b3; /* Color de fondo del botón cuando el ratón pasa por encima */
+}
+
+/* Footer: Estilos generales para el pie de página */
+footer {
+    background-color: #343a40; /* Fondo oscuro para el pie de página */
+    color: #ffffff; /* Color de texto blanco para el contenido del pie de página */
+    padding: 20px 0; /* Espaciado interno superior e inferior en el pie de página */
+}
+
+footer p {
+    margin: 0; /* Elimina el margen para los párrafos en el pie de página */
+}

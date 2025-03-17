@@ -1,0 +1,73 @@
+body {
+     font-family: 'Poppins', sans-serif; /* Aplica la fuente 'Poppins' a todo el contenido de la página */
+}
+
+/* Barra de navegación con degradado */
+.navbar {
+    background: linear-gradient(to bottom, #000000 0%, rgba(0,0,0,0.7) 50%, rgba(0,0,0,0) 100%);
+    position: fixed;
+    width: 100%;
+    z-index: 1000;
+    color: #fff; /* Texto blanco */
+    border: none; /* Elimina cualquier borde */
+    transition: background 0.3s ease; /* Suaviza la transición de fondo */
+}
+
+/* Opcional: Efecto de fondo cuando se hace scroll */
+.navbar.scrolled {
+    background: rgba(0,0,0,0.8);
+}
+
+.navbar-brand {
+    color: #fff;
+    font-weight: bold;
+}
+
+/* Enlaces de la barra de navegación */
+.navbar-nav {
+    display: flex;
+    justify-content: center; /* Centra los enlaces */
+    flex-grow: 1; /* Asegura que ocupen todo el espacio disponible */
+}
+
+.navbar-nav .nav-link {
+    color: #fff;
+    font-weight: 500;
+    padding: 8px 16px;
+    text-transform: uppercase;
+}
+
+.navbar-nav .nav-link.active {
+    font-weight: bold;
+    color: #f8f9fa;
+}
+
+/* Hover de los enlaces */
+.navbar-nav .nav-link:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+    border-radius: 4px;
+}
+
+.navbar-toggler {
+    border-color: rgba(255, 255, 255, 0.1);
+}
+
+/* Botones de Log Out */
+.btn-outline-light {
+    border-color: #ffffff;
+    color: #ffffff;
+}
+
+.btn-outline-light:hover {
+    background-color: #ffffff;
+    color: #343a40;
+}
+
+/* Ajuste para los elementos a la izquierda (usuario, log out, carrito) */
+.d-flex.align-items-center {
+    justify-content: flex-start; /* Alineación a la izquierda de los botones de usuario, log out y carrito */
+}
+
+.navbar-text, .btn-outline-light, .nav-link.position-relative {
+    margin-right: 15px; /* Espaciado entre los elementos */
+}

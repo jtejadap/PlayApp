@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Administrar Restaurante</title>
+    <link rel="stylesheet" href="/css/admrestaurante.css">
+    <link rel="icon" href="/img/Logo.png" type="image/png">
+</head>
+<body>
+<header class="header">
+    <nav class="navbar">
+        <div class="navbar-left">
+            <h1 th:text="'Bienvenido, ' + ${nombreRestaurante}">Bienvenido, [Nombre del Restaurante]</h1>
+        </div>
+        <div class="navbar-right">
+            <a href="#" class="nav-link">Platos</a>
+            <a href="/bebida/admin-bebidas" class="nav-link">Bebidas</a>
+            <a href="/servicio/admin-servicios" class="nav-link">Servicios</a>
+            <form th:action="@{/restaurantes/api/restaurantes/logout}" method="post" style="display: inline;">
+                <button type="submit" class="logout-btn">Cerrar Sesión</button>
+            </form>
+        </div>
+    </nav>
+</header>
+
+<main class="container">
+    <section class="admin-section">
+        <div class="section-header">
+            <h3>Platos</h3>
+            <div class="search-container">
+                <input type="text" id="search-input" class="search-input" placeholder="Buscar platos...">
+                <a href="/registro-plato" class="btn-add"><span>+</span></a>
+            </div>
+        </div>
+        <table class="styled-table" id="platos-table">
+            <thead>
+            <tr>
+                <th>Imagen</th>
+                <th>Nombre</th>
+                <th>Precio</th>
+                <th>Cantidad</th>
+                <th>Descripción</th>
+                <th>Tipo</th>
+                <th>Acciones</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="plato : ${platos}">
+                <td><img th:src="'data:image/jpeg;base64,' + ${plato.imagenBase64}" alt="Imagen del Plato" class="plato-img"></td>
+                <td th:text="${plato.nombre}"></td>
+                <td th:text="${plato.precio}"></td>
+                <td th:text="${plato.cantidad}"></td>
+                <td th:text="${plato.descripcion}"></td>
+                <td th:text="${plato.tipo}"></td>
+                <td>
+                    <a th:href="@{/comida/editar/{id}(id=${plato.id})}" class="btn btn-secondary">Editar</a>
+                    <form th:action="@{/comida/eliminar/{id}(id=${plato.id})}" method="post" style="display:inline;">
+                        <input type="hidden" name="id" th:value="${plato.id}">
+                        <button type="submit" class="btn btn-danger">Eliminar</button>
+                    </form>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </section>
+</main>
+
+<script>
+    // Funcionalidad del buscador
+    document.getElementById('search-input').addEventListener('input', function() {
+        let searchValue = this.value.toLowerCase();
+        let rows = document.querySelectorAll('#platos-table tbody tr');
+
+        rows.forEach(row => {
+            let nombre = row.querySelector('td:nth-child(2)').innerText.toLowerCase();
+            if (nombre.includes(searchValue)) {
+                row.style.display = '';
+            } else {
+                row.style.display = 'none';
+            }
+        });
+    });
+</script>
+</body>
+</html>

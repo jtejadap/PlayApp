@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reseñas y Contacto - Restaurante</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/css/contacto.css">
+    <link rel="icon" href="/img/Logo.png" type="image/png">
+</head>
+
+<video class="video-background" autoplay loop muted playsinline>
+    <source src="/img/olas del mar.mp4" type="video/mp4">
+    Tu navegador no soporta el elemento de video.
+</video>
+
+<body>
+<!-- Barra de navegación -->
+<div class="container-subs">
+    <nav class="navbar navbar-expand-lg navbar-custom shadow-sm fixed-top">
+        <div class="container-fluid">
+            <a class="navbar-brand d-flex align-items-center" href="#">
+                <img th:src="@{/img/Logo.png}" alt="Logo" width="30" height="24" class="d-inline-block align-text-top">
+                <span class="ms-2 fw-bold">PlayApp</span>
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarsExample11" aria-controls="navbarsExample11" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse justify-content-center" id="navbarsExample11">
+                <ul class="navbar-nav mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <a class="nav-link text-light " aria-current="page" href="/inicio">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-light" href="/comida">Comida</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-light" href="/bebida">Bebida</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-light" href="/servicio">Servicios</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-light active" href="/contacto">Contacto</a>
+                    </li>
+                </ul>
+                <div class="d-flex align-items-center">
+                    <span class="navbar-text text-light me-3">Hola, <span th:text="${nombreUsuario}">Usuario</span></span>
+                    <a class="btn btn-outline-light me-2" href="/auth/logout">Log Out</a>
+                    <a class="nav-link text-light position-relative" href="/carrito">
+                        <i class="fa fa-shopping-cart"></i>
+                        <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" th:text="${carrito != null ? carrito.items.size() : 0}">0</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+</div>
+
+
+
+<section class="section reviews">
+    <br>
+    <br>
+    <h2>Reseñas</h2>
+
+    <!-- Formulario para nuevas reseñas -->
+    <form action="/submit-review" method="post" class="review-form">
+        <div class="form-group">
+            <label style="color: white;">Nombre:</label>
+            <input type="text" name="nombre" required>
+        </div>
+
+        <div class="form-group">
+            <label style="color: white;">Valoración:</label>
+            <div class="star-rating">
+                <input type="radio" id="star5" name="valoracion" value="5">
+                <label for="star5">★</label>
+                <input type="radio" id="star4" name="valoracion" value="4">
+                <label for="star4">★</label>
+                <input type="radio" id="star3" name="valoracion" value="3">
+                <label for="star3">★</label>
+                <input type="radio" id="star2" name="valoracion" value="2">
+                <label for="star2">★</label>
+                <input type="radio" id="star1" name="valoracion" value="1">
+                <label for="star1">★</label>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label style="color: white;">Tu reseña:</label>
+            <textarea name="comentario" required></textarea>
+        </div>
+
+        <button type="submit">Enviar Reseña</button>
+    </form>
+
+    <h3 style="text-align: center; color: white;">Reseñas recientes</h3>
+
+    <!-- Reseñas existentes -->
+    <div class="review-cards">
+        <th:block th:if="${not #lists.isEmpty(reviews)}">
+            <div th:each="review : ${reviews}" class="review-card">
+                <div class="review-header">
+                    <strong style="color: white;"th:text="${review.nombre}"></strong>
+                    <div class="review-stars">
+                        <span th:text="${'★'.repeat(review.valoracion)}"></span>
+                    </div>
+                </div>
+                <p style="color: white;"th:text="${review.comentario}"></p>
+            </div>
+        </th:block>
+        <div th:if="${#lists.isEmpty(reviews)}">
+            <p>No hay reseñas disponibles aún.</p>
+        </div>
+    </div>
+</section>
+
+
+<!-- Sección de Contacto -->
+<section class="section">
+    <h2>Contacto</h2>
+
+    <div class="contact-info">
+        <div class="info-card">
+            <h3>Dirección</h3>
+            <p>Cra. 1, Cartagena de Indias,<br>Provincia de Cartagena, Bolívar
+                Kiosco El Bony, dirección</p>
+        </div>
+        <div class="info-card">
+            <h3>Teléfono</h3>
+            <p>+57 323 254 5463</p>
+        </div>
+    </div>
+
+    <!-- Mapa -->
+    <img src="/img/cartagena.avif" alt="" class="map">
+
+
+    <div th:if="${mensajeEnviado}" class="alert alert-success">
+        <p th:text="${mensajeEnviado}"></p>
+    </div>
+
+    <!-- Formulario de contacto -->
+    <form method="post" action="/contacto/enviar">
+        <div class="form-group">
+            <label style="color: white;">Nombre:</label>
+            <input type="text" name="nombre" required>
+        </div>
+
+        <div class="form-group">
+            <label style="color: white;">Email:</label>
+            <input type="email" name="email" required>
+        </div>
+
+        <div class="form-group">
+            <label style="color: white;">Asunto:</label>
+            <select name="asunto" required>
+                <option value="">Selecciona una opción</option>
+                <option value="reserva">Reservación</option>
+                <option value="consulta">Consulta</option>
+                <option value="sugerencia">Sugerencia</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label style="color: white;">Mensaje:</label>
+            <textarea name="mensaje" required></textarea>
+        </div>
+
+        <button type="submit">Enviar Mensaje</button>
+    </form>
+
+</section>
+</div>
+
+<!-- Footer -->
+<footer class="py-4 bg-dark text-white text-center">
+    <p>&copy; 2024 PlayApp. Todos los derechos reservados.</p>
+    <ul class="list-inline">
+        <li class="list-inline-item"><a href="#" class="text-white">Términos y condiciones</a></li>
+        <li class="list-inline-item"><a href="#" class="text-white">Política de privacidad</a></li>
+    </ul>
+</footer>
+<script>
+    let lastScrollTop = 0; // Variable para almacenar la posición anterior del scroll
+ let navbar = document.querySelector('header nav'); // Selecciona la barra de navegación
+
+ // Evento de desplazamiento (scroll)
+ window.addEventListener("scroll", function() {
+     let currentScroll = window.pageYOffset || document.documentElement.scrollTop; // Obtiene la posición actual del scroll
+
+     // Si el usuario hace scroll hacia abajo, oculta la barra
+     if (currentScroll > lastScrollTop) {
+         navbar.style.top = "-70px"; // Desplaza la barra hacia arriba para ocultarla
+     } else {
+         // Si el usuario hace scroll hacia arriba, muestra la barra
+         navbar.style.top = "0"; // Muestra la barra en la parte superior
+     }
+
+     // Actualiza la posición anterior del scroll
+     lastScrollTop = currentScroll <= 0 ? 0 : currentScroll;
+ });
+
+</script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

@@ -1,0 +1,418 @@
+Css
+/* Estilos generales */
+body {
+    font-family: 'Poppins', sans-serif;
+    background-color: #000; /* Fondo de respaldo */
+    color: #fff; /* Texto blanco para contraste */
+    margin: 0;
+    padding: 0;
+    background-size: cover; /* Asegura que la imagen cubra todo el fondo */
+    background-repeat: no-repeat; /* Evita que la imagen se repita */
+    background-position: center center; /* Centra la imagen */
+    background-attachment: scroll; /* Permite que el fondo se mueva al hacer scroll */
+}
+
+a {
+    text-decoration: none;
+    color: #007bff;
+}
+a:hover {
+    color: #0056b3;
+}
+
+/* Barra de navegación con degradado */
+.navbar {
+    background: linear-gradient(to bottom, #000000 0%, rgba(0,0,0,0.7) 50%, rgba(0,0,0,0) 100%);
+    position: fixed;
+    width: 100%;
+    z-index: 1000;
+    color: #fff; /* Texto blanco */
+    border: none; /* Elimina cualquier borde */
+    transition: background 0.3s ease; /* Suaviza la transición de fondo */
+}
+
+/* Opcional: Efecto de fondo cuando se hace scroll */
+.navbar.scrolled {
+    background: rgba(0,0,0,0.8);
+}
+
+.navbar-brand {
+    color: #fff;
+    font-weight: bold;
+}
+
+/* Enlaces de la barra de navegación */
+.navbar-nav {
+    display: flex;
+    justify-content: center; /* Centra los enlaces */
+    flex-grow: 1; /* Asegura que ocupen todo el espacio disponible */
+}
+
+.navbar-nav .nav-link {
+    color: #fff;
+    font-weight: 500;
+    padding: 8px 16px;
+    text-transform: uppercase;
+}
+
+.navbar-nav .nav-link.active {
+    font-weight: bold;
+    color: #f8f9fa;
+}
+
+/* Hover de los enlaces */
+.navbar-nav .nav-link:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+    border-radius: 4px;
+}
+
+.navbar-toggler {
+    border-color: rgba(255, 255, 255, 0.1);
+}
+
+/* Botones de Log Out */
+.btn-outline-light {
+    border-color: #ffffff;
+    color: #ffffff;
+}
+
+.btn-outline-light:hover {
+    background-color: #ffffff;
+    color: #343a40;
+}
+
+/* Ajuste para los elementos a la izquierda (usuario, log out, carrito) */
+.d-flex.align-items-center {
+    justify-content: flex-start; /* Alineación a la izquierda de los botones de usuario, log out y carrito */
+}
+
+.navbar-text, .btn-outline-light, .nav-link.position-relative {
+    margin-right: 15px; /* Espaciado entre los elementos */
+}
+
+/* Carrusel con forma ajustada */
+#carouselExampleCaptions {
+    position: relative;
+    width: 100%;
+    height: 80vh; /* Ajusta la altura del carrusel */
+}
+
+.carousel-inner {
+    height: 100%;
+}
+
+.carousel-item {
+    height: 100%;
+    background-size: 100% auto;
+    background-position: center;
+}
+
+.carousel-caption {
+    bottom: 20px; /* Ajusta la posición de los subtítulos */
+}
+
+/* Curva de la imagen */
+#carouselExampleCaptions:after {
+    content: '';
+    display: block;
+    position: absolute;
+    bottom: -5px;
+    width: 100%;
+    height: 100px;
+    background: #000;
+    clip-path: ellipse(50% 25% at 50% 100%); /* Ajusta la forma de la curva */
+}
+
+/* Sección de descripción */
+
+/* Curva hacia abajo después de la sección */
+#description::after {
+    content: '';
+    display: block;
+    position: absolute;
+    top: 100%; /* Coloca la curva al final de la sección */
+    left: 0;
+    width: 100%;
+    height: 100px;
+    background: #000; /* Color de la curva, ajusta según tu diseño */
+    clip-path: ellipse(50% 25% at 50% 0%);
+    z-index: 1; /* Asegúrate de que la curva esté sobre el siguiente contenido */
+}
+
+
+
+#description {
+    background-color: #000; /* Fondo negro */
+    color: #fff; /* Texto blanco para contraste */
+    padding: 60px 20px;
+    text-align: center;
+}
+
+#description h2 {
+    font-weight: 700;
+    margin-bottom: 20px;
+}
+
+#description p {
+    font-size: 18px;
+    line-height: 1.6;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+
+/* Sección de categorías populares */
+.categories {
+    background: url('/img/FondoTierra.jpg') no-repeat center center;
+    background-size: cover;
+    padding: 4rem 0;
+    color:  #000;
+    text-align: center;
+}
+
+.categories img {
+    transition: transform 0.3s ease-in-out;
+    border-radius: 30px;
+}
+
+.categories img:hover {
+    transform: scale(1.05);
+}
+
+.categories p {
+    margin-top: 15px;
+    font-size: 25px;
+    font-weight: 500;
+    color:  #000;
+}
+
+.categories h2 {
+    font-size: 36px; /* Cambia el tamaño del texto, ajusta según prefieras */
+    font-weight: 700; /* Define el grosor del texto */
+    color: #000; /* Cambia el color si es necesario */
+    margin-bottom: 20px; /* Ajusta el espacio inferior */
+}
+
+
+
+/* Sección de ofertas del día */
+.offers .card {
+    border: none;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease-in-out;
+}
+
+.offers .card:hover {
+    transform: translateY(-5px);
+}
+
+.offers .card img {
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+}
+
+.offers .card-body {
+    padding: 20px;
+}
+
+.offers .card-title {
+    font-size: 20px;
+    font-weight: bold;
+    color: #007bff;
+}
+
+.offers .card-text {
+    font-size: 16px;
+    color: #555;
+}
+
+/* Sección de suscripción */
+.subscribe {
+    background-color: #007bff;
+    color: #ffffff;
+    padding: 60px 20px;
+    text-align: center;
+    border-radius: 5px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.subscribe h2 {
+    font-weight: bold;
+    margin-bottom: 20px;
+}
+
+.subscribe p {
+    font-size: 16px;
+    margin-bottom: 30px;
+}
+
+.subscribe input[type="email"] {
+    border-radius: 5px;
+    padding: 10px;
+    font-size: 16px;
+}
+
+.subscribe .btn-success {
+    background-color: #28a745;
+    border-color: #218838;
+}
+
+.subscribe .btn-success:hover {
+    background-color: #218838;
+    border-color: #1e7e34;
+}
+
+/* Sección de mapa de ubicación */
+
+
+
+.location {
+    position: relative;
+    background-image: url('/img/ArenaDemas.jpg'); /* Ruta de la imagen de fondo */
+    background-size: cover; /* Asegura que la imagen cubra toda la sección */
+    background-position: center center; /* Centra la imagen */
+    background-repeat: no-repeat; /* Evita que la imagen se repita */
+    padding: 40px 20px; /* Ajusta el espacio dentro de la sección */
+}
+
+/* Curva hacia abajo después de la sección */
+#ubicate::after {
+    content: '';
+    display: block;
+    position: absolute;
+    top: 100%; /* Coloca la curva al final de la sección */
+    left: 0;
+    width: 100%;
+    height: 100px;
+    background: inherit;  /* Color de la curva, ajusta según tu diseño */
+    clip-path: ellipse(50% 50% at 50% 0%);
+    z-index: 1; /* Asegúrate de que la curva esté sobre el siguiente contenido */
+}
+
+.location iframe {
+    border: none;
+    border-radius: 10px;
+    width: 100%; /* Asegura que el iframe ocupe todo el ancho disponible */
+    height: 400px; /* Ajusta la altura del iframe (cambia según lo necesites) */
+}
+/* Estilo para el título de la sección */
+.location h2 {
+    font-size: 36px; /* Cambia el tamaño del texto del título */
+    font-weight: 700; /* Grosor del texto */
+    color: #000; /* Color del texto, ajusta según el diseño */
+    margin-bottom: 20px; /* Espacio inferior */
+}
+
+/* Estilo para el subtítulo (párrafo) */
+.location p {
+    font-size: 25px; /* Cambia el tamaño del texto del subtítulo */
+    font-weight: 500; /* Grosor del texto */
+    color: #000; /* Color del texto, ajusta según el diseño */
+    margin-bottom: 30px; /* Espacio inferior */
+}
+
+
+/* Sección de opiniones */
+.reviews {
+    position: relative;
+    background-image: url('/img/Piedras.jpg'); /* Ruta de la imagen de fondo */
+    background-size: cover; /* La imagen cubre todo el fondo */
+    background-position: center center; /* Centra la imagen */
+    background-repeat: no-repeat; /* Evita que la imagen se repita */
+    padding: 40px 20px; /* Ajusta el espacio dentro de la sección */
+    color: #fff; /* Color de texto blanco para contraste */
+}
+
+/* Estilo del título de Opiniones Destacadas */
+.reviews h2 {
+    font-size: 36px; /* Cambia el tamaño del título, ajusta según tu preferencia */
+    font-weight: 700; /* Cambia el grosor de la fuente si lo deseas */
+    text-align: center; /* Centra el texto */
+    max-width: 80%; /* Ajusta el ancho máximo del título */
+    margin: 0 auto 20px; /* Centra y añade un margen inferior */
+}
+
+/* Filtro oscuro */
+.reviews::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5); /* Fondo oscuro con opacidad */
+    z-index: -1; /* Coloca el filtro detrás del contenido */
+}
+
+
+/* Estilo de las tarjetas de reseñas */
+.reviews .review-card {
+    margin-bottom: 20px;
+    background-color: #fff; /* Fondo blanco para las tarjetas */
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    color: #333; /* Texto negro dentro de las tarjetas */
+}
+
+/* Estilos adicionales para las reseñas */
+.reviews .blockquote {
+    margin: 0;
+}
+
+.reviews .stars span {
+    font-size: 20px;
+    margin-right: 2px;
+    color: #f1c40f; /* Color dorado para las estrellas */
+}
+
+
+
+
+/* Footer */
+footer {
+    background-color: #000;
+    color: #ffffff;
+    padding: 20px 0;
+    text-align: center;
+}
+
+footer a {
+    color: #ffffff;
+}
+
+footer a:hover {
+    color: #cccccc;
+}
+
+/* Responisive adjustments */
+@media (max-width: 768px) {
+    .navbar-nav {
+        text-align: center;
+    }
+
+    .navbar-nav .nav-link {
+        margin-bottom: 10px;
+    }
+
+    #description {
+        padding: 30px 20px;
+    }
+
+    .categories h4 {
+        font-size: 18px;
+    }
+
+    .offers .card {
+        margin-bottom: 20px;
+    }
+
+    .subscribe {
+        padding: 30px 20px;
+    }
+
+    .reviews .review-card {
+        margin-bottom: 20px;
+    }
+}

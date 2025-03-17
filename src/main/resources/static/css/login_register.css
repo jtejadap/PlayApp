@@ -1,0 +1,138 @@
+/* Estilo general */
+body {
+    font-family: 'Poppins', sans-serif; /* Aplica la fuente 'Poppins' a todo el contenido de la página */
+}
+
+/* Barra de navegación */
+.navbar {
+    width: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1000;
+}
+
+/* Contenedor principal */
+/* Estilo para el contenedor principal */
+/* Estilo para el contenedor del formulario */
+.form-container {
+    max-width: 350px; /* Ajusta el ancho máximo del contenedor */
+    margin: 0 auto; /* Centra el contenedor horizontalmente */
+    padding: 20px; /* Añade un poco de padding */
+    background-color: white; /* Fondo blanco */
+    border-radius: 10px; /* Bordes redondeados */
+    box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.1); /* Sombra suave */
+}
+
+/* Estilo para el encabezado dentro del formulario */
+.form-container .header {
+    margin-bottom: 20px; /* Espacio inferior */
+}
+
+.form-container .header h1 {
+    font-size: 1.5rem; /* Tamaño del encabezado */
+    margin: 0; /* Sin margen */
+}
+
+.form-container .header p {
+    font-size: 0.9rem; /* Tamaño del subtítulo */
+    color: #666; /* Color del subtítulo */
+}
+
+/* Estilo para las pestañas dentro del formulario */
+.form-container .tab {
+    display: flex; /* Flex para alinear botones */
+    justify-content: space-between; /* Espacio entre botones */
+    margin-bottom: 15px; /* Margen inferior */
+}
+
+.form-container .tab button {
+    flex: 1; /* Cada botón ocupa el mismo ancho */
+    background-color: #f8f9fa; /* Fondo claro */
+    border: 1px solid #ccc; /* Borde gris */
+    padding: 10px; /* Espaciado interno */
+    font-size: 1rem; /* Tamaño de fuente */
+    cursor: pointer; /* Cambia el cursor al pasar */
+    transition: background-color 0.3s; /* Transición de fondo */
+}
+
+.form-container .tab button:hover {
+    background-color: #007bff;
+    color: white;
+    transform: scale(1.05);}
+
+/* Estilo para el contenido de las pestañas */
+.form-container .tabcontent {
+    display: none; /* Ocultar contenido por defecto */
+}
+
+.form-container .tabcontent h2 {
+    font-size: 1.3rem; /* Tamaño del encabezado dentro de la pestaña */
+    margin-bottom: 10px; /* Margen inferior */
+    border-radius: 5px;
+}
+
+.form-container .tabcontent form {
+    display: flex; /* Flex para los elementos del formulario */
+    flex-direction: column; /* Coloca elementos en columna */
+}
+
+/* Estilo para etiquetas e inputs dentro del formulario */
+.form-container .tabcontent label {
+    font-size: 0.9rem; /* Tamaño de la etiqueta */
+    margin-bottom: 5px; /* Espacio debajo de la etiqueta */
+}
+
+.form-container .tabcontent input {
+    padding: 10px; /* Espaciado interno */
+    margin-bottom: 15px; /* Espacio entre inputs */
+    border: 1px solid #ccc; /* Borde gris */
+    border-radius: 5px; /* Bordes redondeados */
+}
+
+/* Estilo para botones de envío dentro del formulario */
+.form-container .tabcontent button {
+    padding: 10px; /* Espaciado interno */
+    background-color: #007bff; /* Color de fondo */
+    border: none; /* Sin borde */
+    border-radius: 5px; /* Bordes redondeados */
+    color: white; /* Color de texto */
+    font-size: 1rem; /* Tamaño de fuente */
+    cursor: pointer; /* Cambia el cursor al pasar */
+    transition: background-color 0.3s; /* Transición de fondo */
+}
+
+.form-container .tabcontent button:hover {
+    background-color: #0056b3; /* Color de fondo al pasar */
+}
+
+/* Enlaces extras dentro del formulario */
+.form-container .extra-links {
+    text-align: right; /* Alineación a la derecha */
+}
+
+.form-container .extra-links a {
+    font-size: 0.8rem; /* Tamaño de fuente */
+    color: #007bff; /* Color del enlace */
+    text-decoration: none; /* Sin subrayado */
+}
+
+.form-container .extra-links a:hover {
+    text-decoration: underline; /* Subrayar al pasar */
+}
+
+.back-to-login {
+    margin-top: 10px; /* Espaciado superior */
+    text-align: center; /* Centrar el enlace */
+}
+
+.back-to-login a {
+    color: #007bff; /* Color del enlace */
+    text-decoration: none; /* Sin subrayado */
+    transition: color 0.3s; /* Suavizar el cambio de color */
+}
+
+.back-to-login a:hover {
+    text-decoration: underline; /* Subrayar al pasar el mouse */
+    color: #0056b3; /* Cambiar el color al pasar el mouse */
+}

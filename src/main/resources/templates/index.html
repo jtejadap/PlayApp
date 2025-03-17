@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inicio - PlayApp</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet"> <!-- Font Awesome -->
+    <link rel="stylesheet" href="/css/inicio.css"> <!-- Enlaza el nuevo archivo CSS -->
+    <link rel="icon" href="/img/Logo.png" type="image/png">
+</head>
+<body>
+
+<!-- Barra de navegación -->
+<div class="container-subs">
+    <nav class="navbar navbar-expand-lg navbar-custom shadow-sm fixed-top">
+        <div class="container-fluid">
+            <a class="navbar-brand d-flex align-items-center" href="#">
+                <img th:src="@{/img/Logo.png}" alt="Logo" width="30" height="24" class="d-inline-block align-text-top">
+                <span class="ms-2 fw-bold">PlayApp</span>
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarsExample11" aria-controls="navbarsExample11" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse justify-content-center" id="navbarsExample11">
+                <ul class="navbar-nav mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <a class="nav-link text-light active" aria-current="page" href="/inicio">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-light" href="/comida">Comida</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-light" href="/bebida">Bebida</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-light" href="/servicio">Servicios</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-light" href="/contacto">Contacto</a>
+                    </li>
+                </ul>
+                <div class="d-flex align-items-center">
+                    <span class="navbar-text text-light me-3">Hola, <span th:text="${nombreUsuario}">Usuario</span></span>
+                    <a class="btn btn-outline-light me-2" href="/auth/logout">Log Out</a>
+                    <a class="nav-link text-light position-relative" href="/carrito">
+                        <i class="fa fa-shopping-cart"></i>
+                        <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" th:text="${carrito != null ? carrito.items.size() : 0}">0</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+</div>
+
+<!-- Sección de Carrusel -->
+<div id="carouselExampleCaptions" class="carousel slide" data-bs-ride="carousel">
+    <div class="carousel-indicators">
+        <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+        <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="1" aria-label="Slide 2"></button>
+        <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="2" aria-label="Slide 3"></button>
+    </div>
+    <div class="carousel-inner">
+        <div class="carousel-item active" style="background-image: url('/img/Burguer.jpg');">
+            <div class="carousel-caption d-none d-md-block">
+                <h5>Hamburguesa de la casa</h5>
+                <p></p>
+            </div>
+        </div>
+        <div class="carousel-item" style="background-image: url('/img/Pescado.jpg');">
+            <div class="carousel-caption d-none d-md-block">
+                <h5>Mojarra</h5>
+                <p></p>
+            </div>
+        </div>
+        <div class="carousel-item" style="background-image: url('/img/Bebidas.jpeg');">
+            <div class="carousel-caption d-none d-md-block">
+                <h5>Bebidas</h5>
+                <p></p>
+            </div>
+        </div>
+    </div>
+    <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide="prev">
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Previous</span>
+    </button>
+    <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide="next">
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Next</span>
+    </button>
+</div>
+
+<!-- Descripción de la Página -->
+<section id="description" class="py-5 text-center" style="position: relative;">
+    <div class="container">
+        <h2>Bienvenido a PlayApp</h2>
+        <p>
+            PlayApp es tu compañero ideal para disfrutar de tus vacaciones en las playas de Cartagena y en toda Colombia.
+            Con nuestra plataforma, puedes realizar compras de comida en los mejores establecimientos,
+            reservar carpas para tu comodidad y evitar estafas gracias a nuestras recomendaciones y alertas.
+            Disfruta de una experiencia segura y placentera mientras exploras las maravillas de nuestras costas.
+        </p>
+    </div>
+</section>
+
+
+<!-- Sección de Categorías Populares -->
+<section class="categories py-5 text-center">
+    <div class="container">
+        <h2 class="mb-4">Categorías Populares</h2>
+        <div class="row">
+            <div class="col-md-4">
+                <a href="/comida">
+                    <img src="/img/Langosta.png" alt="Comida" class="img-fluid rounded">
+                    <p class="mt-2">Comida</p>
+                </a>
+            </div>
+            <div class="col-md-4">
+                <a href="/bebida">
+                    <img src="/img/Bebida.png" alt="Bebidas" class="img-fluid rounded">
+                    <p class="mt-2">Bebidas</p>
+                </a>
+            </div>
+            <div class="col-md-4">
+                <a href="/servicio">
+                    <img src="/img/Moto.png" alt="Moto Acuatica" class="img-fluid rounded">
+                    <p class="mt-2">Servicios</p>
+                </a>
+            </div>
+        </div>
+    </div>
+
+</section>
+
+<!-- Sección de Suscripción -->
+<section class="subscribe py-5 text-center">
+    <div class="container-subs">
+        <h2 class="mb-4">Suscríbete para Ofertas Exclusivas</h2>
+        <p>Recibe ofertas y promociones directamente en tu bandeja de entrada.</p>
+        <form class="row g-3 justify-content-center" action="/subscribe" method="POST">
+            <div class="col-md-6">
+                <input type="email" name="email" class="form-control" placeholder="Introduce tu correo electrónico" required>
+            </div>
+            <div class="col-md-3">
+                <button type="submit" class="btn btn-success w-100">Suscribirse</button>
+            </div>
+        </form>
+    </div>
+</section>
+
+<!-- Sección de Mapa de Ubicación -->
+<section id="ubicate" class="location py-5 text-center">
+    <div class="container">
+        <h2 class="mb-4">Ubicación</h2>
+        <p>Visítanos o recibe tu pedido en estas zonas:</p>
+        <div id="map-container" class="mb-5" style="height: 400px;">
+            <iframe
+                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3151.835434509535!2d144.95373631541198!3d-37.816279579751795!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x6ad642af0f11fd81%3A0xf577b6b37f44c89f!2sFederation%20Square!5e0!3m2!1sen!2sau!4v1638238732161!5m2!1sen!2sau"
+                    width="100%" height="400" style="border:0;" allowfullscreen="" loading="lazy">
+            </iframe>
+        </div>
+    </div>
+</section>
+
+<!-- Sección de Opiniones con Calificación -->
+</section>
+<section class="reviews py-5 bg-light text-center">
+    <div class="container">
+        <h2 class="mb-4">Opiniones Destacadas</h2>
+        <div class="row">
+            <!-- Itera sobre las mejores reseñas -->
+            <div class="col-md-4" th:each="review : ${topReviews}">
+                <div class="review-card p-3 bg-white rounded shadow-sm">
+                    <blockquote class="blockquote">
+                        <p th:text="|${review.comentario}|"></p>
+                        <footer class="blockquote-footer" th:text="${review.nombre}"></footer>
+                    </blockquote>
+                    <div class="stars">
+                        <span th:each="i : ${#numbers.sequence(1, 5)}"
+                              th:classappend="${i <= review.valoracion} ? 'text-warning' : ''">
+                            &#9733;
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Footer -->
+<footer class="py-4 text-white text-center">
+    <p>&copy; 2024 PlayApp. Todos los derechos reservados.</p>
+    <ul class="list-inline">
+        <li class="list-inline-item"><a href="#" class="text-white">Términos y condiciones</a></li>
+        <li class="list-inline-item"><a href="#" class="text-white">Política de privacidad</a></li>
+    </ul>
+</footer>
+
+<script>
+    let lastScrollTop = 0; // Variable para almacenar la posición anterior del scroll
+ let navbar = document.querySelector('header nav'); // Selecciona la barra de navegación
+
+ // Evento de desplazamiento (scroll)
+ window.addEventListener("scroll", function() {
+     let currentScroll = window.pageYOffset || document.documentElement.scrollTop; // Obtiene la posición actual del scroll
+
+     // Si el usuario hace scroll hacia abajo, oculta la barra
+     if (currentScroll > lastScrollTop) {
+         navbar.style.top = "-70px"; // Desplaza la barra hacia arriba para ocultarla
+     } else {
+         // Si el usuario hace scroll hacia arriba, muestra la barra
+         navbar.style.top = "0"; // Muestra la barra en la parte superior
+     }
+
+     // Actualiza la posición anterior del scroll
+     lastScrollTop = currentScroll <= 0 ? 0 : currentScroll;
+ });
+
+</script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

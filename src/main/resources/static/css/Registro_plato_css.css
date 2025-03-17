@@ -1,0 +1,36 @@
+.admin-section {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    width: 400px;
+     background: #2c3e50;
+     padding: 30px;
+     margin: auto;
+     margin-top: 100px;
+     border-radius: 4px;
+     font-family: 'calibri';
+     color: rgb(255, 255, 255);
+     box-shadow: 7px 13px 37px #000;
+ }
+ 
+ .controls {
+     width: 100%;
+     background: hwb(204 20% 14%);
+     padding: 10px;
+     border-radius: 4px;
+     margin-bottom: 16px;
+     border: 1px;
+     font-family: 'calibri';
+     font-size: 18px;
+ }
+ 
+ .btn-primary{
+     width: 100%;
+     background: hwb(204 20% 14%);
+     border: none;
+     padding: 12px;
+     border-radius: 4px
+     color: blanchedalmond;
+     margin: 16px 0;
+     font-size: 16px;
+ }

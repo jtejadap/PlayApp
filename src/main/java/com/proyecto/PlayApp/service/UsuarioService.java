@@ -23,10 +23,18 @@ public class UsuarioService {
         this.passwordEncoder = passwordEncoder;
     }
 
-    public Usuario crearUsuario(Usuario formulario){
+    public Usuario createUser(Usuario formulario){
         formulario.setPassword(passwordEncoder.encode(formulario.getPassword()));
         Usuario newUser = users.save(formulario);
         Roles rol = new Roles(newUser.getId(), "ROLE_USER");
+        roles.save(rol);
+        return newUser;
+    }
+
+    public Usuario createRestaurant(Usuario formulario){
+        formulario.setPassword(passwordEncoder.encode(formulario.getPassword()));
+        Usuario newUser = users.save(formulario);
+        Roles rol = new Roles(newUser.getId(), "ROLE_ADMIN");
         roles.save(rol);
         return newUser;
     }

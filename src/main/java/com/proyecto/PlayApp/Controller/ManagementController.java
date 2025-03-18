@@ -1,4 +1,4 @@
-package com.proyecto.PlayApp.Controller.Restaurante;
+package com.proyecto.PlayApp.Controller;
 
 import com.proyecto.PlayApp.entity.Restaurante;
 import com.proyecto.PlayApp.service.*;
@@ -11,8 +11,8 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Optional;
 
 @Controller
-@RequestMapping("/restaurantes")
-public class RestauranteController {
+@RequestMapping("/manager")
+public class ManagementController {
 
     @Autowired
     private RestauranteService restauranteService;
@@ -29,27 +29,7 @@ public class RestauranteController {
     @Autowired
     private ServicioService servicioService;
 
-    @GetMapping("/registro")
-    public String mostrarRegistro(Model model) {
-        model.addAttribute("restaurante", new Restaurante());
-        return "Restaurante/register"; // Asegúrate de que esta vista es accesible sin autenticación
-    }
 
-    @PostMapping("/api/restaurantes/registrar")
-    public String registrarRestaurante(@ModelAttribute Restaurante restaurante, Model model) {
-        try {
-            // Verifica si el correo ya está en uso
-            if (authService.existePorCorreoRestaurante(restaurante.getCorreoRestaurante())) {
-                model.addAttribute("error", "El correo ya está en uso.");
-                return "Restaurante/register"; // Mantener en la página de registro para mostrar el mensaje de error
-            }
-            restauranteService.registrarRestaurante(restaurante);
-            model.addAttribute("registroExitoso", "Registro completado. ¡Ahora puedes iniciar sesión!");
-        } catch (IllegalArgumentException e) {
-            model.addAttribute("error", e.getMessage());
-        }
-        return "Restaurante/register";
-    }
 
     @PostMapping("/api/restaurantes/login")
     public String login(@RequestParam("correoRestaurante") String correoRestaurante,
@@ -67,15 +47,11 @@ public class RestauranteController {
         }
     }
 
-    @GetMapping("/admin-restaurante")
+    @GetMapping("/dashboard")
     public String viewAdminPage(HttpSession session, Model model) {
-        String nombreRestaurante = (String) session.getAttribute("nombreRestaurante");
-        if (nombreRestaurante == null) {
-            return "redirect:/login"; // Redirige al login si no hay sesión activa
-        }
-        model.addAttribute("nombreRestaurante", nombreRestaurante);
+        model.addAttribute("nombreRestaurante", "naem");
         model.addAttribute("platos", platoService.obtenerTodosLosPlatos());
-        return "Restaurante/admin-restaurante";
+        return "Management/admin-restaurante";
     }
 
     @PostMapping("/api/restaurantes/logout")

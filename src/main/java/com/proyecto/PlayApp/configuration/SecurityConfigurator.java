@@ -2,6 +2,7 @@ package com.proyecto.PlayApp.configuration;
 
 import com.proyecto.PlayApp.repository.UsuarioRepository;
 import com.proyecto.PlayApp.service.CustomUserDetailsService;
+import com.proyecto.PlayApp.util.CustomAuthenticationSuccessHandler;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -27,12 +28,6 @@ public class SecurityConfigurator {
             "/fonts/**",
             "/static/favicon.ico",
             "/favicon.ico"
-    };
-
-    public String[] pathstoStaticRoutes ={
-            "/login",
-            "/registro",
-            "/home"
     };
 
     @Bean
@@ -75,15 +70,15 @@ public class SecurityConfigurator {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers(pathsToStaticResources).permitAll()
-                        .requestMatchers(pathstoStaticRoutes).permitAll()
-                        .requestMatchers("/shop/**").permitAll()
                         .requestMatchers("/user/**").hasRole("USER")
-                        .requestMatchers("/admin/**").hasRole("ADMIN")
-                        .anyRequest().authenticated()
+                        .requestMatchers("/manager/**").hasRole("ADMIN")
+                        .requestMatchers(pathsToStaticResources).permitAll()
+                        .requestMatchers("/shop/**").permitAll()
+                        .anyRequest().permitAll()
                 )
                 .formLogin(form -> form
                         .loginPage("/login")
+                        .successHandler(new CustomAuthenticationSuccessHandler())
                         .permitAll()
                 );
         return http.build();

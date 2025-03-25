@@ -1,57 +1,32 @@
 package com.proyecto.PlayApp.Controller;
 
-import com.proyecto.PlayApp.entity.Restaurante;
 import com.proyecto.PlayApp.service.*;
 import jakarta.servlet.http.HttpSession;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Optional;
-
 @Controller
 @RequestMapping("/manager")
 public class ManagementController {
+    private final ProductoService servicio;
 
-    @Autowired
-    private RestauranteService restauranteService;
-
-    @Autowired
-    private AuthService authService;
-
-    @Autowired
-    private PlatoService platoService;
-
-    @Autowired
-    private BebidaService bebidaService;
-
-    @Autowired
-    private ServicioService servicioService;
-
-
-
-    @PostMapping("/api/restaurantes/login")
-    public String login(@RequestParam("correoRestaurante") String correoRestaurante,
-                        @RequestParam("password") String password,
-                        Model model, HttpSession session) {
-        Optional<Restaurante> restaurante = authService.authenticateRestaurante(correoRestaurante, password);
-        if (restaurante.isPresent()) {
-            // Crear sesión y agregar atributos
-            session.setAttribute("nombreRestaurante", restaurante.get().getNombre());
-            return "redirect:/restaurantes/admin-restaurante";
-        } else {
-            model.addAttribute("error", "Credenciales incorrectas. Por favor, inténtelo de nuevo.");
-            model.addAttribute("restaurante", new Restaurante());
-            return "Restaurante/register";
-        }
+    public ManagementController(ProductoService servicio) {
+        this.servicio = servicio;
     }
 
     @GetMapping("/dashboard")
     public String viewAdminPage(HttpSession session, Model model) {
         model.addAttribute("nombreRestaurante", "naem");
-        model.addAttribute("platos", platoService.obtenerTodosLosPlatos());
-        return "Management/admin-restaurante";
+        model.addAttribute("platos", servicio.listarTodoslosProductos());
+        return "Management/dashboard";
+    }
+
+    @GetMapping("/products")
+    public String mostrarProductos(Model model) {
+        model.addAttribute("nombreRestaurante", "naem");
+        model.addAttribute("platos", servicio.listarTodoslosProductos());
+        return "Management/productos";
     }
 
     @PostMapping("/api/restaurantes/logout")

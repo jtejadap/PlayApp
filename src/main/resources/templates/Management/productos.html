@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Productos</title>
+    <link th:href="@{/css/bootstrap.min.css}" rel="stylesheet">
+    <link rel="icon" href="/img/Logo.png" type="image/png">
+</head>
+<body class="container-fluid">
+<main class="row flex-nowrap">
+    <div class="col-3 border-end p-0">
+        <div class="d-flex flex-column flex-shrink-0 p-3 bg-body-tertiary min-vh-100">
+            <a href="/manager/dashboard"
+               class="d-flex align-items-center mb-3 mb-md-0 me-md-auto link-body-emphasis text-decoration-none">
+                <img src="/img/Logo.png" class="bi pe-none me-2" width="40" height="32" alt="home"/>
+                <span class="fs-4">Playapp</span>
+            </a>
+            <hr>
+            <ul class="nav nav-pills flex-column mb-auto">
+                <li>
+                    <a href="/manager/dashboard" class="nav-link  link-body-emphasis">
+                        <img src="/img/icons/speedometer2.svg" class="bi pe-none me-2" width="16" height="16"
+                             alt="dashboard"/>
+                        Dashboard
+                    </a>
+                </li>
+                <li>
+                    <a href="#" class="nav-link link-body-emphasis">
+                        <svg class="bi pe-none me-2" width="16" height="16">
+                            <use xlink:href="#table"></use>
+                        </svg>
+                        Ordenes
+                    </a>
+                </li>
+                <li>
+                    <a href="/manager/products" class="nav-link active nav-item">
+                        <img src="/img/icons/boxes.svg" class="bi pe-none me-2" width="16" height="16" alt="inventory"/>
+                        Inventario
+                    </a>
+                </li>
+                <li>
+                    <a href="#" class="nav-link link-body-emphasis">
+                        <svg class="bi pe-none me-2" width="16" height="16">
+                            <use xlink:href="#people-circle"></use>
+                        </svg>
+                        Customers
+                    </a>
+                </li>
+            </ul>
+            <hr>
+            <div class="dropdown">
+                <a href="#" class="d-flex align-items-center link-body-emphasis text-decoration-none dropdown-toggle"
+                   data-bs-toggle="dropdown" aria-expanded="false">
+                    <img src="https://github.com/mdo.png" alt="" width="32" height="32" class="rounded-circle me-2">
+                    <strong>Restaurante</strong>
+                </a>
+                <ul class="dropdown-menu text-small shadow">
+                    <li><a class="dropdown-item" href="#">New project...</a></li>
+                    <li><a class="dropdown-item" href="#">Settings</a></li>
+                    <li><a class="dropdown-item" href="#">Profile</a></li>
+                    <li>
+                        <hr class="dropdown-divider">
+                    </li>
+                    <li><a class="dropdown-item" href="#">Sign out</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="col-9">
+        <div class="row">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb breadcrumb-chevron p-3 bg-body-tertiary rounded-3">
+                    <li class="breadcrumb-item">
+                        <a class="link-body-emphasis" href="#">
+                            <img src="/img/icons/house-door-fill.svg" class="bi" width="16" height="16" alt="home"/>
+                            <span class="visually-hidden">Home</span>
+                        </a>
+                    </li>
+                    <li class="breadcrumb-item active" aria-current="page">
+                        Inventario
+                    </li>
+                </ol>
+            </nav>
+        </div>
+        <div class="row mb-3">
+            <form class="row row-cols-lg-auto align-items-center">
+                <div class="col-12">
+                    <label class="visually-hidden" for="inlineFormInputGroupUsername">Username</label>
+                    <div class="input-group">
+                        <div class="input-group-text">Buscar</div>
+                        <input type="text" class="form-control" id="inlineFormInputGroupUsername"
+                               placeholder="Username">
+                    </div>
+                </div>
+                <div class="col-12">
+                    <label class="visually-hidden" for="inlineFormSelectPref">Filtrar</label>
+                    <select class="form-select" id="inlineFormSelectPref">
+                        <option selected>Choose...</option>
+                        <option value="1">One</option>
+                        <option value="2">Two</option>
+                        <option value="3">Three</option>
+                    </select>
+                </div>
+                <div class="col-12">
+                    <button type="submit" class="btn btn-primary">Buscar</button>
+                </div>
+            </form>
+        </div>
+        <div class="row">
+            <div class="col-4 mb-2">
+                <div class="card h-100 rounded-0">
+                    <img src="/img/imagen2.jpg" height="191" class="card-img-top rounded-0" alt="...">
+                    <div class="card-body">
+                        <h5 class="card-title">Producto</h5>
+                        <h6 class="card-subtitle mb-2 text-body-secondary">Tipo</h6>
+                        <a href="#" class="card-link">Editar</a>
+                        <a href="#" class="card-link">Eliminar</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-4 mb-2">
+                <div class="card h-100 rounded-0">
+                    <img src="/img/imagen2.jpg" height="191" class="card-img-top rounded-0" alt="...">
+                    <div class="card-body">
+                        <h5 class="card-title">Producto</h5>
+                        <h6 class="card-subtitle mb-2 text-body-secondary">Tipo</h6>
+                        <a href="#" class="card-link">Editar</a>
+                        <a href="#" class="card-link">Eliminar</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-4 mb-2">
+                <div class="card h-100 rounded-0">
+                    <img src="/img/imagen2.jpg" height="191" class="card-img-top rounded-0" alt="...">
+                    <div class="card-body">
+                        <h5 class="card-title">Producto</h5>
+                        <h6 class="card-subtitle mb-2 text-body-secondary">Tipo</h6>
+                        <a href="#" class="card-link">Editar</a>
+                        <a href="#" class="card-link">Eliminar</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-4 mb-2">
+                <div class="card h-100 rounded-0">
+                    <img src="/img/imagen2.jpg" height="191" class="card-img-top rounded-0" alt="...">
+                    <div class="card-body">
+                        <h5 class="card-title">Producto</h5>
+                        <h6 class="card-subtitle mb-2 text-body-secondary">Tipo</h6>
+                        <a href="#" class="card-link">Editar</a>
+                        <a href="#" class="card-link">Eliminar</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-4 mb-2">
+                <div class="card h-100 rounded-0">
+                    <img src="/img/imagen2.jpg" height="191" class="card-img-top rounded-0" alt="...">
+                    <div class="card-body">
+                        <h5 class="card-title">Producto</h5>
+                        <h6 class="card-subtitle mb-2 text-body-secondary">Tipo</h6>
+                        <a href="#" class="card-link">Editar</a>
+                        <a href="#" class="card-link">Eliminar</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-4 mb-2">
+                <div class="card h-100 rounded-0">
+                    <img src="/img/imagen2.jpg" height="191" class="card-img-top rounded-0" alt="...">
+                    <div class="card-body">
+                        <h5 class="card-title">Producto</h5>
+                        <h6 class="card-subtitle mb-2 text-body-secondary">Tipo</h6>
+                        <a href="#" class="card-link">Editar</a>
+                        <a href="#" class="card-link">Eliminar</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+</body>
+</html>

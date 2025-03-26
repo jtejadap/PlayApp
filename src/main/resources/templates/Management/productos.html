@@ -5,16 +5,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Productos</title>
     <link th:href="@{/css/bootstrap.min.css}" rel="stylesheet">
+    <link rel="stylesheet" href="/css/importJakartaFont.css">
     <link rel="icon" href="/img/Logo.png" type="image/png">
 </head>
-<body class="container-fluid">
+<body class="container-fluid jakarta-regular">
 <main class="row flex-nowrap">
     <div class="col-3 border-end p-0">
         <div class="d-flex flex-column flex-shrink-0 p-3 bg-body-tertiary min-vh-100">
             <a href="/manager/dashboard"
                class="d-flex align-items-center mb-3 mb-md-0 me-md-auto link-body-emphasis text-decoration-none">
                 <img src="/img/Logo.png" class="bi pe-none me-2" width="40" height="32" alt="home"/>
-                <span class="fs-4">Playapp</span>
+                <span class="fs-4 jakarta-bold">Playapp</span>
             </a>
             <hr>
             <ul class="nav nav-pills flex-column mb-auto">
@@ -36,7 +37,7 @@
                 <li>
                     <a href="/manager/products" class="nav-link active nav-item">
                         <img src="/img/icons/boxes.svg" class="bi pe-none me-2" width="16" height="16" alt="inventory"/>
-                        Inventario
+                        Catalogo
                     </a>
                 </li>
                 <li>
@@ -44,7 +45,7 @@
                         <svg class="bi pe-none me-2" width="16" height="16">
                             <use xlink:href="#people-circle"></use>
                         </svg>
-                        Customers
+                        Clientes
                     </a>
                 </li>
             </ul>
@@ -83,97 +84,106 @@
                 </ol>
             </nav>
         </div>
-        <div class="row mb-3">
-            <form class="row row-cols-lg-auto align-items-center">
-                <div class="col-12">
-                    <label class="visually-hidden" for="inlineFormInputGroupUsername">Username</label>
-                    <div class="input-group">
-                        <div class="input-group-text">Buscar</div>
-                        <input type="text" class="form-control" id="inlineFormInputGroupUsername"
-                               placeholder="Username">
+        <div class="row my-2">
+            <div class="d-flex">
+                <div class="me-auto">
+                    <div class="btn-toolbar" role="toolbar" aria-label="Toolbar with button groups">
+                        <div class="input-group">
+                            <input type="text" class="form-control" placeholder="Buscar Producto ..."
+                                   aria-label="Input group example" aria-describedby="btnGroupAddon">
+                        </div>
+                        <div class="btn-group mx-2" role="group" aria-label="First group">
+                            <button type="button" class="btn btn-outline-primary">Buscar</button>
+                        </div>
                     </div>
                 </div>
-                <div class="col-12">
-                    <label class="visually-hidden" for="inlineFormSelectPref">Filtrar</label>
-                    <select class="form-select" id="inlineFormSelectPref">
-                        <option selected>Choose...</option>
-                        <option value="1">One</option>
-                        <option value="2">Two</option>
-                        <option value="3">Three</option>
-                    </select>
+                <div>
+                    <button type="submit" class="btn btn-primary">Crear</button>
                 </div>
-                <div class="col-12">
-                    <button type="submit" class="btn btn-primary">Buscar</button>
-                </div>
-            </form>
+            </div>
+
+
+        </div>
+        <div class="row g-2">
+            <table class="table">
+                <thead class="table-secondary">
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">First</th>
+                    <th scope="col">Last</th>
+                    <th scope="col">Handle</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <th scope="row">1</th>
+                    <td>
+                        <img src="/img/imagen2.jpg" height="50" width="50" class="img-fluid img-thumbnail" alt="...">
+                        El nombre del producto
+                    </td>
+                    <td>Otto</td>
+                    <td>@mdo</td>
+                </tr>
+                <tr>
+                    <th scope="row">2</th>
+                    <td>
+                        <img src="/img/imagen2.jpg" height="50" width="50" class="img-fluid img-thumbnail" alt="...">
+                        El nombre del producto
+                    </td>
+                    <td>Thornton</td>
+                    <td>@fat</td>
+                </tr>
+                <tr>
+                    <th scope="row">3</th>
+                    <td>
+                        <img src="/img/imagen2.jpg" height="50" width="50" class="img-fluid img-thumbnail" alt="...">
+                        El nombre del producto
+                    </td>
+                    <td>@fat</td>
+                    <td>@twitter</td>
+                </tr>
+                </tbody>
+            </table>
+
+        </div>
+        <div class="row my-3">
+            <nav aria-label="Page navigation example">
+                <ul class="pagination justify-content-center">
+                    <li class="page-item"><a class="page-link" href="#">Previous</a></li>
+                    <li class="page-item"><a class="page-link" href="#">1</a></li>
+                    <li class="page-item"><a class="page-link" href="#">2</a></li>
+                    <li class="page-item"><a class="page-link" href="#">3</a></li>
+                    <li class="page-item"><a class="page-link" href="#">Next</a></li>
+                </ul>
+            </nav>
         </div>
         <div class="row">
-            <div class="col-4 mb-2">
-                <div class="card h-100 rounded-0">
-                    <img src="/img/imagen2.jpg" height="191" class="card-img-top rounded-0" alt="...">
-                    <div class="card-body">
-                        <h5 class="card-title">Producto</h5>
-                        <h6 class="card-subtitle mb-2 text-body-secondary">Tipo</h6>
-                        <a href="#" class="card-link">Editar</a>
-                        <a href="#" class="card-link">Eliminar</a>
-                    </div>
+            <footer class="d-flex flex-wrap justify-content-between align-items-center py-3 my-4 border-top">
+                <div class="col-md-4 d-flex align-items-center">
+                    <a href="/" class="mb-3 me-2 mb-md-0 text-body-secondary text-decoration-none lh-1">
+                        <img src="/img/Logo.png" class="bi" width="30" height="24" alt="home"/>
+                    </a>
+                    <span class="mb-3 mb-md-0 text-body-secondary">© 2025 Playapp, Inc</span>
                 </div>
-            </div>
-            <div class="col-4 mb-2">
-                <div class="card h-100 rounded-0">
-                    <img src="/img/imagen2.jpg" height="191" class="card-img-top rounded-0" alt="...">
-                    <div class="card-body">
-                        <h5 class="card-title">Producto</h5>
-                        <h6 class="card-subtitle mb-2 text-body-secondary">Tipo</h6>
-                        <a href="#" class="card-link">Editar</a>
-                        <a href="#" class="card-link">Eliminar</a>
-                    </div>
-                </div>
-            </div>
-            <div class="col-4 mb-2">
-                <div class="card h-100 rounded-0">
-                    <img src="/img/imagen2.jpg" height="191" class="card-img-top rounded-0" alt="...">
-                    <div class="card-body">
-                        <h5 class="card-title">Producto</h5>
-                        <h6 class="card-subtitle mb-2 text-body-secondary">Tipo</h6>
-                        <a href="#" class="card-link">Editar</a>
-                        <a href="#" class="card-link">Eliminar</a>
-                    </div>
-                </div>
-            </div>
-            <div class="col-4 mb-2">
-                <div class="card h-100 rounded-0">
-                    <img src="/img/imagen2.jpg" height="191" class="card-img-top rounded-0" alt="...">
-                    <div class="card-body">
-                        <h5 class="card-title">Producto</h5>
-                        <h6 class="card-subtitle mb-2 text-body-secondary">Tipo</h6>
-                        <a href="#" class="card-link">Editar</a>
-                        <a href="#" class="card-link">Eliminar</a>
-                    </div>
-                </div>
-            </div>
-            <div class="col-4 mb-2">
-                <div class="card h-100 rounded-0">
-                    <img src="/img/imagen2.jpg" height="191" class="card-img-top rounded-0" alt="...">
-                    <div class="card-body">
-                        <h5 class="card-title">Producto</h5>
-                        <h6 class="card-subtitle mb-2 text-body-secondary">Tipo</h6>
-                        <a href="#" class="card-link">Editar</a>
-                        <a href="#" class="card-link">Eliminar</a>
-                    </div>
-                </div>
-            </div>
-            <div class="col-4 mb-2">
-                <div class="card h-100 rounded-0">
-                    <img src="/img/imagen2.jpg" height="191" class="card-img-top rounded-0" alt="...">
-                    <div class="card-body">
-                        <h5 class="card-title">Producto</h5>
-                        <h6 class="card-subtitle mb-2 text-body-secondary">Tipo</h6>
-                        <a href="#" class="card-link">Editar</a>
-                        <a href="#" class="card-link">Eliminar</a>
-                    </div>
-                </div>
-            </div>
+
+                <ul class="nav col-md-4 justify-content-end list-unstyled d-flex">
+                    <li class="ms-3"><a class="text-body-secondary" href="#">
+                        <svg class="bi" width="24" height="24">
+                            <use xlink:href="#twitter"></use>
+                        </svg>
+                    </a></li>
+                    <li class="ms-3"><a class="text-body-secondary" href="#">
+                        <svg class="bi" width="24" height="24">
+                            <use xlink:href="#instagram"></use>
+                        </svg>
+                    </a></li>
+                    <li class="ms-3"><a class="text-body-secondary" href="#">
+                        <svg class="bi" width="24" height="24">
+                            <use xlink:href="#facebook"></use>
+                        </svg>
+                    </a></li>
+                </ul>
+            </footer>
         </div>
     </div>
 </main>

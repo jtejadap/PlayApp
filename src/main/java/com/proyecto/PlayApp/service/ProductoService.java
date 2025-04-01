@@ -1,5 +1,6 @@
 package com.proyecto.PlayApp.service;
 
+import com.proyecto.PlayApp.entity.Bebida;
 import com.proyecto.PlayApp.entity.Plato;
 import com.proyecto.PlayApp.entity.Producto;
 import com.proyecto.PlayApp.repository.ProductoRepository;
@@ -16,5 +17,9 @@ public class ProductoService {
     }
     public List<Producto> listarTodoslosProductos() {
         return productos.findAll();
+    }
+
+    public Producto crearProducto(Producto producto) {
+        return productos.save(producto);
     }
 }

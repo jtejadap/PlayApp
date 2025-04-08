@@ -12,6 +12,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.security.Principal;
+import java.util.Optional;
 
 @Controller
 @RequestMapping("/manager")
@@ -23,8 +24,8 @@ public class ManagementController {
     }
 
     @GetMapping("/dashboard")
-    public String viewAdminPage(HttpSession session, Model model) {
-        model.addAttribute("nombreRestaurante", "naem");
+    public String viewAdminPage(Principal principal, Model model) {
+        model.addAttribute("nombreRestaurante", principal.getName());
         model.addAttribute("platos", servicio.listarTodoslosProductos());
         return "Management/dashboard";
     }
@@ -59,10 +60,28 @@ public class ManagementController {
         return "Management/productos";
     }
 
-    @PostMapping("/api/restaurantes/logout")
-    public String logout(HttpSession session) {
-        // Invalidar la sesión actual
-        session.invalidate();
-        return "redirect:/restaurantes/registro"; // Redirigir a la página de inicio de sesión u otra página
+    @GetMapping("/product/{id}")
+    public String mostrarFormularioEdicion(@PathVariable Long id, Model model) {
+        Producto producto = servicio.buscarProductoPorId(id);
+        if (producto == null) {
+            return "redirect:/manager/products";
+        }
+        model.addAttribute("producto", producto);
+        return "Management/editar-producto";
     }
+
+    @PostMapping("/product/edit/{id}")
+    public String editarProducto(
+            @PathVariable Long id,
+            @ModelAttribute("producto") Producto producto,
+            @RequestParam("archivoimagen") MultipartFile imagen
+    ) throws IOException {
+        if (!imagen.isEmpty()) {
+            //byte[] imagenBytes = imagen.getBytes();
+            //TODO save image data
+        }
+        servicio.actualizarProducto(id, producto);
+        return "redirect:/manager/products";
+    }
+
 }

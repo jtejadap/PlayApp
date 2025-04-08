@@ -13,17 +13,12 @@ public class PedidoItem {
     @JoinColumn(name = "pedido_id", nullable = false)
     private Pedido pedido;
 
-    @ManyToOne
-    @JoinColumn(name = "plato_id")
-    private Plato plato;
+
 
     @ManyToOne
     @JoinColumn(name = "bebida_id")
     private Bebida bebida;
 
-    @ManyToOne
-    @JoinColumn(name = "servicio_id")
-    private Servicio servicio;
 
     private int cantidad;
 
@@ -32,12 +27,10 @@ public class PedidoItem {
     public PedidoItem() {
     }
 
-    public PedidoItem(Long id, Pedido pedido, Plato plato, Bebida bebida, Servicio servicio, int cantidad, double precio) {
+    public PedidoItem(Long id, Pedido pedido, Bebida bebida,  int cantidad, double precio) {
         this.id = id;
-        this.pedido = pedido;
-        this.plato = plato;
-        this.bebida = bebida;
-        this.servicio = servicio;
+        this.pedido = pedido;        
+        this.bebida = bebida;       
         this.cantidad = cantidad;
         this.precio = precio;
     }
@@ -58,14 +51,7 @@ public class PedidoItem {
         this.pedido = pedido;
     }
 
-    public Plato getPlato() {
-        return plato;
-    }
-
-    public void setPlato(Plato plato) {
-        this.plato = plato;
-    }
-
+    
     public Bebida getBebida() {
         return bebida;
     }
@@ -74,14 +60,7 @@ public class PedidoItem {
         this.bebida = bebida;
     }
 
-    public Servicio getServicio() {
-        return servicio;
-    }
-
-    public void setServicio(Servicio servicio) {
-        this.servicio = servicio;
-    }
-
+   
     public int getCantidad() {
         return cantidad;
     }
@@ -103,9 +82,10 @@ public class PedidoItem {
         return "PedidoItem{" +
                 "id=" + id +
                 ", pedido=" + pedido +
-                ", plato=" + plato +
+                ", plato=" +
                 ", bebida=" + bebida +
-                ", servicio=" + servicio +
+                ", servicio=" +
+                ", servicio=" +
                 ", cantidad=" + cantidad +
                 ", precio=" + precio +
                 '}';

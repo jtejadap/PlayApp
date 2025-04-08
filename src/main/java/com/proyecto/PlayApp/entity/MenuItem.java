@@ -16,17 +16,14 @@ public abstract class MenuItem {
     @Lob
     private byte[] imagen;
 
-    @ManyToOne
-    @JoinColumn(name = "restaurante_id")
-    private Restaurante restaurante;
+
 
     public MenuItem() {}
 
-    public MenuItem(String nombre, Double precio,byte[] imagen, Restaurante restaurante) {
+    public MenuItem(String nombre, Double precio,byte[] imagen) {
         this.nombre = nombre;
         this.precio = precio;
         this.imagen = imagen;
-        this.restaurante = restaurante;
     }
 
     // Getters y setters para los campos comunes
@@ -62,13 +59,6 @@ public abstract class MenuItem {
         this.imagen = imagen;
     }
 
-    public Restaurante getRestaurante() {
-        return restaurante;
-    }
-
-    public void setRestaurante(Restaurante restaurante) {
-        this.restaurante = restaurante;
-    }
     public String getImagenBase64() {
         return Base64.getEncoder().encodeToString(this.imagen);
     }
@@ -80,7 +70,7 @@ public abstract class MenuItem {
                 ", nombre='" + nombre + '\'' +
                 ", precio=" + precio +
                 ", imagen='" + imagen + '\'' +
-                ", restaurante=" + restaurante.getNombre() +
+                ", restaurante=" +
                 '}';
     }
 }

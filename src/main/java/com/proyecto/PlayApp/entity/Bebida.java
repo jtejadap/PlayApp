@@ -15,8 +15,8 @@ public class Bebida extends MenuItem {
 
     public Bebida() {}
 
-    public Bebida(String nombre,String descripcion, Double precio, byte[] imagen, Restaurante restaurante, int stock, TipoBebida tipo) {
-        super(nombre, precio, imagen, restaurante);
+    public Bebida(String nombre,String descripcion, Double precio, byte[] imagen, int stock, TipoBebida tipo) {
+        super(nombre, precio, imagen);
         this.descripcion = descripcion;
         this.stock = stock;
         this.tipo = tipo;

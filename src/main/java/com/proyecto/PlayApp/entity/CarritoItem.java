@@ -14,28 +14,18 @@ public class CarritoItem {
     private Carrito carrito;
 
     @ManyToOne
-    @JoinColumn(name = "plato_id")
-    private Plato plato;
-
-    @ManyToOne
     @JoinColumn(name = "bebida_id")
     private Bebida bebida;
-
-    @ManyToOne
-    @JoinColumn(name = "servicio_id")
-    private Servicio servicio;
 
     private int cantidad;
 
     public CarritoItem() {
     }
 
-    public CarritoItem(Long id, Carrito carrito, Plato plato, Bebida bebida, Servicio servicio, int cantidad) {
+    public CarritoItem(Long id, Carrito carrito,  Bebida bebida,  int cantidad) {
         this.id = id;
         this.carrito = carrito;
-        this.plato = plato;
         this.bebida = bebida;
-        this.servicio = servicio;
         this.cantidad = cantidad;
     }
 
@@ -55,13 +45,6 @@ public class CarritoItem {
         this.carrito = carrito;
     }
 
-    public Plato getPlato() {
-        return plato;
-    }
-
-    public void setPlato(Plato plato) {
-        this.plato = plato;
-    }
 
     public Bebida getBebida() {
         return bebida;
@@ -71,13 +54,6 @@ public class CarritoItem {
         this.bebida = bebida;
     }
 
-    public Servicio getServicio() {
-        return servicio;
-    }
-
-    public void setServicio(Servicio servicio) {
-        this.servicio = servicio;
-    }
 
     public int getCantidad() {
         return cantidad;
@@ -92,9 +68,9 @@ public class CarritoItem {
         return "CarritoItem{" +
                 "id=" + id +
                 ", carrito=" + carrito +
-                ", plato=" + plato +
+                ", plato=" +
                 ", bebida=" + bebida +
-                ", servicio=" + servicio +
+                ", servicio="  +
                 ", cantidad=" + cantidad +
                 '}';
     }

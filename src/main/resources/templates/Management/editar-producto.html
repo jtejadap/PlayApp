@@ -54,7 +54,7 @@
                 <a href="#" class="d-flex align-items-center link-body-emphasis text-decoration-none dropdown-toggle"
                    data-bs-toggle="dropdown" aria-expanded="false">
                     <img src="https://github.com/mdo.png" alt="" width="32" height="32" class="rounded-circle me-2">
-                    <strong th:text="${nombreRestaurante}"></strong>
+                    <strong>Restaurante</strong>
                 </a>
                 <ul class="dropdown-menu text-small shadow">
                     <li>
@@ -73,95 +73,65 @@
             <nav aria-label="breadcrumb">
                 <ol class="breadcrumb breadcrumb-chevron p-3 bg-body-tertiary rounded-3">
                     <li class="breadcrumb-item">
-                        <a class="link-body-emphasis" href="#">
+                        <a class="link-body-emphasis" href="/manager/dashboard">
                             <img src="/img/icons/house-door-fill.svg" class="bi" width="16" height="16" alt="home"/>
                             <span class="visually-hidden">Home</span>
                         </a>
                     </li>
+                    <li class="breadcrumb-item">
+                        <a class="link-body-emphasis fw-semibold text-decoration-none" href="/manager/products">Catalogo</a>
+                    </li>
                     <li class="breadcrumb-item active" aria-current="page">
-                        Catalogo
+                        Editar producto
                     </li>
                 </ol>
             </nav>
         </div>
-        <div class="row my-2">
-            <div class="d-flex">
-                <div class="me-auto">
-                    <div class="btn-toolbar" role="toolbar" aria-label="Toolbar with button groups">
-                        <div class="input-group">
-                            <input type="text" class="form-control" placeholder="Buscar Producto ..."
-                                   aria-label="Input group example" aria-describedby="btnGroupAddon">
-                        </div>
-                        <div class="btn-group mx-2" role="group" aria-label="First group">
-                            <button type="button" class="btn btn-outline-primary">Buscar</button>
-                        </div>
+        <div class="row">
+            <div class="col">
+                <form action="#"   th:action="@{/manager/product/edit/{id}(id=${producto.id})}" th:object="${producto}" method="post"  enctype="multipart/form-data" class="row g-3">
+                    <div class="col-6">
+                        <label class="form-label" for="nombre">Nombre</label>
+                        <input class="form-control" type="text" th:field="*{nombre}" id="nombre" required>
                     </div>
-                </div>
-                <div>
-                    <a href="/manager/product" type="submit" class="btn btn-primary">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-bag-plus-fill" viewBox="0 0 16 16">
-                            <path fill-rule="evenodd" d="M10.5 3.5a2.5 2.5 0 0 0-5 0V4h5zm1 0V4H15v10a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V4h3.5v-.5a3.5 3.5 0 1 1 7 0M8.5 8a.5.5 0 0 0-1 0v1.5H6a.5.5 0 0 0 0 1h1.5V12a.5.5 0 0 0 1 0v-1.5H10a.5.5 0 0 0 0-1H8.5z"/>
-                        </svg> Agregar Producto
-                    </a>
-                </div>
+                    <div class="col-6">
+                        <label class="form-label" for="precio">Precio</label>
+                        <input class="form-control" type="number" th:field="*{precio}" step="0.01" id="precio" required>
+                    </div>
+                    <div class="col-12">
+                        <label class="form-label" for="descripcion">Descripción</label>
+                        <textarea class="form-control" id="descripcion" th:field="*{descripcion}" rows="3" required></textarea>
+                    </div>
+                    <div class="col-4">
+                        <label class="form-label" for="stock">Stock</label>
+                        <input  class="form-control" th:field="*{stock}" type="number" id="stock" required>
+                    </div>
+                    <div class="col-4">
+                        <label class="form-label" for="categoria">Categoria</label>
+                        <select th:field="*{categoria}" id="categoria" class="form-select">
+                            <option th:value="${0}">Seleccione...</option>
+                            <option th:value="${1}">Comida</option>
+                            <option th:value="${2}">Bebida</option>
+                            <option th:value="${3}">Servicio</option>
+                        </select>
+                    </div>
+                    <div class="col-4">
+                        <label class="form-label" for="tipo">Tipo</label>
+                        <select class="form-select" th:field="*{tipo}" id="tipo" name="tipo">
+                            <option th:each="item : ${T(com.proyecto.PlayApp.entity.TipoBebida).values()}"
+                                    th:value="${item.ordinal()}"
+                                    th:text="${item}"></option>
+                        </select>
+                    </div>
+                    <div class="col-12">
+                        <label class="form-label" for="archivoimagen">Imagen:</label>
+                        <input class="form-control" type="file" id="archivoimagen" name="archivoimagen" accept="image/*">
+                    </div>
+                    <div class="col-4">
+                        <button type="submit" class="btn btn-primary">Editar</button>
+                    </div>
+                </form>
             </div>
-
-
-        </div>
-        <div class="row g-2">
-            <table class="table">
-                <thead class="table-secondary">
-                    <tr>
-                        <th scope="col">CODIGO</th>
-                        <th scope="col">PRODUCTO</th>
-                        <th scope="col">CATEGORIA</th>
-                        <th scope="col">PRECIO</th>
-                        <th scope="col">STOCK</th>
-                        <th scope="col">HERRAMIENTAS</th>                    </tr>
-                </thead>
-                <tbody>
-                <tr th:each="producto : ${productos}">
-                    <th scope="row" th:text="${producto.id}"></th>
-                    <td  th:inline="text">
-                        <img src="/img/imagen2.jpg" height="50" width="50" class="img-fluid img-thumbnail" alt="...">
-                        [[${producto.nombre}]]
-                    </td>
-                    <td>
-                        <span class="badge" th:classappend="${producto.obtenerClaseCategoria()}" th:text="${producto.obtenerNombreCategoria()}"></span>
-                    </td>
-                    <td th:text="${#numbers.formatCurrency(producto.precio)}"></td>
-                    <td th:text="${producto.stock}"></td>
-                    <td>
-                        <div class="d-flex justify-content-center">
-                            <div class="btn-group" role="group" aria-label="Basic outlined example">
-                                <a  th:href="@{/manager/product/{id}(id=${producto.id})}" class="btn btn-outline-primary btn-sm">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil-fill" viewBox="0 0 16 16">
-                                        <path d="M12.854.146a.5.5 0 0 0-.707 0L10.5 1.793 14.207 5.5l1.647-1.646a.5.5 0 0 0 0-.708zm.646 6.061L9.793 2.5 3.293 9H3.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.207zm-7.468 7.468A.5.5 0 0 1 6 13.5V13h-.5a.5.5 0 0 1-.5-.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.5-.5V10h-.5a.5.5 0 0 1-.175-.032l-.179.178a.5.5 0 0 0-.11.168l-2 5a.5.5 0 0 0 .65.65l5-2a.5.5 0 0 0 .168-.11z"/>
-                                    </svg>
-                                </a>
-                                <a href="/manager/products"  class="btn btn-outline-primary btn-sm">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash-fill" viewBox="0 0 16 16">
-                                        <path d="M2.5 1a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1H3v9a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V4h.5a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1zm3 4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 .5-.5M8 5a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7A.5.5 0 0 1 8 5m3 .5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 1 0"/>
-                                    </svg>
-                                </a>
-                            </div>
-                        </div>
-                    </td>
-                </tr>
-                </tbody>
-            </table>
-
-        </div>
-        <div class="row my-3">
-            <nav aria-label="Page navigation example">
-                <ul class="pagination justify-content-center">
-                    <li class="page-item"><a class="page-link" href="#">Previous</a></li>
-                    <li class="page-item"><a class="page-link" href="#">1</a></li>
-                    <li class="page-item"><a class="page-link" href="#">2</a></li>
-                    <li class="page-item"><a class="page-link" href="#">3</a></li>
-                    <li class="page-item"><a class="page-link" href="#">Next</a></li>
-                </ul>
-            </nav>
         </div>
         <div class="row">
             <footer class="d-flex flex-wrap justify-content-between align-items-center py-3 my-4 border-top">

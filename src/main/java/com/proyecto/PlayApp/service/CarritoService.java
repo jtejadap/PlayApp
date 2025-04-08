@@ -2,9 +2,7 @@ package com.proyecto.PlayApp.service;
 
 import com.proyecto.PlayApp.entity.*;
 import com.proyecto.PlayApp.repository.CarritoRepository;
-import com.proyecto.PlayApp.repository.PlatoRepository;
 import com.proyecto.PlayApp.repository.BebidaRepository;
-import com.proyecto.PlayApp.repository.ServicioRepository;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,13 +16,9 @@ public class CarritoService {
     private CarritoRepository carritoRepository;
 
     @Autowired
-    private PlatoRepository platoRepository;
-
-    @Autowired
     private BebidaRepository bebidaRepository;
 
-    @Autowired
-    private ServicioRepository servicioRepository;
+
 
     public Carrito obtenerCarrito(HttpSession session) {
         Long carritoId = (Long) session.getAttribute("carritoId");
@@ -39,19 +33,6 @@ public class CarritoService {
         return nuevoCarrito;
     }
 
-    public void agregarPlato(HttpSession session, Long platoId, int cantidad) {
-        Carrito carrito = obtenerCarrito(session);
-        Optional<Plato> platoOpt = platoRepository.findById(platoId);
-        if (platoOpt.isPresent()) {
-            Plato plato = platoOpt.get();
-            CarritoItem carritoItem = new CarritoItem();
-            carritoItem.setCarrito(carrito);
-            carritoItem.setPlato(plato);
-            carritoItem.setCantidad(cantidad);
-            carrito.getItems().add(carritoItem);
-            carritoRepository.save(carrito);
-        }
-    }
 
     public void agregarBebida(HttpSession session, Long bebidaId, int cantidad) {
         Carrito carrito = obtenerCarrito(session);
@@ -67,19 +48,7 @@ public class CarritoService {
         }
     }
 
-    public void agregarServicio(HttpSession session, Long servicioId, int cantidad) {
-        Carrito carrito = obtenerCarrito(session);
-        Optional<Servicio> servicioOpt = servicioRepository.findById(servicioId);
-        if (servicioOpt.isPresent()) {
-            Servicio servicio = servicioOpt.get();
-            CarritoItem carritoItem = new CarritoItem();
-            carritoItem.setCarrito(carrito);
-            carritoItem.setServicio(servicio);
-            carritoItem.setCantidad(cantidad);
-            carrito.getItems().add(carritoItem);
-            carritoRepository.save(carrito);
-        }
-    }
+
 
     public void eliminarItem(HttpSession session, Long itemId) {
         Carrito carrito = (Carrito) session.getAttribute("carrito");

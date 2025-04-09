@@ -1,7 +1,9 @@
 package com.proyecto.PlayApp.service;
 
 import com.proyecto.PlayApp.entity.Producto;
+import com.proyecto.PlayApp.entity.Usuario;
 import com.proyecto.PlayApp.repository.ProductoRepository;
+import com.proyecto.PlayApp.repository.UsuarioRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -10,15 +12,20 @@ import java.util.Optional;
 @Service
 public class ProductoService {
     private final ProductoRepository productos;
+    private final UsuarioRepository usuarios;
 
-    public ProductoService(ProductoRepository productos) {
+    public ProductoService(ProductoRepository productos, UsuarioRepository usuarios) {
         this.productos = productos;
+        this.usuarios = usuarios;
     }
-    public List<Producto> listarTodoslosProductos() {
-        return productos.findAll();
+    public List<Producto> listarTodoslosProductosPorRestaurante(String userMail) {
+        Usuario usuario = usuarios.findByCorreo(userMail).orElse(new Usuario());
+        return productos.findByRestaurante_Id(usuario.getId());
     }
 
-    public Producto crearProducto(Producto producto) {
+    public Producto crearProducto(Producto producto, String userMail) {
+        Usuario usuario = usuarios.findByCorreo(userMail).orElse(null);
+        producto.setRestaurante(usuario);
         return productos.save(producto);
     }
 

@@ -31,7 +31,7 @@ public class CustomUserDetailsService implements UserDetailsService {
                 });
         System.out.println("Usuario encontrado: " + usuario.getNombre_completo());
         return new User(
-                usuario.getNombre_completo(),
+                usuario.getCorreo(),
                 usuario.getPassword(),
                 usuario.getRoles().stream().map(SimpleGrantedAuthority::new).collect(Collectors.toList())
         );

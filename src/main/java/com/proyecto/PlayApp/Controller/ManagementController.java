@@ -26,14 +26,13 @@ public class ManagementController {
     @GetMapping("/dashboard")
     public String viewAdminPage(Principal principal, Model model) {
         model.addAttribute("nombreRestaurante", principal.getName());
-        model.addAttribute("platos", servicio.listarTodoslosProductos());
         return "Management/dashboard";
     }
 
     @GetMapping("/products")
     public String mostrarProductos(Principal principal, Model model) {
         model.addAttribute("nombreRestaurante", principal.getName());
-        model.addAttribute("productos", servicio.listarTodoslosProductos());
+        model.addAttribute("productos", servicio.listarTodoslosProductosPorRestaurante(principal.getName()));
         return "Management/productos";
     }
 
@@ -45,6 +44,7 @@ public class ManagementController {
 
     @PostMapping("/product/new")
     public String crearNuevoProducto(
+            Principal userInSession,
             @ModelAttribute("producto") Producto producto,
             @RequestParam("archivoimagen") MultipartFile imagen,
             BindingResult bindingResult,
@@ -55,9 +55,9 @@ public class ManagementController {
             byte[] imagenBytes = imagen.getBytes();
             //TODO save image on redis
         }
-        servicio.crearProducto(producto);
+        servicio.crearProducto(producto, userInSession.getName());
         model.addAttribute("success", "Producto añadido al catalogo con exito");
-        return "Management/productos";
+        return "redirect:/manager/products";
     }
 
     @GetMapping("/product/{id}")

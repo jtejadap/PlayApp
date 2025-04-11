@@ -1,33 +1,27 @@
 package com.proyecto.PlayApp.Controller;
 
-import com.proyecto.PlayApp.entity.Bebida;
-import com.proyecto.PlayApp.entity.Carrito;
-import com.proyecto.PlayApp.entity.TipoBebida;
-import com.proyecto.PlayApp.entity.Usuario;
-import com.proyecto.PlayApp.service.BebidaService;
-import jakarta.servlet.http.HttpSession;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.proyecto.PlayApp.entity.Producto;
+import com.proyecto.PlayApp.service.ProductoService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 
 @Controller
 @RequestMapping("/shop")
 public class ShopController {
-    private final BebidaService bebidaService;
+    private final ProductoService servicio;
 
-    public ShopController(BebidaService bebidaService) {
-        this.bebidaService = bebidaService;
+    public ShopController(ProductoService servicio) {
+        this.servicio = servicio;
     }
 
-    @GetMapping("/products")
-    public String showAllProducts(Model model){
-        List<Bebida>  bebidas = bebidaService.obtenerTodasLasBebidas();
-        model.addAttribute("bebidas", bebidas);
+    @GetMapping
+    public String mostrarTienda(Model model){
+        List<Producto>  productos = servicio.listarTodosLosProductos();
+        model.addAttribute("productos", productos);
         return "bebida";
     }
 

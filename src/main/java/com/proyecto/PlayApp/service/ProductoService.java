@@ -18,7 +18,12 @@ public class ProductoService {
         this.productos = productos;
         this.usuarios = usuarios;
     }
-    public List<Producto> listarTodoslosProductosPorRestaurante(String userMail) {
+
+    public List<Producto> listarTodosLosProductos() {
+        return productos.findAll();
+    }
+
+    public List<Producto> listarTodosLosProductosPorRestaurante(String userMail) {
         Usuario usuario = usuarios.findByCorreo(userMail).orElse(new Usuario());
         return productos.findByRestaurante_Id(usuario.getId());
     }

@@ -32,7 +32,7 @@ public class ManagementController {
     @GetMapping("/products")
     public String mostrarProductos(Principal principal, Model model) {
         model.addAttribute("nombreRestaurante", principal.getName());
-        model.addAttribute("productos", servicio.listarTodoslosProductosPorRestaurante(principal.getName()));
+        model.addAttribute("productos", servicio.listarTodosLosProductosPorRestaurante(principal.getName()));
         return "Management/productos";
     }
 

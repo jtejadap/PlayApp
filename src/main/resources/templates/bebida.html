@@ -112,7 +112,7 @@
             <h5 class="card-title " th:text="${producto.nombre}">Nombre de la Bebida</h5>
             <h5 class="card-text jakarta-bold"  th:text="${#numbers.formatCurrency(producto.precio)}"> </h5>
             <p class="card-text jakarta-medium" th:text="'Disponible: '+${#numbers.formatInteger(producto.getStock(),0)}+ ' unidades.'"></p>
-            <p class="card-text jakarta-light text-body-secondary" th:text="${producto.getRestaurante().getNombre_completo()}"></p>
+            <!--<p class="card-text jakarta-light text-body-secondary" th:text="${producto.getRestaurante().getNombre_completo()}"></p>-->
             <div class="row">
               <div class="btn-group" role="group" aria-label="Basic example">
                 <button type="button" class="btn btn-primary">

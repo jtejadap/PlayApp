@@ -1,23 +1,33 @@
 package com.proyecto.PlayApp.service;
 
+import com.proyecto.PlayApp.dto.BusquedaDTO;
+import com.proyecto.PlayApp.dto.FiltrosDTO;
+import com.proyecto.PlayApp.dto.OrdenDTO;
+import com.proyecto.PlayApp.dto.ResultadoDTO;
 import com.proyecto.PlayApp.entity.Producto;
 import com.proyecto.PlayApp.entity.Usuario;
 import com.proyecto.PlayApp.repository.ProductoRepository;
 import com.proyecto.PlayApp.repository.UsuarioRepository;
+import com.proyecto.PlayApp.repository.specification.ProductoSpecification;
+import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.Specification;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.ArrayList;
+import java.util.Objects;
 
 @Service
+@RequiredArgsConstructor
 public class ProductoService {
     private final ProductoRepository productos;
     private final UsuarioRepository usuarios;
-
-    public ProductoService(ProductoRepository productos, UsuarioRepository usuarios) {
-        this.productos = productos;
-        this.usuarios = usuarios;
-    }
 
     public List<Producto> listarTodosLosProductos() {
         return productos.findAll();
@@ -55,5 +65,49 @@ public class ProductoService {
         producto.setCategoria(formulario.getCategoria());
 
         return productos.save(producto);
+    }
+
+    public Page<Producto> searchEmployeeWithPaginationSortingAndFiltering(BusquedaDTO busqueda) {
+        // Create filter DTO
+        FiltrosDTO filtros = FiltrosDTO.builder()
+                .nombre(busqueda.getNombre())
+                .precio(busqueda.getPrecio())
+                .stock(busqueda.getStock())
+                .categoria(busqueda.getCategoria())
+                .build();
+
+        // Parse and create sort orders
+        List<OrdenDTO> ordenes = jsonStringToOrdenDTO(busqueda.getSort());
+        List<Sort.Order> ordenado = new ArrayList<>();
+
+        if (ordenes != null) {
+            for(OrdenDTO sort: ordenes) {
+                Sort.Direction direction = Objects.equals(sort.getDireccion(), "desc")
+                        ? Sort.Direction.DESC : Sort.Direction.ASC;
+                ordenado.add(new Sort.Order(direction,sort.getCampo()));
+            }
+        }
+
+        // Create page request with sorting
+        PageRequest solicitudPagina = PageRequest.of(
+                busqueda.getPage(),
+                busqueda.getSize(),
+                Sort.by(ordenado)
+        );
+
+        // Apply specification and pagination
+        Specification<Producto> specification = ProductoSpecification.getSpecification(filtros);
+
+        // Map to DTO and return
+        return productos.findAll(specification,solicitudPagina);
+    }
+
+    private List<OrdenDTO> jsonStringToOrdenDTO(String jsonString) {
+        try {
+            ObjectMapper obj = new ObjectMapper();
+            return obj.readValue(jsonString, new TypeReference<>() {});
+        } catch (Exception e) {
+            return null;
+        }
     }
 }

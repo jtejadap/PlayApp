@@ -3,7 +3,6 @@ package com.proyecto.PlayApp.service;
 import com.proyecto.PlayApp.dto.BusquedaDTO;
 import com.proyecto.PlayApp.dto.FiltrosDTO;
 import com.proyecto.PlayApp.dto.OrdenDTO;
-import com.proyecto.PlayApp.dto.ResultadoDTO;
 import com.proyecto.PlayApp.entity.Producto;
 import com.proyecto.PlayApp.entity.Usuario;
 import com.proyecto.PlayApp.repository.ProductoRepository;

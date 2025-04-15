@@ -1,71 +1,58 @@
 package com.proyecto.PlayApp.service;
 
-import com.proyecto.PlayApp.entity.*;
-import com.proyecto.PlayApp.repository.CarritoRepository;
-import com.proyecto.PlayApp.repository.BebidaRepository;
-import jakarta.servlet.http.HttpSession;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.proyecto.PlayApp.dto.ItemDTO;
+import com.proyecto.PlayApp.entity.Item;
+import com.proyecto.PlayApp.entity.Producto;
+import com.proyecto.PlayApp.entity.Usuario;
+import com.proyecto.PlayApp.repository.ProductoRepository;
+import com.proyecto.PlayApp.repository.UsuarioRepository;
+import lombok.RequiredArgsConstructor;
+import org.springframework.data.redis.core.HashOperations;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class CarritoService {
+    private static final String PREFIJO = "cart:";
 
-    @Autowired
-    private CarritoRepository carritoRepository;
+    private final RedisTemplate<String, Object> redisTemplate;
+    private final UsuarioRepository usuarios;
+    private final ProductoRepository productos;
 
-    @Autowired
-    private BebidaRepository bebidaRepository;
+    public void agregar(ItemDTO campos) {
+        Usuario usuarioInstancia = usuarios.findByCorreo(campos.getCorreo()).orElse(new Usuario());
+        String key = PREFIJO + usuarioInstancia.getId();
+        Producto producto = productos.findById(campos.getItemId()).orElse(new Producto());
+        Item item = Item.builder()
+                .productoId(Long.toString(producto.getId()))
+                .nombre(producto.getNombre())
+                .cantidad(campos.getCantidad())
+                .precio(producto.getPrecio())
+                .build();
 
+        HashOperations<String, String, Item> hash = redisTemplate.opsForHash();
 
-
-    public Carrito obtenerCarrito(HttpSession session) {
-        Long carritoId = (Long) session.getAttribute("carritoId");
-        if (carritoId != null) {
-            Optional<Carrito> carrito = carritoRepository.findById(carritoId);
-            if (carrito.isPresent()) {
-                return carrito.get();
-            }
-        }
-        Carrito nuevoCarrito = new Carrito();
-        session.setAttribute("carrito", nuevoCarrito);
-        return nuevoCarrito;
+        hash.put(key, item.getProductoId(), item);
     }
 
-
-    public void agregarBebida(HttpSession session, Long bebidaId, int cantidad) {
-        Carrito carrito = obtenerCarrito(session);
-        Optional<Bebida> bebidaOpt = bebidaRepository.findById(bebidaId);
-        if (bebidaOpt.isPresent()) {
-            Bebida bebida = bebidaOpt.get();
-            CarritoItem carritoItem = new CarritoItem();
-            carritoItem.setCarrito(carrito);
-            carritoItem.setBebida(bebida);
-            carritoItem.setCantidad(cantidad);
-            carrito.getItems().add(carritoItem);
-            carritoRepository.save(carrito);
-        }
+    public List<Item> listarCarrito(String usuario) {
+        Usuario usuarioInstancia = usuarios.findByCorreo(usuario).orElse(new Usuario());
+        String key = PREFIJO + usuarioInstancia.getId();
+        HashOperations<String, String, Item> hashOps = redisTemplate.opsForHash();
+        return new ArrayList<>(hashOps.values(key));
     }
 
+    public void eliminar(String usuario, String producto) {
+        String key = PREFIJO + usuario;
+        redisTemplate.opsForHash().delete(key, producto);
+    }
 
-
-    public void eliminarItem(HttpSession session, Long itemId) {
-        Carrito carrito = (Carrito) session.getAttribute("carrito");
-        if (carrito == null) {
-            throw new RuntimeException("No se ha encontrado un carrito en la sesión.");
-        }
-
-        boolean itemEliminado = carrito.getItems().removeIf(item ->
-                item.getId() != null && item.getId().equals(itemId)
-        );
-
-        if (!itemEliminado) {
-            throw new RuntimeException("No se encontró el ítem con ID: " + itemId);
-        }
-
-        session.setAttribute("carrito", carrito);
+    public void limpiar(String usuario) {
+        String key = PREFIJO + usuario;
+        redisTemplate.delete(key);
     }
 }
-
-

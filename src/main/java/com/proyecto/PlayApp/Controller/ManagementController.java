@@ -1,9 +1,7 @@
 package com.proyecto.PlayApp.Controller;
 
-import com.proyecto.PlayApp.entity.Bebida;
 import com.proyecto.PlayApp.entity.Producto;
 import com.proyecto.PlayApp.service.*;
-import jakarta.servlet.http.HttpSession;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -12,7 +10,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.security.Principal;
-import java.util.Optional;
 
 @Controller
 @RequestMapping("/manager")

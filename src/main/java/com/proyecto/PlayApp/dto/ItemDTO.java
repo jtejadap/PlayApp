@@ -9,11 +9,8 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class ResultadoDTO {
-    private Long id;
-    private String nombre;
-    private String descripcion;
-    private Float precio;
-    private Float stock;
-    private Integer categoria;
+public class ItemDTO {
+    private String correo;
+    private Long itemId;
+    private Integer cantidad;
 }

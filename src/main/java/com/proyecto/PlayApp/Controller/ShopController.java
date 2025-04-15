@@ -1,7 +1,6 @@
 package com.proyecto.PlayApp.Controller;
 
 import com.proyecto.PlayApp.dto.BusquedaDTO;
-import com.proyecto.PlayApp.dto.ResultadoDTO;
 import com.proyecto.PlayApp.entity.Producto;
 import com.proyecto.PlayApp.service.ProductoService;
 import lombok.RequiredArgsConstructor;

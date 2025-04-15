@@ -1,8 +1,6 @@
 package com.proyecto.PlayApp.Controller.Reseña;
 
-import com.proyecto.PlayApp.entity.Carrito;
 import com.proyecto.PlayApp.entity.Review;
-import com.proyecto.PlayApp.entity.Usuario;
 import com.proyecto.PlayApp.repository.ReviewRepository;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;

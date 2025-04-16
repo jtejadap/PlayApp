@@ -47,12 +47,31 @@ public class CarritoService {
     }
 
     public void eliminar(String usuario, String producto) {
-        String key = PREFIJO + usuario;
+        Usuario usuarioInstancia = usuarios.findByCorreo(usuario).orElse(new Usuario());
+        String key = PREFIJO + usuarioInstancia.getId();
         redisTemplate.opsForHash().delete(key, producto);
     }
 
     public void limpiar(String usuario) {
-        String key = PREFIJO + usuario;
+        Usuario usuarioInstancia = usuarios.findByCorreo(usuario).orElse(new Usuario());
+        String key = PREFIJO + usuarioInstancia.getId();
         redisTemplate.delete(key);
+    }
+
+    public List<Producto> obtenerCheckout(String usuario){
+        Usuario usuarioInstancia = usuarios.findByCorreo(usuario).orElse(new Usuario());
+        String key = PREFIJO + usuarioInstancia.getId();
+        HashOperations<String, String, Item> hashOps = redisTemplate.opsForHash();
+        List<Item> items = new ArrayList<>(hashOps.values(key));
+        return obtenerProductos(items);
+    }
+
+    private List<Producto> obtenerProductos(List<Item> items){
+        List<Producto> resultado = new ArrayList<>();
+        for(Item item : items){
+            Producto producto = productos.findById(Long.valueOf(item.getProductoId())).orElse(new Producto());
+            resultado.add(producto);
+        }
+        return resultado;
     }
 }

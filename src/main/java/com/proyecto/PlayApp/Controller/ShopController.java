@@ -2,6 +2,7 @@ package com.proyecto.PlayApp.Controller;
 
 import com.proyecto.PlayApp.dto.BusquedaDTO;
 import com.proyecto.PlayApp.entity.Producto;
+import com.proyecto.PlayApp.service.CarritoService;
 import com.proyecto.PlayApp.service.ProductoService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.security.Principal;
 import java.util.List;
 
 @Controller
@@ -18,38 +20,58 @@ import java.util.List;
 @RequestMapping("/shop")
 public class ShopController {
     private final ProductoService servicio;
+    private final CarritoService carrito;
 
     @GetMapping
-    public String mostrarTienda(Model model){
-        List<Producto>  productos = servicio.listarTodosLosProductos();
+    public String mostrarTienda(
+            Principal usuario,
+            Model model,
+            @RequestParam(name = "status", required = false) String status
+    ){
+        Page<Producto> productos = servicio.buscarProductoConPaginaOrdenFiltro(
+                BusquedaDTO.builder().page(0).size(6)
+                        .sort("[{\"campo\":\"nombre\",\"direccion\":\"asc\"}]")
+                        .build()
+        );
+
+        if (status!= null) {
+            model.addAttribute("status", status);
+        }
+
+        model.addAttribute("carrito", numeroItemsCarrito(usuario));
         model.addAttribute("productos", productos);
-        return "bebida";
+        return "tienda";
     }
 
     @GetMapping("/search")
-    public String test(
+    public String buscarProducto(
+            Principal usuario,
             Model model,
             @RequestParam(name = "page", defaultValue = "0") Integer page,
             @RequestParam(name = "size", defaultValue = "6") Integer size,
-            @RequestParam(name = "sort", defaultValue = "[{\"field\":\"nombre\",\"direction\":\"desc\"}]") String sort,
+            @RequestParam(name = "sort", defaultValue = "[{\"campo\":\"nombre\",\"direccion\":\"asc\"}]") String sort,
             @RequestParam(name = "nombre", required = false) String nombre,
-            @RequestParam(name = "precio", required = false) Float precio,
-            @RequestParam(name = "stock", required = false) Float stock,
             @RequestParam(name = "categoria", required = false) Integer categoria
     ) {
-        Page<Producto> resultado = servicio.searchEmployeeWithPaginationSortingAndFiltering(
+        Page<Producto> resultado = servicio.buscarProductoConPaginaOrdenFiltro(
                 BusquedaDTO.builder()
                         .nombre(nombre)
-                        .precio(precio)
-                        .stock(stock)
                         .categoria(categoria)
                         .page(page)
                         .size(size)
                         .sort(sort)
-                        .build());
-
+                        .build()
+        );
+        model.addAttribute("carrito", numeroItemsCarrito(usuario));
         model.addAttribute("productos", resultado);
-        return "bebida";
+        return "tienda";
+    }
+
+    private int numeroItemsCarrito(Principal user){
+        if(user == null){
+            return 0;
+        }
+        return carrito.listarCarrito(user.getName()).size();
     }
 
 }

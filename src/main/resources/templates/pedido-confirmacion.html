@@ -16,10 +16,7 @@
   </div>
 
   <h4>Detalles del Pedido</h4>
-  <p><strong>Pedido ID:</strong> <span th:text="${pedido.id}"></span></p>
-  <p><strong>Fecha de Creación:</strong> <span th:text="${pedido.fechaCreacion}"></span></p>
-  <p><strong>Usuario:</strong> <span th:text="${pedido.usuario.nombre_completo}"></span></p>
-  <p><strong>Total:</strong> <span th:text="${pedido.total}"></span></p>
+
 
   <h4>Items</h4>
   <table class="table table-striped">
@@ -32,11 +29,9 @@
     </tr>
     </thead>
     <tbody>
-    <tr th:each="item : ${pedido.items}">
-      <td th:text="${item.plato != null ? item.plato.nombre : item.bebida != null ? item.bebida.nombre : item.servicio.nombre}">Nombre del Producto</td>
-      <td th:text="${item.cantidad}">0</td>
-      <td th:text="${item.precio / item.cantidad}">0.00</td>
-      <td th:text="${item.precio}">0.00</td>
+    <tr th:each="item : ${carrito}">
+      <td th:text="${item.getNombre()}">Nombre del Producto</td>
+      <td th:text="'Precio Unidad:'+${#numbers.formatCurrency(item.precio)}">0.00</td>
     </tr>
     </tbody>
   </table>

@@ -1,38 +1,31 @@
 package com.proyecto.PlayApp.Controller;
 
 
+import com.proyecto.PlayApp.service.CarritoService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+
+import java.security.Principal;
 
 
 @Controller
+@RequiredArgsConstructor
 public class PublicController {
+    private final CarritoService carrito;
+
     @GetMapping("/")
-    public String showHome(){
+    public String showHome(Principal usuario, Model model){
+        model.addAttribute("carrito", numeroItemsCarrito(usuario));
         return "index";
     }
 
-    @GetMapping("/inicio")
-    public String goInicio(){
-        return "index";
-    }
-
-    @GetMapping("/registro-plato")
-    public String showFormAggPlato(){return "Restaurante/registro-plato";}
-
-    @GetMapping("/editar-platos")
-    public String showEdit(){
-        return "Restaurante/editar-platos";
-    }
-
-    @GetMapping("/registro-bebida")
-    public String showFormAggBebida(){
-        return "Restaurante/registro-bebida";
-    }
-
-    @GetMapping("/registro-servicio")
-    public String showFormAggServicio(){
-        return "Restaurante/registro-servicio";
+    private int numeroItemsCarrito(Principal user){
+        if(user == null){
+            return 0;
+        }
+        return carrito.listarCarrito(user.getName()).size();
     }
 
 }

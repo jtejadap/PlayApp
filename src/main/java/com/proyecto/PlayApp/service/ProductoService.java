@@ -66,8 +66,8 @@ public class ProductoService {
         return productos.save(producto);
     }
 
-    public Page<Producto> searchEmployeeWithPaginationSortingAndFiltering(BusquedaDTO busqueda) {
-        // Create filter DTO
+    public Page<Producto>buscarProductoConPaginaOrdenFiltro(BusquedaDTO busqueda) {
+        // Creación de filtrosDTO
         FiltrosDTO filtros = FiltrosDTO.builder()
                 .nombre(busqueda.getNombre())
                 .precio(busqueda.getPrecio())
@@ -75,29 +75,22 @@ public class ProductoService {
                 .categoria(busqueda.getCategoria())
                 .build();
 
-        // Parse and create sort orders
+        // Creación y conversion de orden de registros
         List<OrdenDTO> ordenes = jsonStringToOrdenDTO(busqueda.getSort());
-        List<Sort.Order> ordenado = new ArrayList<>();
+        List<Sort.Order> ordenado = construirOrden(ordenes);
 
-        if (ordenes != null) {
-            for(OrdenDTO sort: ordenes) {
-                Sort.Direction direction = Objects.equals(sort.getDireccion(), "desc")
-                        ? Sort.Direction.DESC : Sort.Direction.ASC;
-                ordenado.add(new Sort.Order(direction,sort.getCampo()));
-            }
-        }
 
-        // Create page request with sorting
+        // Creación de solicitud de orden
         PageRequest solicitudPagina = PageRequest.of(
                 busqueda.getPage(),
                 busqueda.getSize(),
                 Sort.by(ordenado)
         );
 
-        // Apply specification and pagination
+        // Crear especificación (filtros de busqueda)
         Specification<Producto> specification = ProductoSpecification.getSpecification(filtros);
 
-        // Map to DTO and return
+        // Retornar registros de acuerdo especificación y paginación
         return productos.findAll(specification,solicitudPagina);
     }
 
@@ -108,5 +101,17 @@ public class ProductoService {
         } catch (Exception e) {
             return null;
         }
+    }
+
+    private List<Sort.Order> construirOrden(List<OrdenDTO> ordenes){
+        List<Sort.Order> ordenado = new ArrayList<>();
+        if (ordenes != null) {
+            for(OrdenDTO sort: ordenes) {
+                Sort.Direction direction = Objects.equals(sort.getDireccion(), "desc")
+                        ? Sort.Direction.DESC : Sort.Direction.ASC;
+                ordenado.add(new Sort.Order(direction,sort.getCampo()));
+            }
+        }
+        return ordenado;
     }
 }

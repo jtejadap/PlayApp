@@ -1,7 +1,7 @@
 package com.proyecto.PlayApp.service;
 
 import com.proyecto.PlayApp.dto.ItemDTO;
-import com.proyecto.PlayApp.entity.Item;
+import com.proyecto.PlayApp.entity.CarritoItem;
 import com.proyecto.PlayApp.entity.Producto;
 import com.proyecto.PlayApp.entity.Usuario;
 import com.proyecto.PlayApp.repository.ProductoRepository;
@@ -27,22 +27,22 @@ public class CarritoService {
         Usuario usuarioInstancia = usuarios.findByCorreo(campos.getCorreo()).orElse(new Usuario());
         String key = PREFIJO + usuarioInstancia.getId();
         Producto producto = productos.findById(campos.getItemId()).orElse(new Producto());
-        Item item = Item.builder()
+        CarritoItem carritoItem = CarritoItem.builder()
                 .productoId(Long.toString(producto.getId()))
                 .nombre(producto.getNombre())
                 .cantidad(campos.getCantidad())
                 .precio(producto.getPrecio())
                 .build();
 
-        HashOperations<String, String, Item> hash = redisTemplate.opsForHash();
+        HashOperations<String, String, CarritoItem> hash = redisTemplate.opsForHash();
 
-        hash.put(key, item.getProductoId(), item);
+        hash.put(key, carritoItem.getProductoId(), carritoItem);
     }
 
-    public List<Item> listarCarrito(String usuario) {
+    public List<CarritoItem> listarCarrito(String usuario) {
         Usuario usuarioInstancia = usuarios.findByCorreo(usuario).orElse(new Usuario());
         String key = PREFIJO + usuarioInstancia.getId();
-        HashOperations<String, String, Item> hashOps = redisTemplate.opsForHash();
+        HashOperations<String, String, CarritoItem> hashOps = redisTemplate.opsForHash();
         return new ArrayList<>(hashOps.values(key));
     }
 
@@ -58,20 +58,4 @@ public class CarritoService {
         redisTemplate.delete(key);
     }
 
-    public List<Producto> obtenerCheckout(String usuario){
-        Usuario usuarioInstancia = usuarios.findByCorreo(usuario).orElse(new Usuario());
-        String key = PREFIJO + usuarioInstancia.getId();
-        HashOperations<String, String, Item> hashOps = redisTemplate.opsForHash();
-        List<Item> items = new ArrayList<>(hashOps.values(key));
-        return obtenerProductos(items);
-    }
-
-    private List<Producto> obtenerProductos(List<Item> items){
-        List<Producto> resultado = new ArrayList<>();
-        for(Item item : items){
-            Producto producto = productos.findById(Long.valueOf(item.getProductoId())).orElse(new Producto());
-            resultado.add(producto);
-        }
-        return resultado;
-    }
 }

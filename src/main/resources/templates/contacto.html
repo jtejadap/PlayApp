@@ -21,7 +21,7 @@
 <div class="container-subs">
     <nav class="navbar navbar-expand-lg navbar-custom shadow-sm fixed-top">
         <div class="container-fluid">
-            <a class="navbar-brand d-flex align-items-center" href="#">
+            <a class="navbar-brand d-flex align-carritoItems-center" href="#">
                 <img th:src="@{/img/Logo.png}" alt="Logo" width="30" height="24" class="d-inline-block align-text-top">
                 <span class="ms-2 fw-bold">PlayApp</span>
             </a>
@@ -30,28 +30,28 @@
             </button>
             <div class="collapse navbar-collapse justify-content-center" id="navbarsExample11">
                 <ul class="navbar-nav mb-2 mb-lg-0">
-                    <li class="nav-item">
+                    <li class="nav-carritoItem">
                         <a class="nav-link text-light " aria-current="page" href="/inicio">Home</a>
                     </li>
-                    <li class="nav-item">
+                    <li class="nav-carritoItem">
                         <a class="nav-link text-light" href="/comida">Comida</a>
                     </li>
-                    <li class="nav-item">
+                    <li class="nav-carritoItem">
                         <a class="nav-link text-light" href="/bebida">Bebida</a>
                     </li>
-                    <li class="nav-item">
+                    <li class="nav-carritoItem">
                         <a class="nav-link text-light" href="/servicio">Servicios</a>
                     </li>
-                    <li class="nav-item">
+                    <li class="nav-carritoItem">
                         <a class="nav-link text-light active" href="/contacto">Contacto</a>
                     </li>
                 </ul>
-                <div class="d-flex align-items-center">
+                <div class="d-flex align-carritoItems-center">
                     <span class="navbar-text text-light me-3">Hola, <span th:text="${nombreUsuario}">Usuario</span></span>
                     <a class="btn btn-outline-light me-2" href="/auth/logout">Log Out</a>
                     <a class="nav-link text-light position-relative" href="/carrito">
                         <i class="fa fa-shopping-cart"></i>
-                        <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" th:text="${carrito != null ? carrito.items.size() : 0}">0</span>
+                        <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" th:text="${carrito != null ? carrito.carritoItems.size() : 0}">0</span>
                     </a>
                 </div>
             </div>
@@ -181,8 +181,8 @@
 <footer class="py-4 bg-dark text-white text-center">
     <p>&copy; 2024 PlayApp. Todos los derechos reservados.</p>
     <ul class="list-inline">
-        <li class="list-inline-item"><a href="#" class="text-white">Términos y condiciones</a></li>
-        <li class="list-inline-item"><a href="#" class="text-white">Política de privacidad</a></li>
+        <li class="list-inline-carritoItem"><a href="#" class="text-white">Términos y condiciones</a></li>
+        <li class="list-inline-carritoItem"><a href="#" class="text-white">Política de privacidad</a></li>
     </ul>
 </footer>
 <script>

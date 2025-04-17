@@ -11,7 +11,7 @@ import java.io.Serializable;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class Item implements Serializable {
+public class CarritoItem implements Serializable {
     private String productoId;
     private String nombre;
     private int cantidad;

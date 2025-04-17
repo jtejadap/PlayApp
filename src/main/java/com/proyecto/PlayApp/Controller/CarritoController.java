@@ -1,8 +1,9 @@
 package com.proyecto.PlayApp.Controller;
 
 import com.proyecto.PlayApp.dto.ItemDTO;
-import com.proyecto.PlayApp.entity.Producto;
+import com.proyecto.PlayApp.entity.CarritoItem;
 import com.proyecto.PlayApp.service.CarritoService;
+import com.proyecto.PlayApp.service.PedidoService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -19,6 +20,7 @@ import java.util.List;
 @RequestMapping("/cart")
 public class CarritoController {
     private final CarritoService servicio;
+    private final PedidoService pedidos;
 
     @GetMapping("/add/{item}")
     public String addItem(
@@ -41,9 +43,28 @@ public class CarritoController {
 
     @GetMapping("/checkout")
     public String visualizarCarritoDeCompra(Principal usuario, Model model) {
-        List<Producto> checkout = servicio.obtenerCheckout(usuario.getName());
-        model.addAttribute("carrito", checkout);
-        return "pedido-confirmacion";
+        List<CarritoItem> checkout = servicio.listarCarrito(usuario.getName());
+        double total = checkout.stream().mapToDouble(item-> item.getCantidad()* item.getPrecio()).sum();
+        model.addAttribute("total", total);
+        model.addAttribute("carrito", checkout.size());
+        model.addAttribute("checkout", checkout);
+        return "checkout";
+    }
+
+    @GetMapping("/checkout/proceed")
+    public String procederCompra(Principal usuario, Model model) {
+        try {
+            List<CarritoItem> checkout = servicio.listarCarrito(usuario.getName());
+            pedidos.crearPedido(usuario.getName(), checkout);
+            servicio.limpiar(usuario.getName());
+            model.addAttribute("pedidos", checkout);
+            model.addAttribute("success", "¡Compra realizada con exito!, en breve recibirás tu pedido.");
+            return "pedido-confirmacion";
+        }catch (Exception e){
+            model.addAttribute("error", e.getMessage());
+            return "pedido-confirmacion";
+        }
+
     }
 
 

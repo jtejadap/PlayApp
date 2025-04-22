@@ -13,23 +13,19 @@ import java.time.LocalDateTime;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "pedidos")
-public class Pedido {
-
+@Table(name = "envios")
+public class Envio {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-    private Integer estado;
-    private double total;
-    private LocalDateTime timestamp;
+    private long id;
+    private Double latitud;
+    private Double longitud;
+    private String dirreccion;
+    private String descripcion;
+    private Integer mesa;
+    private Integer carpa;
+    private LocalDateTime fecha;
     @ManyToOne
     @JoinColumn(name = "usuario_id")
     private Usuario usuario;
-    @ManyToOne
-    @JoinColumn(name = "pago_id")
-    private Pago pago;
-    @ManyToOne
-    @JoinColumn(name = "envio_id")
-    private Envio envio;
-
 }

@@ -30,7 +30,6 @@ public class PedidoService {
 
 
         Pedido order = Pedido.builder()
-                .usuarioId(usuario.getId())
                 .estado(0)
                 .total(total)
                 .timestamp(LocalDateTime.now())

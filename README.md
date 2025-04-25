@@ -26,12 +26,12 @@ Es una aplicacion web  que busca brindar acceso a la compra de productos y servi
 4. Compilar y ejecutar el proyecto con la ayuda de su IDE de preferencia
 
 ### si no tengo Redis ¿como lo instalo?
-La forma mas sencilla usar redis es descargando la imagen publicada en dockerhub con el siguiente comando:
+La forma mas sencilla de usar redis es descargando la imagen publicada en dockerhub con el siguiente comando:
 
 ```bash
 docker run -d --name redis -p 6379:6379 redis:7.4
 ```
-* Tenga encuenta que para descargar la imagen tiene que estar logeado con su perfil de dockerhub, esto lo puede hacer con el siguiente comando (reemplaze "user", con su usuario de docker):
+* Tenga encuenta que para descargar la imagen tiene que iniciar sesión con su perfil de dockerhub, esto lo puede hacer con el siguiente comando (reemplaze "user", con su usuario de docker):
 
 ```bash
 docker login -u <user>

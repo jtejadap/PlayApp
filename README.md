@@ -1,8 +1,8 @@
 # Playapp
-[![Spring Boot](https://img.shields.io/badge/Springboot-6AAD3D)](https://redis.io/)
+[![Spring Boot](https://img.shields.io/badge/Springboot-6AAD3D)](https://spring.io/projects/spring-boot)
 [![Redis](https://img.shields.io/badge/Redis-FF4C41)](https://redis.io/)
-[![MySQL](https://img.shields.io/badge/MySQL-3E6E93)](https://redis.io/)
-[![Docker](https://img.shields.io/badge/Docker-0F4AC3)](https://redis.io/)
+[![MySQL](https://img.shields.io/badge/MySQL-3E6E93)](https://www.mysql.com/downloads/)
+[![Docker](https://img.shields.io/badge/Docker-0F4AC3)](https://www.docker.com/)
 ## ¿Que es Playapp?
 Es una aplicacion web  que busca brindar acceso a la compra de productos y servicios en las playas de cartagena con precios justos con el fin de mitigar el impacto de las estafas.
 ## ¿Que necesito para ejecutarlo?

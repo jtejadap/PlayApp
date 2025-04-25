@@ -19,7 +19,7 @@ Es una aplicacion web  que busca brindar acceso a la compra de productos y servi
 2. Configurar e iniciar servicio de base de Datos MySQL
     1. Editar los parametros de conexión en el archivo "application.properties" con la información de su servidor MySQL .
     2. Iniciar servicio de MySQL
-    3. Crear una nueva base datos que se llame "playappdb" (En caso de no haber modificado el parametro "Server")
+    3. Crear una nueva base datos que se llame "playappdb" (En caso de NO haber modificado el parametro "spring.datasource.url")
 3. Configurar e iniciar servicio de Redis
     1. Modificar los parametros de conexión a redis en el archivo "application.properties" con la información de su servidor Redis.
     2. Iniciar servicio de Redis, esto se puede hacer desde docker(mirar siguiente sección).

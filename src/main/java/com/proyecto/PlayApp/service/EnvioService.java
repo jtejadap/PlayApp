@@ -14,8 +14,7 @@ public class EnvioService {
     private final EnvioRepository envios;
     private final UsuarioRepository usuarios;
 
-    public Envio crearEnvio(String usermail,Envio envio) {
-        Usuario usuario = usuarios.findByCorreo(usermail).orElse(new Usuario());
+    public Envio crearEnvio(Envio envio) {
 
         Envio nuevoEnvio = Envio.builder()
                 .latitud(envio.getLatitud())
@@ -25,7 +24,7 @@ public class EnvioService {
                 .carpa(envio.getCarpa())
                 .mesa(envio.getMesa())
                 .fecha(LocalDateTime.now())
-                .usuario(usuario)
+                .usuario(envio.getUsuario())
                 .build();
 
         return  envios.save(nuevoEnvio);

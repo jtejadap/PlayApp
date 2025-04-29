@@ -20,7 +20,7 @@ import java.util.List;
 @RequestMapping("/cart")
 public class CarritoController {
     private final CarritoService servicio;
-    private final PedidoService pedidos;
+
 
     @GetMapping("/add/{item}")
     public String addItem(
@@ -54,12 +54,7 @@ public class CarritoController {
     @GetMapping("/checkout/proceed")
     public String procederCompra(Principal usuario, Model model) {
         try {
-            List<CarritoItem> checkout = servicio.listarCarrito(usuario.getName());
-            pedidos.crearPedido(usuario.getName(), checkout);
-            servicio.limpiar(usuario.getName());
-            model.addAttribute("pedidos", checkout);
-            model.addAttribute("success", "¡Compra realizada con exito!, en breve recibirás tu pedido.");
-            return "pedido-confirmacion";
+            return "redirect:/shipment/place";
         }catch (Exception e){
             model.addAttribute("error", e.getMessage());
             return "pedido-confirmacion";

@@ -16,14 +16,13 @@ public class PagoService {
     private final PagoRepository pagos;
     private final UsuarioRepository usuarios;
 
-    public Pago crearPago(String userMail, Pago pago) {
-        Usuario usuario = usuarios.findByCorreo(userMail).orElse(new Usuario());
+    public Pago crearPago(Pago pago) {
 
         Pago nuevoPago = Pago.builder()
                 .valor(pago.getValor())
-                .metodo("PAYPAL")
+                .metodo(pago.getMetodo())
                 .estado(0)
-                .usuario(usuario)
+                .usuario(pago.getUsuario())
                 .fecha(LocalDateTime.now())
                 .build();
 

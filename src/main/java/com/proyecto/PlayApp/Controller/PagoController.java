@@ -30,7 +30,7 @@ public class PagoController {
             @ModelAttribute("pago") Pago pago,
             Model model
     ){
-        servicio.crearPago(userInSession.getName(), pago);
+        servicio.crearPago( pago);
         return "login";
     }
 }

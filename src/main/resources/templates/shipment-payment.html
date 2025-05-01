@@ -48,27 +48,66 @@
 </header>
 
 <div class="container mt-5">
-    <h2>Entrega</h2>
 
-    <div class="row">
-        <button onclick="getLocation()">Obtener Ubicación</button>
-        <div id="map" style="width: 100%; height: 750px;"></div>
-    </div>
+    <form action="#" th:action="@{/shipment/proceed}" th:object="${envioPago}" method="post" class="row justify-content-center g-2" >
+        <div class="col-6">
+            <div class="card h-100">
+                <div class="card-body">
+                    <h4>Lugar de Entrega</h4>
+                    <p class="card-text">¡Ya casi!, Indicanos donde quieres recibir tu pedido.</p>
+                    <div id="map" class="w-100" style="height:25vw"></div>
+                </div>
+            </div>
+        </div>
+        <div class="col-6">
+            <div class="card h-100">
+                <div class="card-body">
+                    <h4>Información adicional</h4>
+                    <p class="card-text">Puedes contarnos más detalles sobre el envío.</p>
+                    <input type="hidden" id="latitud" th:field="*{latitud}" value="10.394598592365298">
+                    <input type="hidden" id="longitud" th:field="*{longitud}" value="-75.5571199005398">
+                    <div class="row border-bottom mb-1">
+                        <div class="col-8 mb-3">
+                            <label for="address" class="form-label">Dirección</label>
+                            <input type="text" class="form-control" id="address" th:field="*{direccion}" placeholder="Direccion..." disabled>
+                        </div>
+                        <div class="col-4 mb-3">
+                            <label for="table" class="form-label">Carpa/Mesa</label>
+                            <input type="number" step="1" min="0"  th:field="*{mesa}" class="form-control" id="table">
+                        </div>
+                        <div class="col-12 mb-3">
+                            <label for="descripcion" class="form-label">Descripción adicional</label>
+                            <textarea class="form-control" id="descripcion" th:field="*{descripcion}" rows="3"></textarea>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <h4>Pago</h4>
+                        <p class="card-text">Indícanos como quieres realizar el pago.</p>
+                        <div class="col-12 mb-3">
+                            <label for="table" class="form-label">Metodo de Pago</label>
+                            <select th:field="*{metodoPago}" class="form-select" aria-label="Default select example">
+                                <option selected th:value="${'NONE'}">Metodo de Pago..</option>
+                                <option  th:value="${'PAYPAL'}">PayPal</option>
+                                <option  th:value="${'DEBITO'}">Tarjeta Debito</option>
+                                <option  th:value="${'CREDITO'}">Tarjeta Credito</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row justify-content-end">
+                        <div class="col-4 d-flex justify-content-end">
+                            <button type="submit" class="btn btn-primary">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-credit-card-fill" viewBox="0 0 16 16">
+                                    <path d="M0 4a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v1H0zm0 3v5a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7zm3 2h1a1 1 0 0 1 1 1v1a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1v-1a1 1 0 0 1 1-1"/>
+                                </svg> Ir a pasarela
 
-    <div class="d-flex justify-content-end">
-        <form action="#" th:action="@{/shipment/proceed}" th:object="${envioPago}" method="post" class="row g-3">
-            <input type="hidden" id="latitud" th:field="*{latitud}" value="10.394598592365298">
-            <input type="hidden" id="longitud" th:field="*{longitud}" value="-75.5571199005398">
-            <h2>Entrega y Pago</h2>
-            <select th:field="*{metodoPago}" class="form-select" aria-label="Default select example">
-                <option selected th:value="${'NONE'}">Metodo de Pago..</option>
-                <option  th:value="${'PAYPAL'}">PayPal</option>
-                <option  th:value="${'DEBITO'}">Tarjeta Debito</option>
-                <option  th:value="${'CREDITO'}">Tarjeta Credito</option>
-            </select>
-            <button type="submit" class="btn btn-primary">Pagar</button>
-        </form>
-    </div>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+
 </div>
 <script src="/js/leaflet.js"></script>
 <script src="/js/handleUserLocation.js"></script>

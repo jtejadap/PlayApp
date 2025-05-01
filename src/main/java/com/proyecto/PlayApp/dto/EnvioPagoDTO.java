@@ -12,6 +12,9 @@ import lombok.NoArgsConstructor;
 public class EnvioPagoDTO {
     private Double latitud;
     private Double longitud;
+    private String direccion;
+    private Integer mesa;
+    private String descripcion;
     private String metodoPago;
     private Double valor;
 }

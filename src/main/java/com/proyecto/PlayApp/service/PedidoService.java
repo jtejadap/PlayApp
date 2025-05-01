@@ -54,9 +54,10 @@ public class PedidoService {
         Envio envio = Envio.builder()
                 .latitud(datos.getLatitud())
                 .longitud(datos.getLongitud())
-                .mesa(0)
-                .carpa(0)
-                .dirreccion("ONCONSTRUCT")
+                .mesa(datos.getMesa())
+                .carpa(datos.getMesa())
+                .dirreccion(datos.getDireccion())
+                .descripcion(datos.getDescripcion())
                 .usuario(usuario)
                 .build();
         return envios.crearEnvio(envio);

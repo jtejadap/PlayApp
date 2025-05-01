@@ -12,22 +12,12 @@
 <body class="background-grey jakarta-regular">
 
 <!-- Barra de navegación -->
-<header class="bg-dark sticky-top">
-    <nav class="container d-flex flex-wrap align-carritoItems-center justify-content-center justify-content-md-between p-2">
+<header class="bg-info sticky-top mb-3">
+    <nav class="container d-flex flex-wrap align-items-center justify-content-center justify-content-md-between p-2">
         <div class="col-md-3 mb-2 mb-md-0">
             <a href="/" class="d-inline-flex link-body-emphasis text-decoration-none">
-                <img th:src="@{/img/Logo.png}" alt="Logo" width="30" height="24" class="d-inline-block align-text-top">
                 <span class="jakarta-extrabold text-light"> FAKE PAYBUDDY</span>
             </a>
-        </div>
-
-        <ul class="nav col-12 col-md-auto mb-2 justify-content-center mb-md-0">
-            <li><a href="/cart/checkout" class="nav-link text-light px-2 jakarta-bold">Carrito</a></li>
-        </ul>
-
-        <div class="col-md-3 text-end">
-            <a href="/login" type="button" class="btn btn-outline-primary me-2">Iniciar</a>
-            <a href="/login" class="btn btn-primary">Registrarse</a>
         </div>
     </nav>
 </header>
@@ -35,27 +25,37 @@
 
 <!-- Categorías de Bebidas -->
 <div class="container">
-    <div class="row">
-        <div class="col-12">
-            <h2>Realizar Pago</h2>
-            <h4 th:text="'Compra:'+${valor}"></h4>
-            <h4 th:text="'Metodo: '+${metodo}"></h4>
-        </div>
-        <div class="col-6">
-            <a href="/payment/proceed?estado=SUCCESS" class="btn btn-primary">Efectuar Pago</a>
-        </div>
-        <div class="col-6">
-            <a href="/payment/proceed?estado=CANCELED" class="btn btn-danger">Cancelar Pago</a>
+    <div class="row justify-content-center">
+        <div class="col-5">
+            <div class="card">
+                <div class="card-body p-3">
+                    <h2 class="jakarta-bold">Realizar Pago</h2>
+                    <p class="jakarta-medium card-text" th:text="'Valor de la compra: '+${#numbers.formatCurrency(valor)}"></p>
+                    <p class="jakarta-medium card-text" th:text="'Metodo de Pago: '+${metodo}"></p>
+                    <div class="row">
+                        <div class="col-6 d-flex justify-content-center">
+                            <a href="/payment/proceed?estado=SUCCESS" class="btn btn-outline-success">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-check-circle-fill" viewBox="0 0 16 16">
+                                    <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0m-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z"/>
+                                </svg> Efectuar Pago</a>
+                        </div>
+                        <div class="col-6 d-flex justify-content-center">
+                            <a href="/payment/proceed?estado=CANCELED" class="btn btn-outline-danger">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x-circle-fill" viewBox="0 0 16 16">
+                                    <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0M5.354 4.646a.5.5 0 1 0-.708.708L7.293 8l-2.647 2.646a.5.5 0 0 0 .708.708L8 8.707l2.646 2.647a.5.5 0 0 0 .708-.708L8.707 8l2.647-2.646a.5.5 0 0 0-.708-.708L8 7.293z"/>
+                                </svg> Cancelar Pago
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
     <!-- Footer -->
     <div class="row">
         <footer class="d-flex flex-wrap justify-content-between align-carritoItems-center py-3 my-4 border-top">
             <div class="col-md-4 d-flex align-carritoItems-center">
-                <a href="/" class="mb-3 me-2 mb-md-0 text-body-secondary text-decoration-none lh-1">
-                    <img src="/img/Logo.png" class="bi" width="30" height="24" alt="home"/>
-                </a>
-                <span class="mb-3 mb-md-0 text-body-secondary">© 2025 Playapp, Inc</span>
+                <span class="mb-3 mb-md-0 text-body-secondary">© 2025 FAKE, Inc</span>
             </div>
 
             <ul class="nav col-md-4 justify-content-end list-unstyled d-flex">

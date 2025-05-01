@@ -1,8 +1,13 @@
 let mapa;
 let marcador;
+const apiKey = 'pk.a921cf52c140515c913de88dd831f598';
+window.onload = function() {
+    inicializarMapa(10.394598592365298,-75.5571199005398);
+    obtenerUbicacion();
+};
 
-function dibujarMapa(lat, lon) {
-    mapa = L.map('map').setView([lat, lon], 13); // Establecemos la vista inicial
+function inicializarMapa(lat, lon) {
+    mapa = L.map('map').setView([lat, lon], 16); // Establecemos la vista inicial
 
     // Capa del mapa (usando OpenStreetMap)
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -15,7 +20,12 @@ function dibujarMapa(lat, lon) {
         .openPopup();
 }
 
-function getLocation() {
+function cambiarUbicacionDeMapa(lat,lon) {
+    mapa.setView([lat, lon], 16);
+    marcador.setLatLng([lat, lon]);
+}
+
+function obtenerUbicacion() {
     if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(guardarCoordenadas, gestionarError);
     } else {
@@ -23,11 +33,12 @@ function getLocation() {
     }
 }
 
-function guardarCoordenadas(position) {
+async function guardarCoordenadas(position) {
     const latitud = position.coords.latitude;
     const longitud = position.coords.longitude;
     colocarPosicionEnFormulario(latitud, longitud);
-    dibujarMapa(latitud, longitud);
+    cambiarUbicacionDeMapa(latitud, longitud);
+    document.getElementById('address').value = await obtenerDireccion(latitud, longitud);
 }
 
 function colocarPosicionEnFormulario(lat, lon){
@@ -51,5 +62,19 @@ function gestionarError(error) {
         default:
             alert("Ocurrió un error desconocido.");
             break;
+    }
+}
+
+// Replace with your key
+
+async function obtenerDireccion(lat, lon) {
+    const url = `https://us1.locationiq.com/v1/reverse?key=${apiKey}&lat=${lat}&lon=${lon}&format=json`;
+    try {
+        const response = await fetch(url);
+        const data = await response.json();
+        return data.display_name || 'No se encontró dirección';
+    } catch (error) {
+        console.error('Error fetching address:', error);
+        return 'Error retrieving address';
     }
 }

@@ -46,13 +46,16 @@ public class EnvioController {
                     .build();
 
             pedidos.RealizarPedido(compra);
-            model.addAttribute("success", "Compra realizada con exito!");
-            model.addAttribute("pedidos", items);
-            carritos.limpiar(userInSession.getName());
-            return "pedido-confirmacion";
+            return "redirect:/payment/paymentgateway?valor=" + calcularTotalCarrito(items) + "&metodo=" + envioPago.getMetodoPago();
         } catch (Exception e) {
             model.addAttribute("error", e.getMessage());
             return "pedido-confirmacion";
         }
+    }
+
+    private double calcularTotalCarrito(List<CarritoItem> compra) {
+        return compra.stream()
+                .mapToDouble(item -> item.getPrecio() * item.getCantidad())
+                .sum();
     }
 }

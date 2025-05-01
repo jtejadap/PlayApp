@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tienda</title>
+    <link th:href="@{/css/bootstrap.min.css}" rel="stylesheet">
+    <link rel="stylesheet" href="/css/importJakartaFont.css">
+    <link rel="stylesheet" href="/css/styles.css">
+    <link rel="icon" href="/img/Logo.png" type="image/png">
+</head>
+<body class="background-grey jakarta-regular">
+
+<!-- Barra de navegación -->
+<header class="bg-dark sticky-top">
+    <nav class="container d-flex flex-wrap align-carritoItems-center justify-content-center justify-content-md-between p-2">
+        <div class="col-md-3 mb-2 mb-md-0">
+            <a href="/" class="d-inline-flex link-body-emphasis text-decoration-none">
+                <img th:src="@{/img/Logo.png}" alt="Logo" width="30" height="24" class="d-inline-block align-text-top">
+                <span class="jakarta-extrabold text-light"> FAKE PAYBUDDY</span>
+            </a>
+        </div>
+
+        <ul class="nav col-12 col-md-auto mb-2 justify-content-center mb-md-0">
+            <li><a href="/cart/checkout" class="nav-link text-light px-2 jakarta-bold">Carrito</a></li>
+        </ul>
+
+        <div class="col-md-3 text-end">
+            <a href="/login" type="button" class="btn btn-outline-primary me-2">Iniciar</a>
+            <a href="/login" class="btn btn-primary">Registrarse</a>
+        </div>
+    </nav>
+</header>
+
+
+<!-- Categorías de Bebidas -->
+<div class="container">
+    <div class="row">
+        <div class="col-12">
+            <h2>Realizar Pago</h2>
+            <h4 th:text="'Compra:'+${valor}"></h4>
+            <h4 th:text="'Metodo: '+${metodo}"></h4>
+        </div>
+        <div class="col-6">
+            <a href="/payment/proceed?estado=SUCCESS" class="btn btn-primary">Efectuar Pago</a>
+        </div>
+        <div class="col-6">
+            <a href="/payment/proceed?estado=CANCELED" class="btn btn-danger">Cancelar Pago</a>
+        </div>
+    </div>
+    <!-- Footer -->
+    <div class="row">
+        <footer class="d-flex flex-wrap justify-content-between align-carritoItems-center py-3 my-4 border-top">
+            <div class="col-md-4 d-flex align-carritoItems-center">
+                <a href="/" class="mb-3 me-2 mb-md-0 text-body-secondary text-decoration-none lh-1">
+                    <img src="/img/Logo.png" class="bi" width="30" height="24" alt="home"/>
+                </a>
+                <span class="mb-3 mb-md-0 text-body-secondary">© 2025 Playapp, Inc</span>
+            </div>
+
+            <ul class="nav col-md-4 justify-content-end list-unstyled d-flex">
+                <li class="ms-3"><a class="text-body-secondary" href="#">
+                    <svg class="bi" width="24" height="24">
+                        <use xlink:href="#twitter"></use>
+                    </svg>
+                </a></li>
+                <li class="ms-3"><a class="text-body-secondary" href="#">
+                    <svg class="bi" width="24" height="24">
+                        <use xlink:href="#instagram"></use>
+                    </svg>
+                </a></li>
+                <li class="ms-3"><a class="text-body-secondary" href="#">
+                    <svg class="bi" width="24" height="24">
+                        <use xlink:href="#facebook"></use>
+                    </svg>
+                </a></li>
+            </ul>
+        </footer>
+    </div>
+</div>
+
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

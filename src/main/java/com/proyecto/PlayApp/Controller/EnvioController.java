@@ -3,6 +3,7 @@ package com.proyecto.PlayApp.Controller;
 import com.proyecto.PlayApp.dto.CompraDTO;
 import com.proyecto.PlayApp.dto.EnvioPagoDTO;
 import com.proyecto.PlayApp.entity.CarritoItem;
+import com.proyecto.PlayApp.entity.Pedido;
 import com.proyecto.PlayApp.service.CarritoService;
 import com.proyecto.PlayApp.service.PedidoService;
 import lombok.RequiredArgsConstructor;
@@ -45,8 +46,11 @@ public class EnvioController {
                     .envioPago(envioPago)
                     .build();
 
-            pedidos.RealizarPedido(compra);
-            return "redirect:/payment/paymentgateway?valor=" + calcularTotalCarrito(items) + "&metodo=" + envioPago.getMetodoPago();
+            Pedido pedido = pedidos.RealizarPedido(compra);
+            return "redirect:/payment/paymentgateway?valor="
+                    + calcularTotalCarrito(items)
+                    + "&metodo=" + envioPago.getMetodoPago()
+                    + "&orden=" + pedido.getPago().getId();
         } catch (Exception e) {
             model.addAttribute("error", e.getMessage());
             return "pedido-confirmacion";

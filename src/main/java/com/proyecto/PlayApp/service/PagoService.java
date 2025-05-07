@@ -28,4 +28,10 @@ public class PagoService {
 
         return pagos.save(nuevoPago);
     }
+
+    public Pago actualizarEstadoPago(Long id, Integer estado) {
+        Pago pago = pagos.findById(id).orElse(new Pago());
+        pago.setEstado(estado);
+        return pagos.save(pago);
+    }
 }

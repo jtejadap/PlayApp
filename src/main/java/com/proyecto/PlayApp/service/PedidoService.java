@@ -44,9 +44,8 @@ public class PedidoService {
                 .timestamp(LocalDateTime.now())
                 .build();
         Pedido pedido = pedidos.save(order);
-        guardarDetallesPedido(pedido.getId(), compra.getCarrito());
-
-        return new Pedido();
+        guardarDetallesPedido(pedido, compra.getCarrito());
+        return pedido;
     }
 
     private Envio realizarOrdenEnvio(EnvioPagoDTO datos , Usuario usuario){
@@ -65,6 +64,7 @@ public class PedidoService {
 
     private Pago realizarPago(EnvioPagoDTO datos , Usuario usuario){
         Pago pago = Pago.builder()
+                .estado(0)
                 .valor(datos.getValor())
                 .metodo(datos.getMetodoPago())
                 .usuario(usuario)
@@ -73,24 +73,30 @@ public class PedidoService {
     }
 
 
-    private void guardarDetallesPedido(Long pedidoId, List<CarritoItem> items){
+    private void guardarDetallesPedido(Pedido pedido, List<CarritoItem> items){
         items.forEach(carritoItem -> {
-            PedidoItem pedido = PedidoItem.builder()
-                    .pedidoId(pedidoId)
-                    .productoId(Long.valueOf(carritoItem.getProductoId()))
+            Producto producto =  productos.findById(Long.valueOf(carritoItem.getProductoId())).orElse(new Producto());
+
+            PedidoItem item = PedidoItem.builder()
+                    .producto(producto)
+                    .pedido(pedido)
                     .cantidad(carritoItem.getCantidad())
                     .build();
 
-            detalles.save(pedido);
-            actualizarCatalogo(Long.valueOf(carritoItem.getProductoId()),carritoItem.getCantidad());
+            detalles.save(item);
+            actualizarCatalogo(producto,carritoItem.getCantidad());
         });
     }
 
-    private void actualizarCatalogo(Long producto, Integer cantidad){
-        Producto catalogo =  productos.findById(producto).orElse(new Producto());
-        float nuevoStock = (catalogo.getStock() - cantidad);
-        catalogo.setStock(nuevoStock);
-        productos.save(catalogo);
+    private void actualizarCatalogo(Producto producto, Integer cantidad){
+        float nuevoStock = (producto.getStock() - cantidad);
+        producto.setStock(nuevoStock);
+        productos.save(producto);
+    }
+
+    public List<Pedido> listarPedidosPorUsuario(String mail){
+        Usuario usuario = usuarios.findByCorreo(mail).orElse(new Usuario());
+        return pedidos.findByUsuario_id(usuario.getId());
     }
 
 

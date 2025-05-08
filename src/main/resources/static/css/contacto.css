@@ -1,52 +1,3 @@
-/* Barra de navegación con degradado */
-.navbar {
-    background: linear-gradient(to bottom, #000000 0%, rgba(0,0,0,0.7) 50%, rgba(0,0,0,0) 100%);
-    position: fixed;
-    width: 100%;
-    z-index: 1000;
-    color: #fff; /* Texto blanco */
-    border: none; /* Elimina cualquier borde */
-    transition: background 0.3s ease; /* Suaviza la transición de fondo */
-}
-
-/* Opcional: Efecto de fondo cuando se hace scroll */
-.navbar.scrolled {
-    background: rgba(0,0,0,0.8);
-}
-
-.navbar-brand {
-    color: #fff;
-    font-weight: bold;
-}
-
-/* Enlaces de la barra de navegación */
-.navbar-nav {
-    display: flex;
-    justify-content: center; /* Centra los enlaces */
-    flex-grow: 1; /* Asegura que ocupen todo el espacio disponible */
-}
-
-.navbar-nav .nav-link {
-    color: #fff;
-    font-weight: 500;
-    padding: 8px 16px;
-    text-transform: uppercase;
-}
-
-.navbar-nav .nav-link.active {
-    font-weight: bold;
-    color: #f8f9fa;
-}
-
-/* Hover de los enlaces */
-.navbar-nav .nav-link:hover {
-    background-color: rgba(255, 255, 255, 0.1);
-    border-radius: 4px;
-}
-
-.navbar-toggler {
-    border-color: rgba(255, 255, 255, 0.1);
-}
 
 /* Botones de Log Out */
 .btn-outline-light {
@@ -64,9 +15,6 @@
     justify-content: flex-start; /* Alineación a la izquierda de los botones de usuario, log out y carrito */
 }
 
-.navbar-text, .btn-outline-light, .nav-link.position-relative {
-    margin-right: 15px; /* Espaciado entre los elementos */
-}
 
 .video-background {
     position: fixed;
@@ -255,39 +203,7 @@ body {
 font-family: 'Poppins', sans-serif; /* Aplica la fuente 'Poppins' a todo el contenido de la página */
 }
 
-header nav {
-background-color: #f8f9fa; /* Fondo claro para la barra de navegación */
-padding: 1rem; /* Espaciado interno para que los elementos no toquen los bordes */
-}
 
-/* Clase para expandir la barra de navegación en pantallas grandes y definir un fondo claro */
-navbar-expand-lg navbar-light bg-light {
-background-color: #007bff; /* Cambia el fondo de la barra de navegación a un color azul */
-}
-
-/* Estilos de los elementos de la barra de navegación */
-header nav ul {
-list-style: none; /* Elimina los puntos de lista */
-margin: 0; /* Elimina márgenes en la lista */
-padding: 0; /* Elimina el relleno en la lista */
-display: flex; /* Alinea los elementos de la lista en una sola fila */
-justify-content: center; /* Centra los elementos horizontalmente */
-}
-
-header nav ul li {
-margin-right: 20px; /* Espaciado entre los elementos de la lista */
-}
-
-header nav ul li a {
-font-size: 1.2rem; /* Tamaño de la fuente para los enlaces */
-text-decoration: none; /* Elimina el subrayado de los enlaces */
-color: #333; /* Color del texto */
-font-weight: 500; /* Grosor medio del texto */
-}
-
-header nav ul li a:hover {
-color: #007bff; /* Cambia el color del enlace cuando se hace hover */
-}
 
 /* Sección principal de la página de inicio: Aplica estilos a la sección principal del contenido */
 #main-content {
@@ -304,10 +220,10 @@ margin-bottom: 2rem; /* Espaciado inferior del título */
 }
 
 #main-content p {
-font-size: 1.2rem; /* Tamaño del texto del párrafo */
-color: #666; /* Color gris para el texto */
-margin-bottom: 2rem; /* Espaciado inferior del párrafo */
-
+    font-size: 1.2rem; /* Tamaño del texto del párrafo */
+    color: #666; /* Color gris para el texto */
+    margin-bottom: 2rem; /* Espaciado inferior del párrafo */
+}
 .section{
 color: white;
 }

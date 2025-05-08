@@ -54,6 +54,10 @@ public class CarritoController {
     @GetMapping("/checkout/proceed")
     public String procederCompra(Principal usuario, Model model) {
         try {
+            List<CarritoItem> checkout = servicio.listarCarrito(usuario.getName());
+            if(checkout.isEmpty()){
+                throw new RuntimeException("El carrito esta vacio, dirijase a la tienda para llenarlo.");
+            }
             return "redirect:/shipment/place";
         }catch (Exception e){
             model.addAttribute("error", e.getMessage());

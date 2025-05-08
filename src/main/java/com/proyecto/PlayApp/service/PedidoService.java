@@ -1,17 +1,26 @@
 package com.proyecto.PlayApp.service;
 
-import com.proyecto.PlayApp.dto.CompraDTO;
-import com.proyecto.PlayApp.dto.EnvioPagoDTO;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.proyecto.PlayApp.dto.*;
 import com.proyecto.PlayApp.entity.*;
 import com.proyecto.PlayApp.repository.PedidoItemRepository;
 import com.proyecto.PlayApp.repository.PedidoRepository;
 import com.proyecto.PlayApp.repository.ProductoRepository;
 import com.proyecto.PlayApp.repository.UsuarioRepository;
+import com.proyecto.PlayApp.repository.specification.PedidoSpecification;
+import com.proyecto.PlayApp.repository.specification.ProductoSpecification;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Service
 @RequiredArgsConstructor
@@ -97,6 +106,54 @@ public class PedidoService {
     public List<Pedido> listarPedidosPorUsuario(String mail){
         Usuario usuario = usuarios.findByCorreo(mail).orElse(new Usuario());
         return pedidos.findByUsuario_id(usuario.getId());
+    }
+
+    public Page<Pedido> buscarPedidoConPaginaOrdenFiltro(BusquedaDTO busqueda) {
+        // Creación de filtrosDTO
+        FiltrosDTO filtros = FiltrosDTO.builder()
+                .nombre(busqueda.getNombre())
+                .id(busqueda.getId())
+                .categoria(busqueda.getCategoria())
+                .build();
+
+        // Creación y conversion de orden de registros
+        List<OrdenDTO> ordenes = jsonStringToOrdenDTO(busqueda.getSort());
+        List<Sort.Order> ordenado = construirOrden(ordenes);
+
+
+        // Creación de solicitud de orden
+        PageRequest solicitudPagina = PageRequest.of(
+                busqueda.getPage(),
+                busqueda.getSize(),
+                Sort.by(ordenado)
+        );
+
+        // Crear especificación (filtros de busqueda)
+        Specification<Pedido> specification = PedidoSpecification.getSpecification(filtros);
+
+        // Retornar registros de acuerdo especificación y paginación
+        return pedidos.findAll(specification,solicitudPagina);
+    }
+
+    private List<OrdenDTO> jsonStringToOrdenDTO(String jsonString) {
+        try {
+            ObjectMapper obj = new ObjectMapper();
+            return obj.readValue(jsonString, new TypeReference<>() {});
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
+    private List<Sort.Order> construirOrden(List<OrdenDTO> ordenes){
+        List<Sort.Order> ordenado = new ArrayList<>();
+        if (ordenes != null) {
+            for(OrdenDTO sort: ordenes) {
+                Sort.Direction direction = Objects.equals(sort.getDireccion(), "desc")
+                        ? Sort.Direction.DESC : Sort.Direction.ASC;
+                ordenado.add(new Sort.Order(direction,sort.getCampo()));
+            }
+        }
+        return ordenado;
     }
 
 

@@ -39,5 +39,9 @@ public class UsuarioService {
         return newUser;
     }
 
+    public Usuario buscarUsuario(String mail){
+        return users.findByCorreo(mail).orElse(new Usuario());
+    }
+
 
 }

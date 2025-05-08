@@ -1,9 +1,13 @@
 package com.proyecto.PlayApp.Controller;
 
 import com.proyecto.PlayApp.dto.BusquedaDTO;
+import com.proyecto.PlayApp.entity.Pedido;
 import com.proyecto.PlayApp.entity.Producto;
+import com.proyecto.PlayApp.entity.Usuario;
 import com.proyecto.PlayApp.service.CarritoService;
 import com.proyecto.PlayApp.service.PedidoService;
+import com.proyecto.PlayApp.service.UsuarioService;
+import com.proyecto.PlayApp.util.PaginationMaker;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
@@ -19,6 +23,7 @@ import java.security.Principal;
 @RequestMapping("/user")
 public class UsuarioController {
     private final PedidoService pedidos;
+    private final UsuarioService usuarios;
     private final CarritoService carrito;
 
     @GetMapping("/orders")
@@ -26,9 +31,42 @@ public class UsuarioController {
             Principal usuario,
             Model model
     ){
+        Usuario loggedUser = usuarios.buscarUsuario(usuario.getName());
+        Page<Pedido> items = pedidos.buscarPedidoConPaginaOrdenFiltro(
+                BusquedaDTO.builder().page(0).size(5)
+                        .id(loggedUser.getId())
+                        .sort("[{\"campo\":\"timestamp\",\"direccion\":\"desc\"}]")
+                        .build()
+        );
 
         model.addAttribute("carrito", numeroItemsCarrito(usuario));
-        model.addAttribute("pedidos", pedidos.listarPedidosPorUsuario(usuario.getName()));
+        model.addAttribute("paginas", new PaginationMaker().makePages(items));
+        model.addAttribute("pedidos", items);
+        return "user-orders";
+    }
+
+    @GetMapping("/search")
+    public String buscarProducto(
+            Principal usuario,
+            Model model,
+            @RequestParam(name = "page", defaultValue = "0") Integer page,
+            @RequestParam(name = "size", defaultValue = "5") Integer size,
+            @RequestParam(name = "sort", defaultValue = "[{\"campo\":\"timestamp\",\"direccion\":\"desc\"}]") String sort,
+            @RequestParam(name = "estado", required = false) Integer estado
+    ) {
+        Usuario loggedUser = usuarios.buscarUsuario(usuario.getName());
+        Page<Pedido> items = pedidos.buscarPedidoConPaginaOrdenFiltro(
+                BusquedaDTO.builder()
+                        .id(loggedUser.getId())
+                        .categoria(estado)
+                        .page(page)
+                        .size(size)
+                        .sort(sort)
+                        .build()
+        );
+        model.addAttribute("carrito", numeroItemsCarrito(usuario));
+        model.addAttribute("paginas", new PaginationMaker().makePages(items));
+        model.addAttribute("pedidos", items);
         return "user-orders";
     }
 

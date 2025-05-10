@@ -23,24 +23,20 @@ public class UsuarioService {
         this.passwordEncoder = passwordEncoder;
     }
 
-    public Usuario createUser(Usuario formulario){
+    public Usuario crearUsuario(Usuario formulario){
         formulario.setPassword(passwordEncoder.encode(formulario.getPassword()));
-        Usuario newUser = users.save(formulario);
-        Roles rol = new Roles(newUser.getId(), "ROLE_USER");
-        roles.save(rol);
-        return newUser;
+        formulario.setRol("ROLE_USER");
+        return users.save(formulario);
     }
 
     public Usuario createRestaurant(Usuario formulario){
         formulario.setPassword(passwordEncoder.encode(formulario.getPassword()));
-        Usuario newUser = users.save(formulario);
-        Roles rol = new Roles(newUser.getId(), "ROLE_ADMIN");
-        roles.save(rol);
-        return newUser;
+        formulario.setRol("ROLE_ADMIN");
+        return users.save(formulario);
     }
 
     public Usuario buscarUsuario(String mail){
-        return users.findByCorreo(mail).orElse(new Usuario());
+        return users.findUsuarioByCorreo(mail);
     }
 
 

@@ -34,7 +34,7 @@ public class UsuarioController {
         Usuario loggedUser = usuarios.buscarUsuario(usuario.getName());
         Page<Pedido> items = pedidos.buscarPedidoConPaginaOrdenFiltro(
                 BusquedaDTO.builder().page(0).size(5)
-                        .id(loggedUser.getId())
+                        //.id(loggedUser.getId())
                         .sort("[{\"campo\":\"timestamp\",\"direccion\":\"desc\"}]")
                         .build()
         );
@@ -57,7 +57,7 @@ public class UsuarioController {
         Usuario loggedUser = usuarios.buscarUsuario(usuario.getName());
         Page<Pedido> items = pedidos.buscarPedidoConPaginaOrdenFiltro(
                 BusquedaDTO.builder()
-                        .id(loggedUser.getId())
+                        //.id(loggedUser.getId())
                         .categoria(estado)
                         .page(page)
                         .size(size)

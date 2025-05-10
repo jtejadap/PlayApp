@@ -25,7 +25,7 @@ public class AuthenticationController {
     @PostMapping("/register")
     public String createNewUser(@ModelAttribute("formulario") Usuario formulario, Model model) {
         try {
-            usuarioService.createUser(formulario);
+            usuarioService.crearUsuario(formulario);
             model.addAttribute("registroExitoso", "Usuario registrado exitosamente. Ahora puedes iniciar sesión.");
             return "login"; // Permanecer en la página de registro para mostrar el mensaje de éxito
         } catch (Exception e) {

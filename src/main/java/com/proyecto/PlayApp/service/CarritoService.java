@@ -24,7 +24,7 @@ public class CarritoService {
     private final ProductoRepository productos;
 
     public void agregar(ItemDTO campos) {
-        Usuario usuarioInstancia = usuarios.findByCorreo(campos.getCorreo()).orElse(new Usuario());
+        Usuario usuarioInstancia = usuarios.findUsuarioByCorreo(campos.getCorreo());
         String key = PREFIJO + usuarioInstancia.getId();
         Producto producto = productos.findById(campos.getItemId()).orElse(new Producto());
         CarritoItem carritoItem = CarritoItem.builder()
@@ -40,20 +40,20 @@ public class CarritoService {
     }
 
     public List<CarritoItem> listarCarrito(String usuario) {
-        Usuario usuarioInstancia = usuarios.findByCorreo(usuario).orElse(new Usuario());
+        Usuario usuarioInstancia = usuarios.findUsuarioByCorreo(usuario);
         String key = PREFIJO + usuarioInstancia.getId();
         HashOperations<String, String, CarritoItem> hashOps = redisTemplate.opsForHash();
         return new ArrayList<>(hashOps.values(key));
     }
 
     public void eliminar(String usuario, String producto) {
-        Usuario usuarioInstancia = usuarios.findByCorreo(usuario).orElse(new Usuario());
+        Usuario usuarioInstancia = usuarios.findUsuarioByCorreo(usuario);
         String key = PREFIJO + usuarioInstancia.getId();
         redisTemplate.opsForHash().delete(key, producto);
     }
 
     public void limpiar(String usuario) {
-        Usuario usuarioInstancia = usuarios.findByCorreo(usuario).orElse(new Usuario());
+        Usuario usuarioInstancia = usuarios.findUsuarioByCorreo(usuario);
         String key = PREFIJO + usuarioInstancia.getId();
         redisTemplate.delete(key);
     }

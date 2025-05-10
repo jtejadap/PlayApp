@@ -57,9 +57,9 @@
 
         <div id="register" class="tabcontent" style="display: none;">
             <h2>Registrarse</h2>
-            <form th:action="@{/signup}" method="post" th:object="${formulario}" class="form">
-                <label for="nombre_completo">Nombre Completo</label>
-                <input type="text" id="nombre_completo" name="nombre_completo" placeholder="Ingresa tu nombre completo" required>
+            <form th:action="@{/signup}" method="post" th:object="${restaurante}" class="form">
+                <label for="nombreCompleto">Nombre Completo</label>
+                <input type="text" id="nombreCompleto" name="nombreCompleto" placeholder="Ingresa tu nombre completo" required>
                 <label for="email">Correo electrónico</label>
                 <input type="email" id="email" name="correo" placeholder="Ingresa tu correo" required>
                 <label for="password">Contraseña</label>

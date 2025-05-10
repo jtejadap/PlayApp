@@ -4,6 +4,7 @@ import com.proyecto.PlayApp.dto.BusquedaDTO;
 import com.proyecto.PlayApp.entity.Producto;
 import com.proyecto.PlayApp.service.CarritoService;
 import com.proyecto.PlayApp.service.ProductoService;
+import com.proyecto.PlayApp.service.UsuarioService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
@@ -21,10 +22,11 @@ import java.util.List;
 public class ShopController {
     private final ProductoService servicio;
     private final CarritoService carrito;
+    private final UsuarioService usuarios;
 
     @GetMapping
     public String mostrarTienda(
-            Principal usuario,
+            Principal session,
             Model model,
             @RequestParam(name = "status", required = false) String status
     ){
@@ -37,8 +39,8 @@ public class ShopController {
         if (status!= null) {
             model.addAttribute("status", status);
         }
-
-        model.addAttribute("carrito", numeroItemsCarrito(usuario));
+        model.addAttribute("usuario", usuarios.buscarUsuario(session.getName()));
+        model.addAttribute("carrito", numeroItemsCarrito(session));
         model.addAttribute("productos", productos);
         return "tienda";
     }

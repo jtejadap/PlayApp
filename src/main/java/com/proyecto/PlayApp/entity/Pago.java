@@ -22,9 +22,12 @@ public class Pago {
     private double valor;
     private Integer estado;
     private LocalDateTime fecha;
+    /*
     @ManyToOne
     @JoinColumn(name = "usuario_id")
     private Usuario usuario;
+
+     */
 
     public String obtenerNombreEstado() {
         String [] estados = {"En espera","Terminado","Cancelado"};

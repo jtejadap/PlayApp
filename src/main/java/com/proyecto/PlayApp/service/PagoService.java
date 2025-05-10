@@ -22,7 +22,7 @@ public class PagoService {
                 .valor(pago.getValor())
                 .metodo(pago.getMetodo())
                 .estado(0)
-                .usuario(pago.getUsuario())
+                //.usuario(pago.getUsuario())
                 .fecha(LocalDateTime.now())
                 .build();
 

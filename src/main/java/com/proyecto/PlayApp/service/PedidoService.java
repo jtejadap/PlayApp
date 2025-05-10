@@ -33,7 +33,7 @@ public class PedidoService {
     private final PagoService pagos;
 
     public Pedido RealizarPedido(CompraDTO compra){
-        Usuario usuario = usuarios.findByCorreo(compra.getCorreoUsuario()).orElse(new Usuario());
+        Usuario usuario = usuarios.findUsuarioByCorreo(compra.getCorreoUsuario());
         if (compra.getCarrito().isEmpty()) throw new IllegalStateException("Carrito vacio");
 
         double total = compra.getCarrito().stream()
@@ -47,7 +47,7 @@ public class PedidoService {
         Pedido order = Pedido.builder()
                 .estado(0)
                 .total(total)
-                .usuario(usuario)
+                //.usuario(usuario)
                 .envio(envio)
                 .pago(pago)
                 .timestamp(LocalDateTime.now())
@@ -66,7 +66,7 @@ public class PedidoService {
                 .carpa(datos.getMesa())
                 .dirreccion(datos.getDireccion())
                 .descripcion(datos.getDescripcion())
-                .usuario(usuario)
+                //.usuario(usuario)
                 .build();
         return envios.crearEnvio(envio);
     }
@@ -76,7 +76,7 @@ public class PedidoService {
                 .estado(0)
                 .valor(datos.getValor())
                 .metodo(datos.getMetodoPago())
-                .usuario(usuario)
+                //.usuario(usuario)
                 .build();
         return pagos.crearPago(pago);
     }
@@ -104,8 +104,9 @@ public class PedidoService {
     }
 
     public List<Pedido> listarPedidosPorUsuario(String mail){
-        Usuario usuario = usuarios.findByCorreo(mail).orElse(new Usuario());
-        return pedidos.findByUsuario_id(usuario.getId());
+        Usuario usuario = usuarios.findUsuarioByCorreo(mail);
+        //return pedidos.findByUsuario_id(usuario.getId());
+        return new ArrayList<>();
     }
 
     public Page<Pedido> buscarPedidoConPaginaOrdenFiltro(BusquedaDTO busqueda) {

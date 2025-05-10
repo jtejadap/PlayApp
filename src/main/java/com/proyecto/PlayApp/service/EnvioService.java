@@ -24,7 +24,7 @@ public class EnvioService {
                 .carpa(envio.getCarpa())
                 .mesa(envio.getMesa())
                 .fecha(LocalDateTime.now())
-                .usuario(envio.getUsuario())
+                //.usuario(envio.getUsuario())
                 .build();
 
         return  envios.save(nuevoEnvio);

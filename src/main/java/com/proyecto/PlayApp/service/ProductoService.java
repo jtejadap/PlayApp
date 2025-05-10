@@ -33,13 +33,14 @@ public class ProductoService {
     }
 
     public List<Producto> listarTodosLosProductosPorRestaurante(String userMail) {
-        Usuario usuario = usuarios.findByCorreo(userMail).orElse(new Usuario());
-        return productos.findByRestaurante_Id(usuario.getId());
+        Usuario usuario = usuarios.findUsuarioByCorreo(userMail);
+       // return productos.findByRestaurante_Id(usuario.getId());
+        return new ArrayList<>();
     }
 
     public Producto crearProducto(Producto producto, String userMail) {
-        Usuario usuario = usuarios.findByCorreo(userMail).orElse(null);
-        producto.setRestaurante(usuario);
+        Usuario usuario = usuarios.findUsuarioByCorreo(userMail);
+        //producto.setRestaurante(usuario);
         return productos.save(producto);
     }
 

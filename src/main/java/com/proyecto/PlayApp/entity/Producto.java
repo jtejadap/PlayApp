@@ -21,9 +21,12 @@ public class Producto {
     private float stock;
     private int tipo;
     private int categoria;
+    /*
     @ManyToOne
     @JoinColumn(name = "restaurante_id")
     private Usuario restaurante;
+
+     */
 
     public String obtenerNombreCategoria() {
          return switch (categoria) {

@@ -12,5 +12,5 @@ import java.util.List;
 @Repository
 public interface PedidoRepository extends JpaRepository<Pedido, Long>, JpaSpecificationExecutor<Pedido> {
     List<Pedido> findAll(Specification<Pedido> specification);
-    List<Pedido> findByUsuario_id(Long id);
+    //List<Pedido> findByUsuario_id(Long id);
 }

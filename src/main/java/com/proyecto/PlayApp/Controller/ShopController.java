@@ -5,6 +5,7 @@ import com.proyecto.PlayApp.entity.Producto;
 import com.proyecto.PlayApp.service.CarritoService;
 import com.proyecto.PlayApp.service.ProductoService;
 import com.proyecto.PlayApp.service.UsuarioService;
+import com.proyecto.PlayApp.util.PaginationMaker;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
@@ -26,36 +27,16 @@ public class ShopController {
 
     @GetMapping
     public String mostrarTienda(
-            Principal session,
-            Model model,
-            @RequestParam(name = "status", required = false) String status
-    ){
-        List<Producto> productos = servicio.buscarProductoConPaginaOrdenFiltro(
-                BusquedaDTO.builder().page(0).size(6)
-                        .sort("[{\"campo\":\"nombre\",\"direccion\":\"asc\"}]")
-                        .build()
-        );
-
-        if (status!= null) {
-            model.addAttribute("status", status);
-        }
-        model.addAttribute("usuario", usuarios.buscarUsuario(session.getName()));
-        model.addAttribute("carrito", numeroItemsCarrito(session));
-        model.addAttribute("productos", productos);
-        return "tienda";
-    }
-
-    @GetMapping("/search")
-    public String buscarProducto(
             Principal usuario,
             Model model,
             @RequestParam(name = "page", defaultValue = "0") Integer page,
             @RequestParam(name = "size", defaultValue = "6") Integer size,
             @RequestParam(name = "sort", defaultValue = "[{\"campo\":\"nombre\",\"direccion\":\"asc\"}]") String sort,
             @RequestParam(name = "nombre", required = false) String nombre,
-            @RequestParam(name = "categoria", required = false) Integer categoria
+            @RequestParam(name = "categoria", required = false) Integer categoria,
+            @RequestParam(name = "status", required = false) String status
     ) {
-        List<Producto> resultado = servicio.buscarProductoConPaginaOrdenFiltro(
+        Page<Producto> resultado = servicio.buscarProductoConPaginaOrdenFiltro(
                 BusquedaDTO.builder()
                         .nombre(nombre)
                         .categoria(categoria)
@@ -64,8 +45,12 @@ public class ShopController {
                         .sort(sort)
                         .build()
         );
+        if (status!= null) {
+            model.addAttribute("status", status);
+        }
         model.addAttribute("carrito", numeroItemsCarrito(usuario));
         model.addAttribute("productos", resultado);
+        model.addAttribute("paginas", new PaginationMaker().makePages(resultado));
         return "tienda";
     }
 

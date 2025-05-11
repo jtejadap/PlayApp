@@ -9,6 +9,11 @@ import com.proyecto.PlayApp.repository.ProductoRepository;
 import com.proyecto.PlayApp.repository.UsuarioRepository;
 import com.proyecto.PlayApp.repository.specification.ProductoSpecification;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
+import org.springframework.data.support.PageableExecutionUtils;
 import org.springframework.stereotype.Service;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -26,6 +31,7 @@ import java.util.Objects;
 public class ProductoService {
     private final ProductoRepository productos;
     private final UsuarioRepository usuarios;
+    private final MongoTemplate mongoTemplate;
 
     public List<Producto> listarTodosLosProductos() {
         return productos.findAll();
@@ -69,15 +75,7 @@ public class ProductoService {
         return productos.save(producto);
     }
 
-    public List<Producto>buscarProductoConPaginaOrdenFiltro(BusquedaDTO busqueda) {
-        // Creación de filtrosDTO
-        FiltrosDTO filtros = FiltrosDTO.builder()
-                .nombre(busqueda.getNombre())
-                .precio(busqueda.getPrecio())
-                .stock(busqueda.getStock())
-                .categoria(busqueda.getCategoria())
-                .build();
-
+    public Page<Producto> buscarProductoConPaginaOrdenFiltro(BusquedaDTO busqueda) {
         // Creación y conversion de orden de registros
         List<OrdenDTO> ordenes = jsonStringToOrdenDTO(busqueda.getSort());
         List<Sort.Order> ordenado = construirOrden(ordenes);
@@ -90,11 +88,21 @@ public class ProductoService {
                 Sort.by(ordenado)
         );
 
-        // Crear especificación (filtros de busqueda)
-        Specification<Producto> specification = ProductoSpecification.getSpecification(filtros);
+        Query query = new Query();
+        if(busqueda.getCategoria() != null) {
+            query.addCriteria(Criteria.where("categoria").is(busqueda.getCategoria()));
+        }
+        if (busqueda.getNombre() != null && !busqueda.getNombre().isEmpty()) {
+            query.addCriteria(Criteria.where("nombre").regex(busqueda.getNombre(), "i"));
+        }
+        query.with(solicitudPagina);
 
         // Retornar registros de acuerdo especificación y paginación
-        return new ArrayList<>() ;
+        return PageableExecutionUtils.getPage(
+                mongoTemplate.find(query, Producto.class),
+                solicitudPagina,
+                () -> mongoTemplate.count(query.skip(0).limit(0), Producto.class)
+        );
     }
 
     private List<OrdenDTO> jsonStringToOrdenDTO(String jsonString) {

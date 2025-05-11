@@ -101,7 +101,7 @@
                 <td>
                     <span class="badge" th:classappend="${pedido.obtenerClaseCSSEstado()}" th:text="${pedido.obtenerNombreEstado()}"></span>
                 </td>
-                <td th:text="${pedido.getProductos().size()}"></td>
+                <td th:text="${pedido.getCarrito().size()}"></td>
             </tr>
             </tbody>
         </table>

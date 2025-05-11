@@ -50,7 +50,7 @@ public class EnvioController {
             return "redirect:/payment/paymentgateway?valor="
                     + calcularTotalCarrito(items)
                     + "&metodo=" + envioPago.getMetodoPago()
-                    + "&orden=" + pedido.getPago().getId();
+                    + "&orden=" + pedido.getId();
         } catch (Exception e) {
             model.addAttribute("error", e.getMessage());
             return "pedido-confirmacion";

@@ -26,12 +26,12 @@ public class CarritoService {
     public void agregar(ItemDTO campos) {
         Usuario usuarioInstancia = usuarios.findUsuarioByCorreo(campos.getCorreo());
         String key = PREFIJO + usuarioInstancia.getId();
-        //Producto producto = productos.findById(campos.getItemId()).orElse(new Producto());
+        Producto producto = productos.findById(campos.getItemId()).orElse(new Producto());
         CarritoItem carritoItem = CarritoItem.builder()
-                //.productoId(Long.toString(producto.getId()))
-                //.nombre(producto.getNombre())
+                .productoId(producto.getId())
+                .nombre(producto.getNombre())
                 .cantidad(campos.getCantidad())
-                //.precio(producto.getPrecio())
+                .precio(producto.getPrecio())
                 .build();
 
         HashOperations<String, String, CarritoItem> hash = redisTemplate.opsForHash();

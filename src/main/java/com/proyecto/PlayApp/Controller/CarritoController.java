@@ -24,7 +24,7 @@ public class CarritoController {
 
     @GetMapping("/add/{item}")
     public String addItem(
-            @PathVariable  Long item,
+            @PathVariable  String item,
             @RequestParam(name = "cantidad", defaultValue = "1") Integer cantidad,
             Principal usuario
     ) {

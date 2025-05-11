@@ -66,7 +66,7 @@
       Producto añadido al carrito de compras!
     </div>
   </div>
-  <form action="#" th:action="@{/shop/search}" method="GET"  class="row my-2">
+  <form action="#" th:action="@{/shop}" method="GET"  class="row my-2">
     <div class="d-flex">
       <div class="me-auto">
         <div class="btn-toolbar" role="toolbar" aria-label="Toolbar with button groups">
@@ -86,7 +86,7 @@
       </div>
       <div>
         <select id="orden" name="orden" class="form-select" aria-label="Default select example">
-          <option selected>Ordenar</option>
+          <option selected value="">Ordenar</option>
           <option value="1">Nombre</option>
           <option value="2">Mayor Precio</option>
           <option value="3">Menor Precio</option>
@@ -97,7 +97,7 @@
   <div class="row g-1">
     <div class="col-12 col-md-4" th:each="producto : ${productos}">
       <div class="card shadow-sm h-100">
-        <img src="/img/imagen2.jpg" class="card-img-top" alt="Imagen de la Bebida">
+        <img th:src="'data:image/jpeg;base64,' + ${producto.getImagenBase64()}" class="card-img-top" alt="Imagen de la Bebida">
         <div class="card-body">
           <div class="d-flex">
             <div class="me-auto">
@@ -130,13 +130,11 @@
     </div>
   </div>
   <div class="row my-3">
-    <nav aria-label="Page navigation example">
+    <nav th:if="${productos.totalPages > 0}" aria-label="Page navigation example">
       <ul class="pagination justify-content-center">
-        <li class="page-carritoItem"><a class="page-link" href="#">Previous</a></li>
-        <li class="page-carritoItem"><a class="page-link" href="#">1</a></li>
-        <li class="page-carritoItem"><a class="page-link" href="#">2</a></li>
-        <li class="page-carritoItem"><a class="page-link" href="#">3</a></li>
-        <li class="page-carritoItem"><a class="page-link" href="#">Next</a></li>
+        <li  th:each="pageNumber : ${paginas}" class="page-carritoItem">
+          <a class="page-link" th:classappend="${pageNumber==productos.number + 1} ? active" th:href="@{/shop(page=${pageNumber - 1})}" th:text="${pageNumber}"></a>
+        </li>
       </ul>
     </nav>
   </div>

@@ -4,7 +4,6 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.proyecto.PlayApp.dto.*;
 import com.proyecto.PlayApp.entity.*;
-import com.proyecto.PlayApp.repository.PedidoItemRepository;
 import com.proyecto.PlayApp.repository.PedidoRepository;
 import com.proyecto.PlayApp.repository.ProductoRepository;
 import com.proyecto.PlayApp.repository.UsuarioRepository;
@@ -14,7 +13,10 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
-import org.springframework.data.jpa.domain.Specification;
+import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
+import org.springframework.data.support.PageableExecutionUtils;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -26,11 +28,9 @@ import java.util.Objects;
 @RequiredArgsConstructor
 public class PedidoService {
     private final PedidoRepository pedidos;
-    private final PedidoItemRepository detalles;
     private final UsuarioRepository usuarios;
     private final ProductoRepository productos;
-    private final EnvioService envios;
-    private final PagoService pagos;
+    private final MongoTemplate mongoTemplate;
 
     public Pedido RealizarPedido(CompraDTO compra){
         Usuario usuario = usuarios.findUsuarioByCorreo(compra.getCorreoUsuario());
@@ -40,83 +40,71 @@ public class PedidoService {
                 .mapToDouble(item -> item.getPrecio() * item.getCantidad())
                 .sum();
         compra.getEnvioPago().setValor(total);
-        Envio envio = realizarOrdenEnvio(compra.getEnvioPago(), usuario);
-        Pago pago = realizarPago(compra.getEnvioPago(),usuario);
+        Envio envio = crearEnvio(compra.getEnvioPago(), usuario);
+        Pago pago = crearPago(compra.getEnvioPago(),usuario);
 
 
         Pedido order = Pedido.builder()
                 .estado(0)
                 .total(total)
-                //.usuario(usuario)
+                .cliente(usuario)
                 .envio(envio)
                 .pago(pago)
                 .timestamp(LocalDateTime.now())
                 .build();
-        Pedido pedido = pedidos.save(order);
-        guardarDetallesPedido(pedido, compra.getCarrito());
-        return pedido;
+
+        order.setCarrito(crearCarrito(compra.getCarrito()));
+        return pedidos.save(order);
     }
 
-    private Envio realizarOrdenEnvio(EnvioPagoDTO datos , Usuario usuario){
-
-        Envio envio = Envio.builder()
+    private Envio crearEnvio(EnvioPagoDTO datos , Usuario usuario){
+        return Envio.builder()
                 .latitud(datos.getLatitud())
                 .longitud(datos.getLongitud())
-                .mesa(datos.getMesa())
-                .carpa(datos.getMesa())
                 .dirreccion(datos.getDireccion())
                 .descripcion(datos.getDescripcion())
-                //.usuario(usuario)
+                .carpa(datos.getMesa())
+                .mesa(datos.getMesa())
+                .fecha(LocalDateTime.now())
+                .clienteId(usuario.getId())
                 .build();
-        return envios.crearEnvio(envio);
     }
 
-    private Pago realizarPago(EnvioPagoDTO datos , Usuario usuario){
-        Pago pago = Pago.builder()
-                .estado(0)
+    private Pago crearPago(EnvioPagoDTO datos , Usuario usuario){
+        return Pago.builder()
                 .valor(datos.getValor())
                 .metodo(datos.getMetodoPago())
-                //.usuario(usuario)
+                .estado(0)
+                .clienteId(usuario.getId())
+                .fecha(LocalDateTime.now())
                 .build();
-        return pagos.crearPago(pago);
     }
 
 
-    private void guardarDetallesPedido(Pedido pedido, List<CarritoItem> items){
+    private List<PedidoItem> crearCarrito(List<CarritoItem> items){
+        List<PedidoItem> carrito = new ArrayList<>();
         items.forEach(carritoItem -> {
-            //Producto producto =  productos.findById(Long.valueOf(carritoItem.getProductoId())).orElse(new Producto());
+            Producto producto =  productos.findById(carritoItem.getProductoId()).orElse(new Producto());
 
             PedidoItem item = PedidoItem.builder()
-                    //.producto(producto)
-                    .pedido(pedido)
+                    .producto(producto)
+                    .subtotal(carritoItem.getPrecio() * carritoItem.getCantidad())
                     .cantidad(carritoItem.getCantidad())
                     .build();
 
-            detalles.save(item);
-            //actualizarCatalogo(producto,carritoItem.getCantidad());
+            carrito.add(item);
+            actualizarCatalogo(producto,carritoItem.getCantidad());
         });
+        return carrito;
     }
-    /*
+
     private void actualizarCatalogo(Producto producto, Integer cantidad){
-        float nuevoStock = (producto.getStock() - cantidad);
+        double nuevoStock = (producto.getStock() - cantidad);
         producto.setStock(nuevoStock);
         productos.save(producto);
-    }*/
-
-    public List<Pedido> listarPedidosPorUsuario(String mail){
-        Usuario usuario = usuarios.findUsuarioByCorreo(mail);
-        //return pedidos.findByUsuario_id(usuario.getId());
-        return new ArrayList<>();
     }
 
     public Page<Pedido> buscarPedidoConPaginaOrdenFiltro(BusquedaDTO busqueda) {
-        // Creación de filtrosDTO
-        FiltrosDTO filtros = FiltrosDTO.builder()
-                .nombre(busqueda.getNombre())
-                .id(busqueda.getId())
-                .categoria(busqueda.getCategoria())
-                .build();
-
         // Creación y conversion de orden de registros
         List<OrdenDTO> ordenes = jsonStringToOrdenDTO(busqueda.getSort());
         List<Sort.Order> ordenado = construirOrden(ordenes);
@@ -129,11 +117,20 @@ public class PedidoService {
                 Sort.by(ordenado)
         );
 
-        // Crear especificación (filtros de busqueda)
-        Specification<Pedido> specification = PedidoSpecification.getSpecification(filtros);
+        Query query = new Query();
+        Usuario usuario = usuarios.findById(busqueda.getId()).orElse(new Usuario());
+        query.addCriteria(Criteria.where("cliente").is(usuario));
+        if(busqueda.getCategoria() != null) {
+            query.addCriteria(Criteria.where("estado").is(busqueda.getCategoria()));
+        }
+        query.with(solicitudPagina);
 
         // Retornar registros de acuerdo especificación y paginación
-        return pedidos.findAll(specification,solicitudPagina);
+        return PageableExecutionUtils.getPage(
+                mongoTemplate.find(query, Pedido.class),
+                solicitudPagina,
+                () -> mongoTemplate.count(query.skip(0).limit(0), Pedido.class)
+        );
     }
 
     private List<OrdenDTO> jsonStringToOrdenDTO(String jsonString) {
@@ -155,6 +152,12 @@ public class PedidoService {
             }
         }
         return ordenado;
+    }
+
+    public Pedido actualizarEstadoPagoPedido(Integer estado, String id){
+        Pedido pedido = pedidos.findById(id).orElseThrow(() -> new IllegalStateException("Pedido no encontrado"));
+        pedido.getPago().setEstado(estado);
+        return pedidos.save(pedido);
     }
 
 

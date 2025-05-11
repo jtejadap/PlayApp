@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class BusquedaDTO {
-    private Long id;
+    private String id;
     private String nombre;
     private String descripcion;
     private Float precio;

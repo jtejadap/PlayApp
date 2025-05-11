@@ -11,6 +11,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class ItemDTO {
     private String correo;
-    private Long itemId;
+    private String itemId;
     private Integer cantidad;
 }

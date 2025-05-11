@@ -8,18 +8,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.security.Principal;
 import java.util.Optional;
 
 @Service
 public class UsuarioService {
 
     private final UsuarioRepository users;
-    private final RolesRepository roles;
     private final PasswordEncoder passwordEncoder;
 
     public UsuarioService(UsuarioRepository usuarioRepository, RolesRepository rolesRepository, PasswordEncoder passwordEncoder) {
         this.users = usuarioRepository;
-        this.roles = rolesRepository;
         this.passwordEncoder = passwordEncoder;
     }
 
@@ -37,6 +36,17 @@ public class UsuarioService {
 
     public Usuario buscarUsuario(String mail){
         return users.findUsuarioByCorreo(mail);
+    }
+
+    public String getHomePath(Principal session){
+        if(session == null){
+            return "/";
+        }
+        Usuario usuario = users.findUsuarioByCorreo(session.getName());
+        if(usuario.getRol().equals("ROLE_ADMIN")){
+            return "/manager/dashboard";
+        }
+        return "/shop";
     }
 
 

@@ -2,6 +2,7 @@ package com.proyecto.PlayApp.configuration;
 
 import com.proyecto.PlayApp.repository.UsuarioRepository;
 import com.proyecto.PlayApp.service.CustomUserDetailsService;
+import com.proyecto.PlayApp.util.CustomAccessDeniedHandler;
 import com.proyecto.PlayApp.util.CustomAuthenticationSuccessHandler;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -92,7 +93,7 @@ public class SecurityConfigurator {
                         .loginPage("/login")
                         .successHandler(new CustomAuthenticationSuccessHandler())
                         .permitAll()
-                );
+                ).exceptionHandling(ex->ex.accessDeniedHandler(new CustomAccessDeniedHandler()));
         return http.build();
     }
 }

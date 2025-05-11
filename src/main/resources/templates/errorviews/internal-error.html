@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tienda</title>
+    <link th:href="@{/css/bootstrap.min.css}" rel="stylesheet">
+    <link rel="stylesheet" href="/css/importJakartaFont.css">
+    <link rel="stylesheet" href="/css/styles.css">
+    <link rel="icon" href="/img/Logo.png" type="image/png">
+</head>
+<body class="background-grey jakarta-regular">
+
+<!-- Barra de navegación -->
+<header class="bg-dark sticky-top">
+    <nav class="container d-flex flex-wrap align-carritoItems-center justify-content-center justify-content-md-between p-2">
+        <div class="col-md-3 mb-2 mb-md-0">
+            <a href="/" class="d-inline-flex link-body-emphasis text-decoration-none">
+                <img th:src="@{/img/Logo.png}" alt="Logo" width="30" height="24" class="d-inline-block align-text-top">
+                <span class="jakarta-extrabold text-light"> PLAYAPP</span>
+            </a>
+        </div>
+    </nav>
+</header>
+
+
+<div class="container">
+    <div class="row justify-content-center mt-5">
+        <div class="col-md-8 text-center">
+            <h1 class="jakarta-extrabold">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20vh" height="20vh" fill="currentColor" class="bi bi-wrench-adjustable-circle me-2" viewBox="0 0 16 16">
+                    <path d="M12.496 8a4.5 4.5 0 0 1-1.703 3.526L9.497 8.5l2.959-1.11q.04.3.04.61"/>
+                    <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0m-1 0a7 7 0 1 0-13.202 3.249l1.988-1.657a4.5 4.5 0 0 1 7.537-4.623L7.497 6.5l1 2.5 1.333 3.11c-.56.251-1.18.39-1.833.39a4.5 4.5 0 0 1-1.592-.29L4.747 14.2A7 7 0 0 0 15 8m-8.295.139a.25.25 0 0 0-.288-.376l-1.5.5.159.474.808-.27-.595.894a.25.25 0 0 0 .287.376l.808-.27-.595.894a.25.25 0 0 0 .287.376l1.5-.5-.159-.474-.808.27.596-.894a.25.25 0 0 0-.288-.376l-.808.27z"/>
+                </svg>
+            </h1>
+            <h1 class="jakarta-extrabold text-primary">500</h1>
+            <h2 class="jakarta-extrabold">Opps! algo no esta funcionado</h2>
+            <p th:text="${exception}"></p>
+            <a class="btn btn btn-primary my-2" th:href="@{${link}}">Volver al inicio</a>
+        </div>
+    </div>
+</div>
+
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

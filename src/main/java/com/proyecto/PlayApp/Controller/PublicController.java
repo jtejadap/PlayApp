@@ -3,6 +3,7 @@ package com.proyecto.PlayApp.Controller;
 
 import com.proyecto.PlayApp.entity.Review;
 import com.proyecto.PlayApp.service.CarritoService;
+import com.proyecto.PlayApp.service.UsuarioService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
@@ -18,6 +19,7 @@ import java.util.ArrayList;
 @RequiredArgsConstructor
 public class PublicController {
     private final CarritoService carrito;
+    private final UsuarioService usuarios;
 
     @GetMapping("/")
     public String showHome(Principal usuario, Model model){
@@ -38,6 +40,16 @@ public class PublicController {
         model.addAttribute("reviews", new ArrayList<Review>());
         model.addAttribute("carrito", numeroItemsCarrito(session));
         return "contacto"; // Carga el archivo contacto.html
+    }
+
+    @GetMapping("/access-denied")
+    public String error(Principal principal, Model model) {
+        model.addAttribute("link",  usuarios.getHomePath(principal));
+        return "errorviews/access-denied";
+    }
+    @GetMapping("/test")
+    public String dashboard() {
+        throw new RuntimeException("Excepción controlada");
     }
 
 }

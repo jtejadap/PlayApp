@@ -20,19 +20,8 @@ public class ReviewController {
 
     @Autowired
     private ReviewRepository reviewRepository;
+    
 
-    @Autowired
-    private CarritoService carrito;
-
-
-    @GetMapping("/contacto")
-    public String showContacto(Principal session, Model model) {
-        // Recupera las últimas 2 reseñas ordenadas por ID de forma descendente
-        model.addAttribute("reviews", reviewRepository.findAll(
-                PageRequest.of(0, 2, Sort.by(Sort.Order.desc("id")))).getContent());
-        model.addAttribute("carrito", carrito.listarCarrito(session.getName()).size());
-        return "contacto"; // Carga el archivo contacto.html
-    }
 
     @PostMapping("/submit-review")
     public String submitReview(@ModelAttribute Review review) {

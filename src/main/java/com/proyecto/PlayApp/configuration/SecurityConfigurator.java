@@ -30,6 +30,18 @@ public class SecurityConfigurator {
             "/favicon.ico"
     };
 
+    public String[] pathsToUserEndpoints = {
+            "/user/**",
+            "/cart/**",
+            "/shipment/**",
+            "/payment/**"
+    };
+
+    public String[] pathsToAdminEndpoints = {
+            "/manager/**",
+    };
+
+
     @Bean
     public UserDetailsService userDetailsService(UsuarioRepository usuarioRepository) {
         return new CustomUserDetailsService(usuarioRepository);
@@ -70,8 +82,8 @@ public class SecurityConfigurator {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/user/**").hasRole("USER")
-                        .requestMatchers("/manager/**").hasRole("ADMIN")
+                        .requestMatchers(pathsToUserEndpoints).hasRole("USER")
+                        .requestMatchers(pathsToAdminEndpoints).hasRole("ADMIN")
                         .requestMatchers(pathsToStaticResources).permitAll()
                         .requestMatchers("/shop/**").permitAll()
                         .anyRequest().permitAll()

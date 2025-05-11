@@ -2,6 +2,8 @@ package com.proyecto.PlayApp.Controller;
 
 import com.proyecto.PlayApp.entity.Producto;
 import com.proyecto.PlayApp.service.*;
+import org.bson.BsonBinarySubType;
+import org.bson.types.Binary;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -29,7 +31,7 @@ public class ManagementController {
     @GetMapping("/products")
     public String mostrarProductos(Principal principal, Model model) {
         model.addAttribute("nombreRestaurante", principal.getName());
-        model.addAttribute("productos", servicio.listarTodosLosProductosPorRestaurante(principal.getName()));
+        model.addAttribute("productos", servicio.listarTodosLosProductos());
         return "Management/productos";
     }
 
@@ -49,8 +51,7 @@ public class ManagementController {
     ) throws IOException {
 
         if (!imagen.isEmpty()) {
-            byte[] imagenBytes = imagen.getBytes();
-            //TODO save image on redis
+            producto.setImagen(new Binary(BsonBinarySubType.BINARY, imagen.getBytes()));
         }
         servicio.crearProducto(producto, userInSession.getName());
         model.addAttribute("success", "Producto añadido al catalogo con exito");
@@ -58,8 +59,8 @@ public class ManagementController {
     }
 
     @GetMapping("/product/{id}")
-    public String mostrarFormularioEdicion(@PathVariable Long id, Model model) {
-        Producto producto = servicio.buscarProductoPorId(id);
+    public String mostrarFormularioEdicion(@PathVariable String id, Model model) {
+        Producto producto = servicio.buscarProductoPorId(id).orElse(null);
         if (producto == null) {
             return "redirect:/manager/products";
         }
@@ -69,13 +70,12 @@ public class ManagementController {
 
     @PostMapping("/product/edit/{id}")
     public String editarProducto(
-            @PathVariable Long id,
+            @PathVariable String id,
             @ModelAttribute("producto") Producto producto,
             @RequestParam("archivoimagen") MultipartFile imagen
     ) throws IOException {
         if (!imagen.isEmpty()) {
-            //byte[] imagenBytes = imagen.getBytes();
-            //TODO save image data
+            producto.setImagen(new Binary(BsonBinarySubType.BINARY, imagen.getBytes()));
         }
         servicio.actualizarProducto(id, producto);
         return "redirect:/manager/products";

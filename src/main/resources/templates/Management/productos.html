@@ -116,7 +116,7 @@
                 <tr th:each="producto : ${productos}">
                     <th scope="row" th:text="${producto.id}"></th>
                     <td  th:inline="text">
-                        <img src="/img/imagen2.jpg" height="50" width="50" class="img-fluid img-thumbnail" alt="...">
+                        <img  th:src="'data:image/jpeg;base64,' + ${producto.getImagenBase64()}"  height="50" width="50" class="img-fluid img-thumbnail" alt="...">
                         [[${producto.nombre}]]
                     </td>
                     <td>

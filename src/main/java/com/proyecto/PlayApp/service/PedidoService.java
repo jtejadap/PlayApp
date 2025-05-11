@@ -84,24 +84,24 @@ public class PedidoService {
 
     private void guardarDetallesPedido(Pedido pedido, List<CarritoItem> items){
         items.forEach(carritoItem -> {
-            Producto producto =  productos.findById(Long.valueOf(carritoItem.getProductoId())).orElse(new Producto());
+            //Producto producto =  productos.findById(Long.valueOf(carritoItem.getProductoId())).orElse(new Producto());
 
             PedidoItem item = PedidoItem.builder()
-                    .producto(producto)
+                    //.producto(producto)
                     .pedido(pedido)
                     .cantidad(carritoItem.getCantidad())
                     .build();
 
             detalles.save(item);
-            actualizarCatalogo(producto,carritoItem.getCantidad());
+            //actualizarCatalogo(producto,carritoItem.getCantidad());
         });
     }
-
+    /*
     private void actualizarCatalogo(Producto producto, Integer cantidad){
         float nuevoStock = (producto.getStock() - cantidad);
         producto.setStock(nuevoStock);
         productos.save(producto);
-    }
+    }*/
 
     public List<Pedido> listarPedidosPorUsuario(String mail){
         Usuario usuario = usuarios.findUsuarioByCorreo(mail);

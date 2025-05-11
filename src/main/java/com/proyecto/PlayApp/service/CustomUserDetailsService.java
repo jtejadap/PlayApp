@@ -27,6 +27,10 @@ public class CustomUserDetailsService implements UserDetailsService {
             UsernameNotFoundException {
         System.out.println("Intentando autenticar usuario: " + mail);
         Usuario usuario = usuarioRepository.findUsuarioByCorreo(mail);
+        if(usuario == null) {
+            System.out.println("Usuario no encontrado: " + mail);
+            throw new UsernameNotFoundException("Usuario no encontrado");
+        }
         System.out.println("Usuario encontrado: " + usuario.getNombreCompleto());
         List<String> roles = new ArrayList<>();
         roles.add(usuario.getRol());

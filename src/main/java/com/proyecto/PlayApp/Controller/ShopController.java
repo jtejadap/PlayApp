@@ -30,7 +30,7 @@ public class ShopController {
             Model model,
             @RequestParam(name = "status", required = false) String status
     ){
-        Page<Producto> productos = servicio.buscarProductoConPaginaOrdenFiltro(
+        List<Producto> productos = servicio.buscarProductoConPaginaOrdenFiltro(
                 BusquedaDTO.builder().page(0).size(6)
                         .sort("[{\"campo\":\"nombre\",\"direccion\":\"asc\"}]")
                         .build()
@@ -55,7 +55,7 @@ public class ShopController {
             @RequestParam(name = "nombre", required = false) String nombre,
             @RequestParam(name = "categoria", required = false) Integer categoria
     ) {
-        Page<Producto> resultado = servicio.buscarProductoConPaginaOrdenFiltro(
+        List<Producto> resultado = servicio.buscarProductoConPaginaOrdenFiltro(
                 BusquedaDTO.builder()
                         .nombre(nombre)
                         .categoria(categoria)

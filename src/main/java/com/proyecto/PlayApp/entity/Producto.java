@@ -1,32 +1,29 @@
 package com.proyecto.PlayApp.entity;
 
-import jakarta.persistence.*;
+import org.bson.types.Binary;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.Base64;
 
-@Entity
+@Document(collection = "productos")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "productos")
 public class Producto {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private String id;
     private String nombre;
     private String descripcion;
-    private float precio;
-    private float stock;
-    private int tipo;
-    private int categoria;
-    /*
-    @ManyToOne
-    @JoinColumn(name = "restaurante_id")
-    private Usuario restaurante;
-
-     */
+    private Double precio;
+    private Double stock;
+    private Integer tipo;
+    private Integer categoria;
+    private Binary imagen;
+    private Usuario entidad;
 
     public String obtenerNombreCategoria() {
          return switch (categoria) {
@@ -44,5 +41,9 @@ public class Producto {
             case 3 -> "text-bg-success";
             default -> "text-bg-secondary";
         };
+    }
+
+    public String getImagenBase64() {
+        return Base64.getEncoder().encodeToString(imagen.getData());
     }
 }

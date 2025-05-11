@@ -19,9 +19,10 @@ public class PedidoItem {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private Integer cantidad;
+    /*
     @ManyToOne
     @JoinColumn(name = "producto_id")
-    private Producto producto;
+    private Producto producto;*/
     @ManyToOne
     @JoinColumn(name = "pedido_id")
     private Pedido pedido;

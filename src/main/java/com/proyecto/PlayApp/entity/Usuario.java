@@ -14,7 +14,7 @@ import java.util.Set;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@Document(collection = "usuarios")
+@Document(collection = "entidades")
 public class Usuario {
     @Id
     private String id;

@@ -9,7 +9,6 @@ import com.proyecto.PlayApp.repository.ProductoRepository;
 import com.proyecto.PlayApp.repository.UsuarioRepository;
 import com.proyecto.PlayApp.repository.specification.ProductoSpecification;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -40,16 +39,18 @@ public class ProductoService {
 
     public Producto crearProducto(Producto producto, String userMail) {
         Usuario usuario = usuarios.findUsuarioByCorreo(userMail);
-        //producto.setRestaurante(usuario);
+        producto.setEntidad(usuario);
         return productos.save(producto);
     }
 
-    public Producto buscarProductoPorId(Long id) {
-        Optional<Producto> producto = productos.findById(id);
-        return producto.orElse(null);
+    public Optional<Producto> buscarProductoPorId(String id) {
+       // Optional<Producto> producto = productos.findById(id);
+       // return producto.orElse(null);
+        return productos.findById(id);
     }
 
-    public Producto actualizarProducto(Long id, Producto formulario) {
+    public Producto actualizarProducto(String id, Producto formulario) {
+
         Optional<Producto> registros = productos.findById(id);
         if(registros.isEmpty()){
             return null;
@@ -63,11 +64,12 @@ public class ProductoService {
         producto.setDescripcion(formulario.getDescripcion());
         producto.setTipo(formulario.getTipo());
         producto.setCategoria(formulario.getCategoria());
+        producto.setImagen(formulario.getImagen());
 
         return productos.save(producto);
     }
 
-    public Page<Producto>buscarProductoConPaginaOrdenFiltro(BusquedaDTO busqueda) {
+    public List<Producto>buscarProductoConPaginaOrdenFiltro(BusquedaDTO busqueda) {
         // Creación de filtrosDTO
         FiltrosDTO filtros = FiltrosDTO.builder()
                 .nombre(busqueda.getNombre())
@@ -92,7 +94,7 @@ public class ProductoService {
         Specification<Producto> specification = ProductoSpecification.getSpecification(filtros);
 
         // Retornar registros de acuerdo especificación y paginación
-        return productos.findAll(specification,solicitudPagina);
+        return new ArrayList<>() ;
     }
 
     private List<OrdenDTO> jsonStringToOrdenDTO(String jsonString) {

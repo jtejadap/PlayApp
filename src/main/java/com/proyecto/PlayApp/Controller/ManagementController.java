@@ -1,9 +1,15 @@
 package com.proyecto.PlayApp.Controller;
 
+import com.proyecto.PlayApp.dto.BusquedaDTO;
+import com.proyecto.PlayApp.entity.Pedido;
 import com.proyecto.PlayApp.entity.Producto;
+import com.proyecto.PlayApp.entity.Usuario;
 import com.proyecto.PlayApp.service.*;
+import com.proyecto.PlayApp.util.PaginationMaker;
+import lombok.RequiredArgsConstructor;
 import org.bson.BsonBinarySubType;
 import org.bson.types.Binary;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -14,13 +20,11 @@ import java.io.IOException;
 import java.security.Principal;
 
 @Controller
+@RequiredArgsConstructor
 @RequestMapping("/manager")
 public class ManagementController {
     private final ProductoService servicio;
-
-    public ManagementController(ProductoService servicio) {
-        this.servicio = servicio;
-    }
+    private final PedidoService pedidos;
 
     @GetMapping("/dashboard")
     public String viewAdminPage(Principal principal, Model model) {
@@ -29,9 +33,26 @@ public class ManagementController {
     }
 
     @GetMapping("/products")
-    public String mostrarProductos(Principal principal, Model model) {
-        model.addAttribute("nombreRestaurante", principal.getName());
-        model.addAttribute("productos", servicio.listarTodosLosProductos());
+    public String mostrarProductos(
+            Principal session,
+            Model model,
+            @RequestParam(name = "page", defaultValue = "0") Integer page,
+            @RequestParam(name = "size", defaultValue = "6") Integer size,
+            @RequestParam(name = "sort", defaultValue = "[{\"campo\":\"nombre\",\"direccion\":\"asc\"}]") String sort,
+            @RequestParam(name = "nombre", required = false) String nombre
+    ) {
+        Page<Producto> resultado = servicio.listarTodosLosProductos(
+                BusquedaDTO.builder()
+                        .id(session.getName())
+                        .nombre(nombre)
+                        .page(page)
+                        .size(size)
+                        .sort(sort)
+                        .build()
+        );
+        model.addAttribute("nombreRestaurante", session.getName());
+        model.addAttribute("productos", resultado);
+        model.addAttribute("paginas", new PaginationMaker().makePages(resultado));
         return "Management/productos";
     }
 
@@ -79,6 +100,41 @@ public class ManagementController {
         }
         servicio.actualizarProducto(id, producto);
         return "redirect:/manager/products";
+    }
+
+    @GetMapping("/orders")
+    public String mostrarPedidos(
+            Principal session,
+            Model model,
+            @RequestParam(name = "page", defaultValue = "0") Integer page,
+            @RequestParam(name = "size", defaultValue = "5") Integer size,
+            @RequestParam(name = "sort", defaultValue = "[{\"campo\":\"timestamp\",\"direccion\":\"desc\"}]") String sort,
+            @RequestParam(name = "estado", required = false) Integer estado
+    ) {
+
+        Page<Pedido> items = pedidos.buscarPedidoPorRestaurate(
+                BusquedaDTO.builder()
+                        .id(session.getName())
+                        .categoria(estado)
+                        .page(page)
+                        .size(size)
+                        .sort(sort)
+                        .build()
+        );
+        model.addAttribute("paginas", new PaginationMaker().makePages(items));
+        model.addAttribute("pedidos", items);
+        model.addAttribute("nombreRestaurante", session.getName());
+        return "Management/orders";
+    }
+
+    @GetMapping("/order")
+    public String editarProducto(
+            @RequestParam(name = "id", defaultValue = "") String id,
+            @RequestParam(name = "estado", defaultValue = "1") Integer estado
+    ){
+
+        pedidos.actualizarEstadoPedido(estado, id);
+        return "redirect:/manager/orders";
     }
 
 }

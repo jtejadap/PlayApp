@@ -43,7 +43,11 @@ public class Producto {
         };
     }
 
-    public String getImagenBase64() {
-        return Base64.getEncoder().encodeToString(imagen.getData());
+    public String getImageSRC() {
+        if(imagen == null) {
+            return "/img/blank-product.jpg";
+        }
+
+        return "data:image/jpeg;base64," + Base64.getEncoder().encodeToString(imagen.getData());
     }
 }

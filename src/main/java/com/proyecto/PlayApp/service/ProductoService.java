@@ -33,14 +33,34 @@ public class ProductoService {
     private final UsuarioRepository usuarios;
     private final MongoTemplate mongoTemplate;
 
-    public List<Producto> listarTodosLosProductos() {
-        return productos.findAll();
-    }
+    public Page<Producto> listarTodosLosProductos(BusquedaDTO busqueda) {
+        // Creación y conversion de orden de registros
+        List<OrdenDTO> ordenes = jsonStringToOrdenDTO(busqueda.getSort());
+        List<Sort.Order> ordenado = construirOrden(ordenes);
 
-    public List<Producto> listarTodosLosProductosPorRestaurante(String userMail) {
-        Usuario usuario = usuarios.findUsuarioByCorreo(userMail);
-       // return productos.findByRestaurante_Id(usuario.getId());
-        return new ArrayList<>();
+
+        // Creación de solicitud de orden
+        PageRequest solicitudPagina = PageRequest.of(
+                busqueda.getPage(),
+                busqueda.getSize(),
+                Sort.by(ordenado)
+        );
+
+        Query query = new Query();
+        Usuario usuario = usuarios.findUsuarioByCorreo(busqueda.getId());
+        query.addCriteria(Criteria.where("entidad.id").is(usuario.getId()));
+
+        if (busqueda.getNombre() != null && !busqueda.getNombre().isEmpty()) {
+            query.addCriteria(Criteria.where("nombre").regex(busqueda.getNombre(), "i"));
+        }
+        query.with(solicitudPagina);
+
+        // Retornar registros de acuerdo especificación y paginación
+        return PageableExecutionUtils.getPage(
+                mongoTemplate.find(query, Producto.class),
+                solicitudPagina,
+                () -> mongoTemplate.count(query.skip(0).limit(0), Producto.class)
+        );
     }
 
     public Producto crearProducto(Producto producto, String userMail) {
@@ -50,8 +70,6 @@ public class ProductoService {
     }
 
     public Optional<Producto> buscarProductoPorId(String id) {
-       // Optional<Producto> producto = productos.findById(id);
-       // return producto.orElse(null);
         return productos.findById(id);
     }
 
@@ -87,6 +105,7 @@ public class ProductoService {
                 busqueda.getSize(),
                 Sort.by(ordenado)
         );
+
 
         Query query = new Query();
         if(busqueda.getCategoria() != null) {

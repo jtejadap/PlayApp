@@ -20,9 +20,7 @@ import org.springframework.data.support.PageableExecutionUtils;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
@@ -52,8 +50,9 @@ public class PedidoService {
                 .pago(pago)
                 .timestamp(LocalDateTime.now())
                 .build();
-
-        order.setCarrito(crearCarrito(compra.getCarrito()));
+        DetallesDTO detalles = extraerDetalles(compra.getCarrito());
+        order.setCarrito(detalles.getCarrito());
+        order.setRestaurantes(detalles.getRestaurantes());
         return pedidos.save(order);
     }
 
@@ -81,10 +80,16 @@ public class PedidoService {
     }
 
 
-    private List<PedidoItem> crearCarrito(List<CarritoItem> items){
+    private DetallesDTO extraerDetalles(List<CarritoItem> items){
         List<PedidoItem> carrito = new ArrayList<>();
+        Set<String> restaurantes = new HashSet<>();
+
         items.forEach(carritoItem -> {
             Producto producto =  productos.findById(carritoItem.getProductoId()).orElse(new Producto());
+
+            if(producto.getStock()<1){
+                throw new IllegalStateException("Producto sin stock");
+            }
 
             PedidoItem item = PedidoItem.builder()
                     .producto(producto)
@@ -93,9 +98,14 @@ public class PedidoService {
                     .build();
 
             carrito.add(item);
+            restaurantes.add(producto.getEntidad().getId());
             actualizarCatalogo(producto,carritoItem.getCantidad());
         });
-        return carrito;
+
+        return DetallesDTO.builder()
+                .carrito(carrito)
+                .restaurantes(new ArrayList<>(restaurantes))
+                .build();
     }
 
     private void actualizarCatalogo(Producto producto, Integer cantidad){
@@ -157,6 +167,42 @@ public class PedidoService {
     public Pedido actualizarEstadoPagoPedido(Integer estado, String id){
         Pedido pedido = pedidos.findById(id).orElseThrow(() -> new IllegalStateException("Pedido no encontrado"));
         pedido.getPago().setEstado(estado);
+        return pedidos.save(pedido);
+    }
+
+    public Page<Pedido> buscarPedidoPorRestaurate(BusquedaDTO busqueda) {
+        // Creación y conversion de orden de registros
+        List<OrdenDTO> ordenes = jsonStringToOrdenDTO(busqueda.getSort());
+        List<Sort.Order> ordenado = construirOrden(ordenes);
+
+
+        // Creación de solicitud de orden
+        PageRequest solicitudPagina = PageRequest.of(
+                busqueda.getPage(),
+                busqueda.getSize(),
+                Sort.by(ordenado)
+        );
+
+        Query query = new Query();
+        Usuario usuario = usuarios.findUsuarioByCorreo(busqueda.getId());
+        query.addCriteria(Criteria.where("restaurantes").is(usuario.getId()));
+
+        if(busqueda.getCategoria() != null) {
+            query.addCriteria(Criteria.where("estado").is(busqueda.getCategoria()));
+        }
+        query.with(solicitudPagina);
+
+        // Retornar registros de acuerdo especificación y paginación
+        return PageableExecutionUtils.getPage(
+                mongoTemplate.find(query, Pedido.class),
+                solicitudPagina,
+                () -> mongoTemplate.count(query.skip(0).limit(0), Pedido.class)
+        );
+    }
+
+    public Pedido actualizarEstadoPedido(Integer estado, String id){
+        Pedido pedido = pedidos.findById(id).orElseThrow(() -> new IllegalStateException("Pedido no encontrado"));
+        pedido.setEstado(estado);
         return pedidos.save(pedido);
     }
 

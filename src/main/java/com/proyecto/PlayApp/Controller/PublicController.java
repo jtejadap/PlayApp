@@ -5,8 +5,6 @@ import com.proyecto.PlayApp.entity.Review;
 import com.proyecto.PlayApp.service.CarritoService;
 import com.proyecto.PlayApp.service.UsuarioService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;

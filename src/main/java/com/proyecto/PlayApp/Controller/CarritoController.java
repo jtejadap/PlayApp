@@ -63,7 +63,6 @@ public class CarritoController {
             model.addAttribute("error", e.getMessage());
             return "pedido-confirmacion";
         }
-
     }
 
 

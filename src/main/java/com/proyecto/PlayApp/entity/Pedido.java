@@ -25,6 +25,7 @@ public class Pedido {
     private Double total;
     private LocalDateTime timestamp;
     private List<PedidoItem> carrito;
+    private List<String> restaurantes;
     private Usuario cliente;
     private Pago pago;
     private Envio envio;

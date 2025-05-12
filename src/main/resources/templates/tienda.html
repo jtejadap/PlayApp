@@ -97,7 +97,7 @@
   <div class="row g-1">
     <div class="col-12 col-md-4" th:each="producto : ${productos}">
       <div class="card shadow-sm h-100">
-        <img th:src="'data:image/jpeg;base64,' + ${producto.getImagenBase64()}" class="card-img-top" alt="Imagen de la Bebida">
+        <img th:src="${producto.getImageSRC()}" width="400px" height="400px" class="card-img-top" alt="Imagen de la Bebida">
         <div class="card-body">
           <div class="d-flex">
             <div class="me-auto">
@@ -110,7 +110,7 @@
 
           <h5 class="card-text jakarta-bold"  th:text="${#numbers.formatCurrency(producto.precio)}"> </h5>
           <p class="card-text jakarta-medium" th:text="'Disponible: '+${#numbers.formatInteger(producto.getStock(),0)}+ ' unidades.'"></p>
-          <!--<p class="card-text jakarta-light text-body-secondary" th:text="${producto.getRestaurante().getNombre_completo()}"></p> -->
+          <p class="card-text jakarta-light text-body-secondary" th:text="${producto.entidad.getNombreCompleto()}"></p>
           <div class="row">
             <div class="btn-group" role="group" aria-label="Basic example">
               <button type="button" class="btn btn-primary">

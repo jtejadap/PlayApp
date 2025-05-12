@@ -1,13 +1,11 @@
 package com.proyecto.PlayApp.service;
 
 import com.proyecto.PlayApp.dto.BusquedaDTO;
-import com.proyecto.PlayApp.dto.FiltrosDTO;
 import com.proyecto.PlayApp.dto.OrdenDTO;
 import com.proyecto.PlayApp.entity.Producto;
 import com.proyecto.PlayApp.entity.Usuario;
 import com.proyecto.PlayApp.repository.ProductoRepository;
 import com.proyecto.PlayApp.repository.UsuarioRepository;
-import com.proyecto.PlayApp.repository.specification.ProductoSpecification;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.mongodb.core.MongoTemplate;
@@ -19,7 +17,6 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
-import org.springframework.data.jpa.domain.Specification;
 
 import java.util.List;
 import java.util.Optional;

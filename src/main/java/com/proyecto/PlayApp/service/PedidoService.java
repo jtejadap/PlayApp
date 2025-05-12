@@ -7,8 +7,6 @@ import com.proyecto.PlayApp.entity.*;
 import com.proyecto.PlayApp.repository.PedidoRepository;
 import com.proyecto.PlayApp.repository.ProductoRepository;
 import com.proyecto.PlayApp.repository.UsuarioRepository;
-import com.proyecto.PlayApp.repository.specification.PedidoSpecification;
-import com.proyecto.PlayApp.repository.specification.ProductoSpecification;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;

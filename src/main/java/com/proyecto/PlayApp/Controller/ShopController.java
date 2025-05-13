@@ -34,7 +34,8 @@ public class ShopController {
             @RequestParam(name = "sort", defaultValue = "[{\"campo\":\"nombre\",\"direccion\":\"asc\"}]") String sort,
             @RequestParam(name = "nombre", required = false) String nombre,
             @RequestParam(name = "categoria", required = false) Integer categoria,
-            @RequestParam(name = "status", required = false) String status
+            @RequestParam(name = "status", required = false) String status,
+            @RequestParam(name = "error", required = false) String error
     ) {
         Page<Producto> resultado = servicio.buscarProductoConPaginaOrdenFiltro(
                 BusquedaDTO.builder()
@@ -45,6 +46,10 @@ public class ShopController {
                         .sort(sort)
                         .build()
         );
+        if (error!= null) {
+            model.addAttribute("error", error);
+        }
+
         if (status!= null) {
             model.addAttribute("status", status);
         }

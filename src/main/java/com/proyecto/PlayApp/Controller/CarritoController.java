@@ -28,17 +28,36 @@ public class CarritoController {
             @RequestParam(name = "cantidad", defaultValue = "1") Integer cantidad,
             Principal usuario
     ) {
-        if(usuario==null){
-            return "redirect:/login";
+        try{
+            servicio.agregar(
+                    ItemDTO.builder()
+                            .itemId(item)
+                            .cantidad(cantidad)
+                            .correo(usuario.getName())
+                            .build()
+            );
+            return "redirect:/shop?status=true";
+
+        } catch (Exception e) {
+            return "redirect:/shop?error=true";
         }
-        servicio.agregar(
-                ItemDTO.builder()
-                        .itemId(item)
-                        .cantidad(cantidad)
-                        .correo(usuario.getName())
-                        .build()
-        );
-        return "redirect:/shop?status=true";
+    }
+
+    @GetMapping("/rm/{item}")
+    public String removeItem(
+            @PathVariable  String item,
+            Principal usuario
+    ) {
+        try{
+            servicio.eliminar(
+                    usuario.getName(),
+                    item
+            );
+            return "redirect:/cart/checkout";
+
+        } catch (Exception e) {
+            return "redirect:/cart/checkout";
+        }
     }
 
     @GetMapping("/checkout")

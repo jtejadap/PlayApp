@@ -27,6 +27,10 @@ public class CarritoService {
         Usuario usuarioInstancia = usuarios.findUsuarioByCorreo(campos.getCorreo());
         String key = PREFIJO + usuarioInstancia.getId();
         Producto producto = productos.findById(campos.getItemId()).orElse(new Producto());
+
+        if(producto.getStock()<1|| producto.getStock()< campos.getCantidad()){
+            throw new IllegalStateException("Producto sin stock");
+        }
         CarritoItem carritoItem = CarritoItem.builder()
                 .productoId(producto.getId())
                 .nombre(producto.getNombre())

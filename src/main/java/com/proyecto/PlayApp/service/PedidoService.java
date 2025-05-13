@@ -85,7 +85,7 @@ public class PedidoService {
         items.forEach(carritoItem -> {
             Producto producto =  productos.findById(carritoItem.getProductoId()).orElse(new Producto());
 
-            if(producto.getStock()<1){
+            if(producto.getStock()<1|| producto.getStock()< carritoItem.getCantidad()){
                 throw new IllegalStateException("Producto sin stock");
             }
 

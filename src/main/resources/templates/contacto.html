@@ -29,7 +29,7 @@
         <ul class="nav col-12 col-md-auto mb-2 justify-content-center mb-md-0">
             <li><a href="/" class="nav-link text-light px-2">Inicio</a></li>
             <li><a href="/shop" class="nav-link text-light px-2">Tienda</a></li>
-            <li><a href="/contacto" class="nav-link text-light jakarta-bold px-2">Contacto</a></li>
+            <li><a href="/resena" class="nav-link text-light jakarta-bold px-2">Contacto</a></li>
         </ul>
 
         <div class="col-md-3 text-end">
@@ -70,36 +70,28 @@
     <br>
     <h2>Reseñas</h2>
 
-    <!-- Formulario para nuevas reseñas -->
-    <form action="/submit-review" method="post" class="review-form">
-        <div class="form-group">
-            <label style="color: white;">Nombre:</label>
-            <input type="text" name="nombre" required>
-        </div>
-
-        <div class="form-group">
-            <label style="color: white;">Valoración:</label>
-            <div class="star-rating">
-                <input type="radio" id="star5" name="valoracion" value="5">
-                <label for="star5">★</label>
-                <input type="radio" id="star4" name="valoracion" value="4">
-                <label for="star4">★</label>
-                <input type="radio" id="star3" name="valoracion" value="3">
-                <label for="star3">★</label>
-                <input type="radio" id="star2" name="valoracion" value="2">
-                <label for="star2">★</label>
-                <input type="radio" id="star1" name="valoracion" value="1">
-                <label for="star1">★</label>
+<!-- Formulario para nuevas reseñas -->
+    <div class="rating-box">
+        <h2 class="mb-4">Deja tu reseña</h2>
+        <form th:action="@{/resena/submit-review}" th:object="${nuevaResena}" method="post">
+            <div class="mb-3">
+                <label for="nombre" class="form-label">Nombre</label>
+                <input type="text" class="form-control" id="nombre" th:field="*{nombre}" required>
             </div>
-        </div>
 
-        <div class="form-group">
-            <label style="color: white;">Tu reseña:</label>
-            <textarea name="comentario" required></textarea>
-        </div>
+            <div class="mb-3">
+                <label for="valoracion" class="form-label">Valoración (1-5)</label>
+                <input type="number" class="form-control" id="valoracion" th:field="*{valoracion}" min="1" max="5" required>
+            </div>
 
-        <button type="submit">Enviar Reseña</button>
-    </form>
+            <div class="mb-3">
+                <label for="comentario" class="form-label">Comentario</label>
+                <textarea class="form-control" id="comentario" th:field="*{comentario}" rows="3" required></textarea>
+            </div>
+
+            <button type="submit" class="btn btn-primary">Enviar Reseña</button>
+        </form>
+    </div>
 
     <h3 style="text-align: center; color: white;">Reseñas recientes</h3>
 

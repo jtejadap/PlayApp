@@ -139,20 +139,25 @@
         <p th:text="${mensajeEnviado}"></p>
     </div>
 
-    <!-- Formulario de contacto -->
-    <form method="post" action="/contacto/enviar">
+    <!-- Notificación de éxito -->
+    <div th:if="${param.exito}" style="color: green; margin-bottom: 20px;">
+        ✓ Mensaje enviado correctamente.
+    </div>
+
+    <!-- Formulario -->
+    <form method="post" th:action="@{/contacto/enviar}">
         <div class="form-group">
-            <label style="color: white;">Nombre:</label>
+            <label>Nombre:</label>
             <input type="text" name="nombre" required>
         </div>
 
         <div class="form-group">
-            <label style="color: white;">Email:</label>
+            <label>Email:</label>
             <input type="email" name="email" required>
         </div>
 
         <div class="form-group">
-            <label style="color: white;">Asunto:</label>
+            <label>Asunto:</label>
             <select name="asunto" required>
                 <option value="">Selecciona una opción</option>
                 <option value="reserva">Reservación</option>
@@ -162,8 +167,8 @@
         </div>
 
         <div class="form-group">
-            <label style="color: white;">Mensaje:</label>
-            <textarea name="mensaje" required></textarea>
+            <label>Mensaje:</label>
+            <textarea name="mensaje" rows="5" required></textarea>
         </div>
 
         <button type="submit">Enviar Mensaje</button>
@@ -174,7 +179,7 @@
 
 <!-- Footer -->
 <footer class="py-4 bg-dark text-white text-center">
-    <p>&copy; 2024 PlayApp. Todos los derechos reservados.</p>
+    <p>&copy; 2025 PlayApp. Todos los derechos reservados.</p>
     <ul class="list-inline">
         <li class="list-inline-carritoItem"><a href="#" class="text-white">Términos y condiciones</a></li>
         <li class="list-inline-carritoItem"><a href="#" class="text-white">Política de privacidad</a></li>

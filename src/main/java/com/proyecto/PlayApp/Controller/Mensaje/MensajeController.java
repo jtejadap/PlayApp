@@ -1,33 +1,34 @@
 package com.proyecto.PlayApp.Controller.Mensaje;
 
 import com.proyecto.PlayApp.entity.Mensaje;
+import com.proyecto.PlayApp.repository.MensajeRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
+@RequestMapping("/contacto")
+@RequiredArgsConstructor
 public class MensajeController {
 
-    @PostMapping("/contacto/enviar")
-    public String enviarMensaje(@RequestParam("nombre") String nombre,
-                                @RequestParam("email") String email,
-                                @RequestParam("asunto") String asunto,
-                                @RequestParam("mensaje") String mensaje,
-                                RedirectAttributes redirectAttributes) {
-        // Guardar el mensaje en la base de datos
-        Mensaje nuevoMensaje = new Mensaje();
-        nuevoMensaje.setNombre(nombre);
-        nuevoMensaje.setEmail(email);
-        nuevoMensaje.setAsunto(asunto);
-        nuevoMensaje.setMensaje(mensaje);
-        //mensajeRepository.save(nuevoMensaje);
+    @Autowired
+    private MensajeRepository mensajeRepo;
 
-        // Añadir un atributo de éxito para mostrar un mensaje de confirmación
-        redirectAttributes.addFlashAttribute("mensajeEnviado", "¡Mensaje enviado con éxito!");
+    @GetMapping
+    public String mostrarFormulario(Model model) {
+        model.addAttribute("mensaje", new Mensaje()); // Cambiado a "mensajeContacto"
+        return "contacto";
+    }
 
-        // Redirigir de nuevo a la página de contacto
-        return "redirect:/contacto";
+    @PostMapping("/enviar")
+    public String enviarMensaje(@ModelAttribute("mensajeContacto") Mensaje mensaje) {
+         // Ahora funcionará correctamente
+        mensajeRepo.save(mensaje);
+        return "redirect:/resena";
     }
 }

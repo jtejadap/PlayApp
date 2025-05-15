@@ -36,6 +36,7 @@ public class UsuarioService {
             return "/";
         }
         Usuario usuario = users.findUsuarioByCorreo(session.getName());
+
         if(usuario.getRol().equals("ROLE_ADMIN")){
             return "/manager/dashboard";
         }

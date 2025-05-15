@@ -37,18 +37,21 @@ public class RandonDataService {
     private static final LocalDate END_DATE = LocalDate.now();
 
     public void seedDatabase(){
-        generateUsuarios("ROLE_ADMIN", 50);
+        generateUsuarios("ROLE_ADMIN", 10);
         generateUsuarios("ROLE_USER", 1000);
-        generateProductosForAllUsers(10);
+        generateProductosForAllUsers(5);
         generatePedidosForUsersWithRoleUser(15);
     }
 
     public void generateUsuarios(String rol, int cantidad) {
-
-        for (int i = 0; i < cantidad; i += BATCH_SIZE) {
+        int batchsize = 5;
+        if(cantidad > 100){
+            batchsize = 100;
+        }
+        for (int i = 0; i < cantidad; i += batchsize) {
             List<Usuario> usuarios = new ArrayList<>();
 
-            for (int j = 0; j < BATCH_SIZE; j++) {
+            for (int j = 0; j < batchsize; j++) {
                 Usuario usuario = Usuario.builder()
                         .nombreCompleto(faker.name().fullName())
                         .correo(generateUniqueEmail(faker))
@@ -59,10 +62,10 @@ public class RandonDataService {
             }
 
             mongoTemplate.insertAll(usuarios);
-            System.out.println("Se insertaron " + usuarios.size() + " registros de tipo:" +rol);
+            System.out.println("Se insertaron " + usuarios.size() + " registros de tipo: " +rol);
         }
 
-        System.out.println("Se generaron " + cantidad + " registros de tipo:" + rol);
+        System.out.println("Se generaron " + cantidad + " registros de tipo: " + rol);
     }
 
     private String generateUniqueEmail(Faker faker) {

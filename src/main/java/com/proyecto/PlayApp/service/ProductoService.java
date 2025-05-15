@@ -90,6 +90,11 @@ public class ProductoService {
         return productos.save(producto);
     }
 
+    public void deleteProducto(String id){
+        Optional<Producto> registro = productos.findById(id);
+        registro.ifPresent(productos::delete);
+    }
+
     public Page<Producto> buscarProductoConPaginaOrdenFiltro(BusquedaDTO busqueda) {
         // Creación y conversion de orden de registros
         List<OrdenDTO> ordenes = jsonStringToOrdenDTO(busqueda.getSort());

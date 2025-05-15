@@ -137,4 +137,12 @@ public class ManagementController {
         return "redirect:/manager/orders";
     }
 
+    @GetMapping("/product/delete/{id}")
+    public String editarProducto(
+            @PathVariable String id
+    ) {
+        servicio.deleteProducto(id);
+        return "redirect:/manager/products";
+    }
+
 }

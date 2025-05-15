@@ -1,5 +1,0 @@
-# Created at 2025-05-15T02:03:35.081
-Boot Manifest-JAR contains absolute paths in classpath 'D:\Tecnologico Comfenalco\Semestre 2\Desarrollo de Software II\PlayApp-main\target\test-classes'
-Hint: <argLine>-Djdk.net.URLClassPath.disableClassPathURLCheck=true</argLine>
-'other' has different root
-

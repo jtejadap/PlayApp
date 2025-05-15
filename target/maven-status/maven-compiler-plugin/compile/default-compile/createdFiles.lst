@@ -45,6 +45,7 @@ com\proyecto\PlayApp\entity\Pedido$PedidoBuilder.class
 com\proyecto\PlayApp\dto\BusquedaDTO$BusquedaDTOBuilder.class
 com\proyecto\PlayApp\configuration\SeedDatabase.class
 com\proyecto\PlayApp\service\PedidoService$1.class
+com\proyecto\PlayApp\repository\MensajeRepository.class
 com\proyecto\PlayApp\util\PaginationMaker.class
 com\proyecto\PlayApp\configuration\RedisConfigurator.class
 com\proyecto\PlayApp\dto\DetallesDTO.class

@@ -1,4 +1,4 @@
 -------------------------------------------------------------------------------
 Test set: com.proyecto.PlayApp.ProyectoApplicationTests
 -------------------------------------------------------------------------------
-Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 686.1 s -- in com.proyecto.PlayApp.ProyectoApplicationTests
+Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 171.7 s -- in com.proyecto.PlayApp.ProyectoApplicationTests

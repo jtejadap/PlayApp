@@ -1,0 +1,56 @@
+package com.proyecto.PlayApp.Controller.Reseña;
+
+import com.proyecto.PlayApp.entity.Resena;
+import com.proyecto.PlayApp.repository.ResenaRepository;
+import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.*;
+
+import com.proyecto.PlayApp.dto.BusquedaDTO;
+import com.proyecto.PlayApp.entity.Producto;
+import com.proyecto.PlayApp.service.CarritoService;
+import com.proyecto.PlayApp.service.ProductoService;
+import com.proyecto.PlayApp.service.UsuarioService;
+import com.proyecto.PlayApp.util.PaginationMaker;
+import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+
+import java.security.Principal;
+
+@Controller
+@RequestMapping("/resena")
+@RequiredArgsConstructor
+public class ResenaController {
+    private final CarritoService carrito;
+    private final ResenaRepository resenaRepository;
+
+    @GetMapping
+    public String mostrarFormulario(Model model, Principal usuario) {
+        model.addAttribute("reviews", resenaRepository.findAllByOrderByFechaDesc());
+        model.addAttribute("nuevaResena", new Resena()); // Objeto vacío para el formulario
+        model.addAttribute("carrito", numeroItemsCarrito(usuario));
+        return "contacto";
+
+    }
+
+    private int numeroItemsCarrito(Principal user){
+        if(user == null){
+            return 0;
+        }
+        return carrito.listarCarrito(user.getName()).size();
+    }
+
+
+    @PostMapping("/submit-review")
+    public String guardarResena(@ModelAttribute("nuevaResena") Resena nuevaResena) {
+        resenaRepository.save(nuevaResena);
+        return "redirect:/resena";
+    }
+}

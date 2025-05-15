@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inicio - PlayApp</title>
+    <link th:href="@{/css/bootstrap.min.css}" rel="stylesheet">
+    <link rel="stylesheet" href="/css/importJakartaFont.css">
+    <link rel="stylesheet" href="/css/inicio.css"> <!-- Enlaza el nuevo archivo CSS -->
+    <link rel="icon" href="/img/Logo.png" type="image/png">
+</head>
+<body class="jakarta-regular bg-dark">
+
+<header class="bg-dark sticky-top">
+    <nav class="container d-flex flex-wrap align-items-center justify-content-center justify-content-md-between p-2">
+        <div class="col-md-3 mb-2 mb-md-0">
+            <a href="/" class="d-inline-flex link-body-emphasis text-decoration-none">
+                <img th:src="@{/img/Logo.png}" alt="Logo" width="30" height="24" class="d-inline-block align-text-top">
+                <span class="jakarta-extrabold text-light"> PLAYAPP</span>
+            </a>
+        </div>
+
+        <ul class="nav col-12 col-md-auto mb-2 justify-content-center mb-md-0">
+            <li><a href="/" class="nav-link text-light px-2 jakarta-bold">Inicio</a></li>
+            <li><a href="/shop" class="nav-link text-light px-2">Tienda</a></li>
+            <li><a href="/resena" class="nav-link text-light px-2">Contacto</a></li>
+        </ul>
+
+        <div class="col-md-3 text-end">
+            <a href="/cart/checkout" class="btn btn-primary position-relative me-2">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-bag-fill" viewBox="0 0 16 16">
+                    <path d="M8 1a2.5 2.5 0 0 1 2.5 2.5V4h-5v-.5A2.5 2.5 0 0 1 8 1m3.5 3v-.5a3.5 3.5 0 1 0-7 0V4H1v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V4z"/>
+                </svg>
+                <span th:text="${carrito}" class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                    0
+                    <span class="visually-hidden">productos agregados</span>
+                </span>
+            </a>
+            <a sec:authorize="isAuthenticated()" href="/user/orders" class="btn btn-outline-primary">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-clock-history" viewBox="0 0 16 16">
+                    <path d="M8.515 1.019A7 7 0 0 0 8 1V0a8 8 0 0 1 .589.022zm2.004.45a7 7 0 0 0-.985-.299l.219-.976q.576.129 1.126.342zm1.37.71a7 7 0 0 0-.439-.27l.493-.87a8 8 0 0 1 .979.654l-.615.789a7 7 0 0 0-.418-.302zm1.834 1.79a7 7 0 0 0-.653-.796l.724-.69q.406.429.747.91zm.744 1.352a7 7 0 0 0-.214-.468l.893-.45a8 8 0 0 1 .45 1.088l-.95.313a7 7 0 0 0-.179-.483m.53 2.507a7 7 0 0 0-.1-1.025l.985-.17q.1.58.116 1.17zm-.131 1.538q.05-.254.081-.51l.993.123a8 8 0 0 1-.23 1.155l-.964-.267q.069-.247.12-.501m-.952 2.379q.276-.436.486-.908l.914.405q-.24.54-.555 1.038zm-.964 1.205q.183-.183.35-.378l.758.653a8 8 0 0 1-.401.432z"/>
+                    <path d="M8 1a7 7 0 1 0 4.95 11.95l.707.707A8.001 8.001 0 1 1 8 0z"/>
+                    <path d="M7.5 3a.5.5 0 0 1 .5.5v5.21l3.248 1.856a.5.5 0 0 1-.496.868l-3.5-2A.5.5 0 0 1 7 9V3.5a.5.5 0 0 1 .5-.5"/>
+                </svg>
+            </a>
+            <form sec:authorize="isAuthenticated()" class="btn p-0" th:action="@{/logout}" method="post">
+                <button type="submit" class="btn btn-outline-primary me-2" value="Sign Out">
+                    Salir
+                </button>
+            </form>
+            <a href="/login" sec:authorize="!isAuthenticated()" type="button" class="btn btn-outline-primary me-2">Iniciar</a>
+            <a href="/login" sec:authorize="!isAuthenticated()" class="btn btn-primary">Registrarse</a>
+            <span class="navbar-text text-light" style="white-space: nowrap;">
+                Hola, <span th:text="${nombreUsuario}">usuario</span>
+            </span>
+        </div>
+    </nav>
+</header>
+
+<!-- Sección de Carrusel -->
+<div id="carouselExampleCaptions" class="carousel slide" data-bs-ride="carousel">
+    <div class="carousel-indicators">
+        <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+        <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="1" aria-label="Slide 2"></button>
+        <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="2" aria-label="Slide 3"></button>
+    </div>
+    <div class="carousel-inner">
+        <div class="carousel-item active" style="background-image: url('/img/Burguer.jpg');">
+            <div class="carousel-caption d-none d-md-block">
+                <h5>Hamburguesa de la casa</h5>
+                <p></p>
+            </div>
+        </div>
+        <div class="carousel-item" style="background-image: url('/img/Pescado.jpg');">
+            <div class="carousel-caption d-none d-md-block">
+                <h5>Mojarra</h5>
+                <p></p>
+            </div>
+        </div>
+        <div class="carousel-item" style="background-image: url('/img/Bebidas.jpeg');">
+            <div class="carousel-caption d-none d-md-block">
+                <h5>Bebidas</h5>
+                <p></p>
+            </div>
+        </div>
+    </div>
+    <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide="prev">
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Previous</span>
+    </button>
+    <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide="next">
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Next</span>
+    </button>
+</div>
+
+<!-- Descripción de la Página -->
+<section id="description" class="py-5 text-center" style="position: relative;">
+    <div class="container">
+        <h2>Bienvenido a PlayApp</h2>
+        <p>
+            PlayApp es tu compañero ideal para disfrutar de tus vacaciones en las playas de Cartagena y en toda Colombia.
+            Con nuestra plataforma, puedes realizar compras de comida en los mejores establecimientos,
+            reservar carpas para tu comodidad y evitar estafas gracias a nuestras recomendaciones y alertas.
+            Disfruta de una experiencia segura y placentera mientras exploras las maravillas de nuestras costas.
+        </p>
+    </div>
+</section>
+
+
+<!-- Sección de Categorías Populares -->
+<section class="categories py-5 text-center">
+    <div class="container">
+        <h2 class="mb-4">Categorías Populares</h2>
+        <div class="row">
+            <div class="col-md-4">
+                <a href="/shop?categoria=1">
+                    <img src="/img/Langosta.png" alt="Comida" class="img-fluid rounded">
+                    <p class="mt-2">Comida</p>
+                </a>
+            </div>
+            <div class="col-md-4">
+                <a href="/shop?categoria=2">
+                    <img src="/img/Bebida.png" alt="Bebidas" class="img-fluid rounded">
+                    <p class="mt-2">Bebidas</p>
+                </a>
+            </div>
+            <div class="col-md-4">
+                <a href="/shop?categoria=3">
+                    <img src="/img/Moto.png" alt="Moto Acuatica" class="img-fluid rounded">
+                    <p class="mt-2">Servicios</p>
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<!-- Sección de Mapa de Ubicación -->
+<section id="ubicate" class="location py-5 text-center">
+    <div class="container">
+        <h2 class="mb-4">Ubicación</h2>
+        <p>Visítanos o recibe tu pedido en estas zonas:</p>
+        <div id="map-container" class="mb-5" style="height: 400px;">
+            <iframe
+                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3151.835434509535!2d144.95373631541198!3d-37.816279579751795!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x6ad642af0f11fd81%3A0xf577b6b37f44c89f!2sFederation%20Square!5e0!3m2!1sen!2sau!4v1638238732161!5m2!1sen!2sau"
+                    width="100%" height="400" style="border:0;" allowfullscreen="" loading="lazy">
+            </iframe>
+        </div>
+    </div>
+</section>
+
+<!-- Footer -->
+<footer class="py-4 text-white text-center">
+    <p>&copy; 2025 PlayApp. Todos los derechos reservados.</p>
+    <ul class="list-inline">
+        <li class="list-inline-carritoItem"><a href="#" class="text-white">Términos y condiciones</a></li>
+        <li class="list-inline-carritoItem"><a href="#" class="text-white">Política de privacidad</a></li>
+    </ul>
+</footer>
+
+<script>
+    let lastScrollTop = 0; // Variable para almacenar la posición anterior del scroll
+ let navbar = document.querySelector('header nav'); // Selecciona la barra de navegación
+
+ // Evento de desplazamiento (scroll)
+ window.addEventListener("scroll", function() {
+     let currentScroll = window.pageYOffset || document.documentElement.scrollTop; // Obtiene la posición actual del scroll
+
+     // Si el usuario hace scroll hacia abajo, oculta la barra
+     if (currentScroll > lastScrollTop) {
+         navbar.style.top = "-70px"; // Desplaza la barra hacia arriba para ocultarla
+     } else {
+         // Si el usuario hace scroll hacia arriba, muestra la barra
+         navbar.style.top = "0"; // Muestra la barra en la parte superior
+     }
+
+     // Actualiza la posición anterior del scroll
+     lastScrollTop = currentScroll <= 0 ? 0 : currentScroll;
+ });
+
+</script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

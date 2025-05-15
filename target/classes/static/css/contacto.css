@@ -1,0 +1,257 @@
+/* Botones de Log Out */
+.btn-outline-light {
+    border-color: #ffffff;
+    color: #ffffff;
+}
+
+.btn-outline-light:hover {
+    background-color: #ffffff;
+    color: #343a40;
+}
+
+/* Ajuste para los elementos a la izquierda (usuario, log out, carrito) */
+.d-flex.align-items-center {
+    justify-content: flex-start; /* Alineación a la izquierda de los botones de usuario, log out y carrito */
+}
+
+
+.video-background {
+    position: fixed;
+    right: 0;
+    bottom: 0;
+    min-width: 100%;
+    min-height: 100%;
+    width: auto;
+    height: auto;
+    z-index: -1000;
+    background-size: cover;
+    overflow: hidden;
+    object-fit: cover;
+}
+
+body {
+    position: relative;
+    z-index: 1;
+    background: rgba(255, 255, 255, 0.7); /* Añade un fondo semi-transparente para mejorar la legibilidad */
+}
+
+/* Asegura que el contenido se vea sobre el video */
+.container, .section, header, footer {
+    position: relative;
+    z-index: 10;
+}
+
+* {
+margin: 0;
+padding: 0;
+box-sizing: border-box;
+}
+
+body {
+/* Color de fondo transparente usando RGBA */
+background-color: rgba(0, 0, 0, 0.5); /* Negro con 50% de transparencia */
+
+}
+
+.container {
+max-width: 1200px;
+margin: 0 auto;
+padding: 20px;
+}
+
+.section {
+/* Color de fondo transparente usando RGBA */
+background-color: rgba(0, 0, 0, 0.5); /* Negro con 50% de transparencia */
+;
+border-radius: 8px;
+padding: 30px;
+margin-bottom: 30px;
+box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+h2 {
+color: white;
+margin-bottom: 20px;
+text-align: center;
+}
+
+/* Estilos para la sección de reseñas */
+.reviews {
+display: grid;
+gap: 20px;
+}
+
+.review-form {
+margin-bottom: 30px;
+}
+
+.rating {
+display: flex;
+gap: 10px;
+margin-bottom: 15px;
+}
+
+.star-rating {
+display: flex;
+flex-direction: row-reverse;
+gap: 5px;
+}
+
+.star-rating input {
+display: none;
+}
+
+.star-rating label {
+font-size: 30px;
+color: #ddd;
+cursor: pointer;
+}
+
+.star-rating label:hover,
+.star-rating label:hover ~ label,
+.star-rating input:checked ~ label {
+color: #ffd700;
+}
+
+.review-card {
+border: 1px solid #eee;
+padding: 15px;
+border-radius: 8px;
+}
+
+.review-header {
+display: flex;
+justify-content: space-between;
+margin-bottom: 10px;
+}
+
+.review-stars {
+color: #ffd700;
+}
+
+/* Estilos para la sección de contacto */
+.contact-info {
+display: grid;
+grid-template-columns: 1fr 1fr;
+gap: 30px;
+margin-bottom: 30px;
+}
+
+.info-card {
+background: #f8f8f8;
+padding: 20px;
+border-radius: 8px;
+text-align: center;
+}
+
+.map {
+width: 100%;
+height: 500px;
+margin-bottom: 30px;
+border: none;
+border-radius: 8px;
+}
+
+/* Estilos compartidos para formularios */
+.form-group {
+margin-bottom: 15px;
+}
+
+label {
+display: block;
+margin-bottom: 5px;
+color: #666;
+}
+
+input, textarea, select {
+width: 100%;
+padding: 8px;
+border: 1px solid #ddd;
+border-radius: 4px;
+font-size: 16px;
+}
+
+textarea {
+height: 120px;
+resize: vertical;
+}
+
+button {
+background: #4CAF50;
+color: white;
+padding: 10px 20px;
+border: none;
+border-radius: 4px;
+cursor: pointer;
+font-size: 16px;
+width: 100%;
+}
+
+button:hover {
+background: #45a049;
+}
+
+@media (max-width: 768px) {
+.contact-info {
+grid-template-columns: 1fr;
+}
+}
+
+/* Estilo de la barra de navegación: Aplica estilos a la barra de navegación en la parte superior de la página */
+body {
+font-family: 'Poppins', sans-serif; /* Aplica la fuente 'Poppins' a todo el contenido de la página */
+}
+
+
+
+/* Sección principal de la página de inicio: Aplica estilos a la sección principal del contenido */
+#main-content {
+background-color: #f8f9fa; /* Fondo claro para la sección */
+padding: 4rem 0; /* Espaciado superior e inferior dentro de la sección */
+text-align: center; /* Centra el contenido de la sección */
+}
+
+#main-content h1 {
+font-size: 3rem; /* Tamaño del título principal */
+font-weight: bold; /* Estilo en negrita para el título */
+color: #007bff; /* Color azul para el título */
+margin-bottom: 2rem; /* Espaciado inferior del título */
+}
+
+#main-content p {
+    font-size: 1.2rem; /* Tamaño del texto del párrafo */
+    color: #666; /* Color gris para el texto */
+    margin-bottom: 2rem; /* Espaciado inferior del párrafo */
+}
+.section{
+color: white;
+}
+/* ===== MODIFICACIÓN SOLICITADA ===== */
+/* Cambios solo para el contenedor de contacto (info-card) */
+
+.info-card {
+    background: rgba(255, 255, 255, 0.85) !important; /* Fondo blanco semitransparente */
+    padding: 20px;
+    border-radius: 8px;
+    text-align: center;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    border: 1px solid rgba(0,0,0,0.1);
+}
+
+.info-card h3 {
+    color: #2c3e50 !important; /* Color oscuro para mejor contraste */
+    margin-bottom: 10px;
+    font-size: 1.2rem;
+}
+
+.info-card p {
+    color: #34495e !important; /* Color gris oscuro para texto */
+    line-height: 1.5;
+    margin: 0;
+}
+
+/* Asegurar que el texto sea visible sobre cualquier fondo */
+.contact-info {
+    position: relative;
+    z-index: 2;
+}

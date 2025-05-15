@@ -1,0 +1,173 @@
+/* Estilos generales con video de fondo */
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Jakarta', sans-serif;
+    color: #ffffff;
+    position: relative;
+    min-height: 100vh;
+    background-color: transparent;
+}
+
+.video-background {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    object-fit: cover;
+    z-index: -1;
+}
+
+/* Eliminamos el fondo blanco del contenedor principal */
+.container {
+    max-width: 600px;
+    margin: 0 auto;
+    position: relative;
+    z-index: 1;
+    background-color: transparent;
+    padding: 20px;
+    margin-top: 20px;
+}
+
+/* Barra de navegación */
+.navbar {
+    background-color: rgba(33, 37, 41, 0.9) !important;
+    padding: 10px;
+    border-radius: 5px;
+}
+
+.navbar-brand {
+    color: #ffffff;
+}
+
+.navbar-toggler {
+    background-color: #6c757d;
+}
+
+.navbar-toggler-icon {
+    filter: invert(1);
+}
+
+/* Estilos de encabezado */
+.header {
+    text-align: center;
+    margin-bottom: 30px;
+    color: #ffffff;
+}
+
+.header h1 {
+    font-size: 2rem;
+    margin-bottom: 10px;
+}
+
+.header p {
+    color: #f8f9fa;
+}
+
+/* Contenedor del formulario */
+.form-container {
+    background-color: rgba(33, 37, 41, 0.9);
+    padding: 20px;
+    border-radius: 10px;
+    color: #ffffff;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+/* Resto del CSS se mantiene igual */
+.tab {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+}
+
+.tab button {
+    padding: 10px 20px;
+    border: none !important;
+    cursor: pointer;
+    margin-right: 10px;
+    border-radius: 5px;
+    transition: background-color 0.3s;
+    background-color: #007bff !important;
+    color: #ffffff !important;
+    outline: none;
+}
+
+.tab button.active {
+    background-color: #0062cc !important;
+}
+
+.tab button:hover {
+    background-color: #0056b3 !important;
+}
+
+.tabcontent {
+    display: none;
+}
+
+.tabcontent.active, #login, #register {
+    display: block;
+}
+
+.form-container .form label, form label {
+    display: block;
+    margin-bottom: 5px;
+    color: #f8f9fa;
+}
+
+.form-container .form input, form input {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #495057;
+    background-color: #495057;
+    color: #ffffff;
+    border-radius: 5px;
+}
+
+.form-container .form input::placeholder, form input::placeholder {
+    color: #adb5bd;
+}
+
+.form-container .form button, form button[type="submit"] {
+    width: 100%;
+    padding: 10px;
+    background-color: #007bff;
+    color: #ffffff;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: background-color 0.3s;
+}
+
+.form-container .form button:hover, form button[type="submit"]:hover {
+    background-color: #0056b3;
+}
+
+.alert {
+    margin-bottom: 15px;
+    padding: 10px;
+    border-radius: 5px;
+}
+
+.alert-danger {
+    background-color: #dc3545;
+    color: #ffffff;
+}
+
+.alert-success {
+    background-color: #198754;
+    color: #ffffff;
+}
+
+@media (max-width: 768px) {
+    .container {
+        margin: 20px;
+        width: auto;
+    }
+
+    .tab button {
+        padding: 8px 15px;
+        font-size: 0.9rem;
+    }
+}

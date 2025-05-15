@@ -1,0 +1,134 @@
+productos.css
+/* Estilo de la barra de navegación: Define el diseño y estilo del menú de navegación en la parte superior de la página */
+body {
+    font-family: 'Poppins', sans-serif; /* Aplica la fuente 'Poppins' a todo el contenido de la página */
+}
+
+/* Barra de navegación con degradado */
+.navbar {
+    background: linear-gradient(to bottom, #000000 0%, rgba(0,0,0,0.7) 50%, rgba(0,0,0,0) 100%);
+    position: fixed;
+    width: 100%;
+    z-index: 1000;
+    color: #fff; /* Texto blanco */
+    border: none; /* Elimina cualquier borde */
+    transition: background 0.3s ease; /* Suaviza la transición de fondo */
+}
+
+/* Opcional: Efecto de fondo cuando se hace scroll */
+.navbar.scrolled {
+    background: rgba(0,0,0,0.8);
+}
+
+.navbar-brand {
+    color: #fff;
+    font-weight: bold;
+}
+
+/* Enlaces de la barra de navegación */
+.navbar-nav {
+    display: flex;
+    justify-content: center; /* Centra los enlaces */
+    flex-grow: 1; /* Asegura que ocupen todo el espacio disponible */
+}
+
+.navbar-nav .nav-link {
+    color: #fff;
+    font-weight: 500;
+    padding: 8px 16px;
+    text-transform: uppercase;
+}
+
+.navbar-nav .nav-link.active {
+    font-weight: bold;
+    color: #f8f9fa;
+}
+
+/* Hover de los enlaces */
+.navbar-nav .nav-link:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+    border-radius: 4px;
+}
+
+.navbar-toggler {
+    border-color: rgba(255, 255, 255, 0.1);
+}
+
+/* Botones de Log Out */
+.btn-outline-light {
+    border-color: #ffffff;
+    color: #ffffff;
+}
+
+.btn-outline-light:hover {
+    background-color: #ffffff;
+    color: #343a40;
+}
+
+/* Ajuste para los elementos a la izquierda (usuario, log out, carrito) */
+.d-flex.align-items-center {
+    justify-content: flex-start; /* Alineación a la izquierda de los botones de usuario, log out y carrito */
+}
+
+.navbar-text, .btn-outline-light, .nav-link.position-relative {
+    margin-right: 15px; /* Espaciado entre los elementos */
+}
+
+
+/* Sección principal de Compra de Comida: Estilos aplicados a la sección 'Compra de Comida' */
+#food-shop {
+    background-color: #f8f9fa; /* Fondo claro para la sección de comida */
+    padding: 4rem 0; /* Espaciado superior e inferior dentro de la sección */
+}
+
+#food-shop h2 {
+    font-size: 2.5rem; /* Tamaño de la fuente del título principal de la sección */
+    font-weight: bold; /* Estilo en negrita para el título */
+    margin-bottom: 2rem; /* Espaciado inferior del título */
+    color: #007bff; /* Color azul para el título */
+}
+
+#food-shop .list-group-item {
+    border: none; /* Elimina el borde alrededor de los elementos de la lista */
+    padding: 10px 0; /* Espaciado interno superior e inferior */
+    background: none; /* Sin color de fondo en los elementos de la lista */
+    font-size: 1.1rem; /* Tamaño de la fuente de los elementos de la lista */
+}
+
+#food-shop .list-group-item a {
+    text-decoration: none; /* Elimina el subrayado de los enlaces dentro de la lista */
+    color: #007bff; /* Color azul para los enlaces */
+    font-weight: 500; /* Grosor medio de la fuente de los enlaces */
+}
+
+#food-shop .list-group-item a:hover {
+    color: #0056b3; /* Cambia el color del enlace al pasar el cursor por encima */
+}
+
+/* Estilos de las tarjetas en la sección de comida */
+#food-shop .card {
+    border: 1px solid #e7e7e7; /* Borde gris claro para las tarjetas */
+    transition: all 0.3s ease-in-out; /* Transición suave para animaciones al interactuar */
+    border-radius: 10px; /* Bordes redondeados para las tarjetas */
+    overflow: hidden; /* Oculta cualquier contenido que sobresalga de los bordes redondeados */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Sombras sutiles para las tarjetas */
+}
+
+#food-shop .card:hover {
+    transform: translateY(-5px); /* Eleva la tarjeta ligeramente al pasar el cursor por encima */
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); /* Sombra más fuerte cuando se hace hover en la tarjeta */
+}
+
+#food-shop .card-img-top {
+    border-bottom: 1px solid #e7e7e7; /* Línea separadora entre la imagen y el cuerpo de la tarjeta */
+}
+
+#food-shop .card-body {
+    padding: 1.5rem; /* Espaciado interno del cuerpo de la tarjeta */
+}
+
+#food-shop .card-title {
+    font-size: 1.5rem; /* Tamaño de la fuente del título de la tarjeta */
+    font-weight: 600; /* Grosor medio de la fuente del título */
+    margin-bottom: 0.5rem; /* Espaciado inferior del título para separarlo del siguiente contenido */
+}

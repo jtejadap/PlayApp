@@ -51,7 +51,8 @@
             <a href="/login" sec:authorize="!isAuthenticated()" type="button" class="btn btn-outline-primary me-2">Iniciar</a>
             <a href="/login" sec:authorize="!isAuthenticated()" class="btn btn-primary">Registrarse</a>
             <span class="navbar-text text-light" style="white-space: nowrap;">
-        Hola, <span th:text="${nombreUsuario}">usuario</span>
+                Hola, <span th:text="${nombreUsuario}">usuario</span>
+            </span>
         </div>
     </nav>
 </header>
@@ -113,19 +114,19 @@
         <h2 class="mb-4">Categorías Populares</h2>
         <div class="row">
             <div class="col-md-4">
-                <a href="/comida">
+                <a href="/shop?categoria=1">
                     <img src="/img/Langosta.png" alt="Comida" class="img-fluid rounded">
                     <p class="mt-2">Comida</p>
                 </a>
             </div>
             <div class="col-md-4">
-                <a href="/bebida">
+                <a href="/shop?categoria=2">
                     <img src="/img/Bebida.png" alt="Bebidas" class="img-fluid rounded">
                     <p class="mt-2">Bebidas</p>
                 </a>
             </div>
             <div class="col-md-4">
-                <a href="/servicio">
+                <a href="/shop?categoria=3">
                     <img src="/img/Moto.png" alt="Moto Acuatica" class="img-fluid rounded">
                     <p class="mt-2">Servicios</p>
                 </a>

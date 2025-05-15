@@ -16,14 +16,10 @@ Es una aplicacion web  que busca brindar acceso a la compra de productos y servi
 ## ¿Como lo ejecuto?
 
 1. Descargar codigo fuente y abrir proyecto en el IDE
-2. Configurar e iniciar servicio de base de Datos MySQL
-    1. Editar los parametros de conexión en el archivo "application.properties" con la información de su servidor MySQL .
-    2. Iniciar servicio de MySQL
-    3. Crear una nueva base datos que se llame "playappdb" (En caso de NO haber modificado el parametro "spring.datasource.url")
-3. Configurar e iniciar servicio de Redis
+2. Configurar e iniciar servicio de Redis
     1. Modificar los parametros de conexión a redis en el archivo "application.properties" con la información de su servidor Redis.
     2. Iniciar servicio de Redis, esto se puede hacer desde docker(mirar siguiente sección).
-4. Compilar y ejecutar el proyecto con la ayuda de su IDE de preferencia
+3. Compilar y ejecutar el proyecto con la ayuda de su IDE de preferencia
 
 ### si no tengo Redis ¿como lo instalo?
 La forma mas sencilla de usar redis es descargando la imagen publicada en dockerhub con el siguiente comando:

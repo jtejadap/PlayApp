@@ -18,9 +18,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import java.security.Principal;
 
@@ -30,12 +27,18 @@ import java.security.Principal;
 public class ResenaController {
     private final CarritoService carrito;
     private final ResenaRepository resenaRepository;
+    private final UsuarioService usuarios;
 
     @GetMapping
     public String mostrarFormulario(Model model, Principal usuario) {
         model.addAttribute("reviews", resenaRepository.findAllByOrderByFechaDesc());
         model.addAttribute("nuevaResena", new Resena()); // Objeto vacío para el formulario
         model.addAttribute("carrito", numeroItemsCarrito(usuario));
+        String nombreusuario = "";
+        if(usuario != null){
+        nombreusuario = usuarios.buscarUsuario(usuario.getName()).getNombreCompleto();
+    }   
+        model.addAttribute("nombreUsuario", nombreusuario);
         return "contacto";
 
     }

@@ -22,6 +22,11 @@ public class PublicController {
     @GetMapping("/")
     public String showHome(Principal usuario, Model model){
         model.addAttribute("carrito", numeroItemsCarrito(usuario));
+        String nombreusuario = "";
+        if(usuario != null){
+        nombreusuario = usuarios.buscarUsuario(usuario.getName()).getNombreCompleto();
+    }   
+        model.addAttribute("nombreUsuario", nombreusuario);
         return "index";
     }
 
@@ -37,6 +42,11 @@ public class PublicController {
         // Recupera las últimas 2 reseñas ordenadas por ID de forma descendente
         model.addAttribute("reviews", new ArrayList<Review>());
         model.addAttribute("carrito", numeroItemsCarrito(session));
+        String nombreusuario = "";
+        if(session != null){
+        nombreusuario = usuarios.buscarUsuario(session.getName()).getNombreCompleto();
+    }   
+        model.addAttribute("nombreUsuario", nombreusuario);
         return "contacto"; // Carga el archivo contacto.html
     }
 

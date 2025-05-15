@@ -23,7 +23,7 @@
         <ul class="nav col-12 col-md-auto mb-2 justify-content-center mb-md-0">
             <li><a href="/" class="nav-link text-light px-2 jakarta-bold">Inicio</a></li>
             <li><a href="/shop" class="nav-link text-light px-2">Tienda</a></li>
-            <li><a href="/contacto" class="nav-link text-light px-2">Contacto</a></li>
+            <li><a href="/resena" class="nav-link text-light px-2">Contacto</a></li>
         </ul>
 
         <div class="col-md-3 text-end">
@@ -150,34 +150,9 @@
     </div>
 </section>
 
-<!-- Sección de Opiniones con Calificación -->
-</section>
-<section class="reviews py-5 bg-light text-center">
-    <div class="container">
-        <h2 class="mb-4">Opiniones Destacadas</h2>
-        <div class="row">
-            <!-- Itera sobre las mejores reseñas -->
-            <div class="col-md-4" th:each="review : ${topReviews}">
-                <div class="review-card p-3 bg-white rounded shadow-sm">
-                    <blockquote class="blockquote">
-                        <p th:text="|${review.comentario}|"></p>
-                        <footer class="blockquote-footer" th:text="${review.nombre}"></footer>
-                    </blockquote>
-                    <div class="stars">
-                        <span th:each="i : ${#numbers.sequence(1, 5)}"
-                              th:classappend="${i <= review.valoracion} ? 'text-warning' : ''">
-                            &#9733;
-                        </span>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
-
 <!-- Footer -->
 <footer class="py-4 text-white text-center">
-    <p>&copy; 2024 PlayApp. Todos los derechos reservados.</p>
+    <p>&copy; 2025 PlayApp. Todos los derechos reservados.</p>
     <ul class="list-inline">
         <li class="list-inline-carritoItem"><a href="#" class="text-white">Términos y condiciones</a></li>
         <li class="list-inline-carritoItem"><a href="#" class="text-white">Política de privacidad</a></li>

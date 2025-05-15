@@ -1,7 +1,7 @@
 package com.proyecto.PlayApp.Controller;
 
 
-import com.proyecto.PlayApp.entity.Review;
+import com.proyecto.PlayApp.entity.Resena;
 import com.proyecto.PlayApp.service.CarritoService;
 import com.proyecto.PlayApp.service.UsuarioService;
 import lombok.RequiredArgsConstructor;
@@ -35,19 +35,6 @@ public class PublicController {
             return 0;
         }
         return carrito.listarCarrito(user.getName()).size();
-    }
-
-    @GetMapping("/contacto")
-    public String showContacto(Principal session, Model model) {
-        // Recupera las últimas 2 reseñas ordenadas por ID de forma descendente
-        model.addAttribute("reviews", new ArrayList<Review>());
-        model.addAttribute("carrito", numeroItemsCarrito(session));
-        String nombreusuario = "";
-        if(session != null){
-        nombreusuario = usuarios.buscarUsuario(session.getName()).getNombreCompleto();
-    }   
-        model.addAttribute("nombreUsuario", nombreusuario);
-        return "contacto"; // Carga el archivo contacto.html
     }
 
     @GetMapping("/access-denied")

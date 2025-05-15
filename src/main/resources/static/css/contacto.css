@@ -1,4 +1,3 @@
-
 /* Botones de Log Out */
 .btn-outline-light {
     border-color: #ffffff;
@@ -226,4 +225,33 @@ margin-bottom: 2rem; /* Espaciado inferior del título */
 }
 .section{
 color: white;
+}
+/* ===== MODIFICACIÓN SOLICITADA ===== */
+/* Cambios solo para el contenedor de contacto (info-card) */
+
+.info-card {
+    background: rgba(255, 255, 255, 0.85) !important; /* Fondo blanco semitransparente */
+    padding: 20px;
+    border-radius: 8px;
+    text-align: center;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    border: 1px solid rgba(0,0,0,0.1);
+}
+
+.info-card h3 {
+    color: #2c3e50 !important; /* Color oscuro para mejor contraste */
+    margin-bottom: 10px;
+    font-size: 1.2rem;
+}
+
+.info-card p {
+    color: #34495e !important; /* Color gris oscuro para texto */
+    line-height: 1.5;
+    margin: 0;
+}
+
+/* Asegurar que el texto sea visible sobre cualquier fondo */
+.contact-info {
+    position: relative;
+    z-index: 2;
 }

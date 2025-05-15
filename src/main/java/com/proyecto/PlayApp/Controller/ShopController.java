@@ -56,6 +56,11 @@ public class ShopController {
         model.addAttribute("carrito", numeroItemsCarrito(usuario));
         model.addAttribute("productos", resultado);
         model.addAttribute("paginas", new PaginationMaker().makePages(resultado));
+        String nombreusuario = "";
+        if(usuario != null){
+        nombreusuario = usuarios.buscarUsuario(usuario.getName()).getNombreCompleto();
+    }   
+        model.addAttribute("nombreUsuario", nombreusuario);
         return "tienda";
     }
 

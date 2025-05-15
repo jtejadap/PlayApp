@@ -50,10 +50,6 @@
             </form>
             <a href="/login" sec:authorize="!isAuthenticated()" type="button" class="btn btn-outline-primary me-2">Iniciar</a>
             <a href="/login" sec:authorize="!isAuthenticated()" class="btn btn-primary">Registrarse</a>
-            <span class="navbar-text text-light" style="white-space: nowrap;">
-                Hola, <span th:text="${nombreUsuario}">usuario</span>
-            </span>
-            
         </div>
     </nav>
 </header>
@@ -137,21 +133,6 @@
 
 </section>
 
-<!-- Sección de Suscripción -->
-<section class="subscribe py-5 text-center">
-    <div class="container-subs">
-        <h2 class="mb-4">Suscríbete para Ofertas Exclusivas</h2>
-        <p>Recibe ofertas y promociones directamente en tu bandeja de entrada.</p>
-        <form class="row g-3 justify-content-center" action="/subscribe" method="POST">
-            <div class="col-md-6">
-                <input type="email" name="email" class="form-control" placeholder="Introduce tu correo electrónico" required>
-            </div>
-            <div class="col-md-3">
-                <button type="submit" class="btn btn-success w-100">Suscribirse</button>
-            </div>
-        </form>
-    </div>
-</section>
 
 <!-- Sección de Mapa de Ubicación -->
 <section id="ubicate" class="location py-5 text-center">

@@ -18,6 +18,18 @@ function inicializarMapa(lat, lon) {
     marcador = L.marker([lat, lon]).addTo(mapa)
         .bindPopup("<b>Tu Ubicación</b>")
         .openPopup();
+
+    mapa.on('click', async function(e) {
+        const lat = e.latlng.lat;
+        const lon = e.latlng.lng;
+
+        marcador.setLatLng([lat, lon]);
+
+        colocarPosicionEnFormulario(lat, lon);
+
+        const direccion = await obtenerDireccion(lat, lon);
+        document.getElementById('address').value = direccion;
+    });
 }
 
 function cambiarUbicacionDeMapa(lat,lon) {

@@ -40,7 +40,7 @@ public class SeedDatabase implements CommandLineRunner {
         }
         if(usuariosEmpty && productosEmpty && pedidosEmpty){
             System.out.println("Clean Database found proceed with Seeder");
-            randonDataService.seedDatabase();
+            // randonDataService.seedDatabase();
         }
     }
 }

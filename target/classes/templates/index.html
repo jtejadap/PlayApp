@@ -26,7 +26,7 @@
             <li><a href="/resena" class="nav-link text-light px-2">Contacto</a></li>
         </ul>
 
-        <div class="col-md-3 text-end">
+        <div class="col-md-3 text-end d-inline-flex align-items-center justify-content-end gap-2">
             <a href="/cart/checkout" class="btn btn-primary position-relative me-2">
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-bag-fill" viewBox="0 0 16 16">
                     <path d="M8 1a2.5 2.5 0 0 1 2.5 2.5V4h-5v-.5A2.5 2.5 0 0 1 8 1m3.5 3v-.5a3.5 3.5 0 1 0-7 0V4H1v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V4z"/>
@@ -36,7 +36,7 @@
                     <span class="visually-hidden">productos agregados</span>
                 </span>
             </a>
-            <a sec:authorize="isAuthenticated()" href="/user/orders" class="btn btn-outline-primary">
+            <a sec:authorize="isAuthenticated()" href="/user/orders" class="btn btn-outline-primary me-2">
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-clock-history" viewBox="0 0 16 16">
                     <path d="M8.515 1.019A7 7 0 0 0 8 1V0a8 8 0 0 1 .589.022zm2.004.45a7 7 0 0 0-.985-.299l.219-.976q.576.129 1.126.342zm1.37.71a7 7 0 0 0-.439-.27l.493-.87a8 8 0 0 1 .979.654l-.615.789a7 7 0 0 0-.418-.302zm1.834 1.79a7 7 0 0 0-.653-.796l.724-.69q.406.429.747.91zm.744 1.352a7 7 0 0 0-.214-.468l.893-.45a8 8 0 0 1 .45 1.088l-.95.313a7 7 0 0 0-.179-.483m.53 2.507a7 7 0 0 0-.1-1.025l.985-.17q.1.58.116 1.17zm-.131 1.538q.05-.254.081-.51l.993.123a8 8 0 0 1-.23 1.155l-.964-.267q.069-.247.12-.501m-.952 2.379q.276-.436.486-.908l.914.405q-.24.54-.555 1.038zm-.964 1.205q.183-.183.35-.378l.758.653a8 8 0 0 1-.401.432z"/>
                     <path d="M8 1a7 7 0 1 0 4.95 11.95l.707.707A8.001 8.001 0 1 1 8 0z"/>
@@ -49,7 +49,9 @@
                 </button>
             </form>
             <a href="/login" sec:authorize="!isAuthenticated()" type="button" class="btn btn-outline-primary me-2">Iniciar</a>
-            <a href="/login" sec:authorize="!isAuthenticated()" class="btn btn-primary">Registrarse</a>
+            <a href="/login" sec:authorize="!isAuthenticated()" class="btn btn-primary me-2">Registrarse</a>
+            
+            <!-- Saludo alineado a la derecha del botón "Salir" -->
             <span class="navbar-text text-light" style="white-space: nowrap;">
                 Hola, <span th:text="${nombreUsuario}">usuario</span>
             </span>
@@ -112,7 +114,7 @@
 <section class="categories py-5 text-center">
     <div class="container">
         <h2 class="mb-4">Categorías Populares</h2>
-        <div class="row">
+        <div class="row align-items-end">
             <div class="col-md-4">
                 <a href="/shop?categoria=1">
                     <img src="/img/Langosta.png" alt="Comida" class="img-fluid rounded">
@@ -143,7 +145,7 @@
         <p>Visítanos o recibe tu pedido en estas zonas:</p>
         <div id="map-container" class="mb-5" style="height: 400px;">
             <iframe
-                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3151.835434509535!2d144.95373631541198!3d-37.816279579751795!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x6ad642af0f11fd81%3A0xf577b6b37f44c89f!2sFederation%20Square!5e0!3m2!1sen!2sau!4v1638238732161!5m2!1sen!2sau"
+                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3976.8593800273364!2d-75.55500068523652!3d10.39966699257292!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8ef62f8530bafcc1%3A0x6a021fa5d9e4a4c1!2sPlaya%20de%20Bocagrande!5e0!3m2!1ses!2sco!4v1693407632143!5m2!1ses!2sco"
                     width="100%" height="400" style="border:0;" allowfullscreen="" loading="lazy">
             </iframe>
         </div>

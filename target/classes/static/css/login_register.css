@@ -48,7 +48,7 @@ body {
 
 .form-container .tab button {
     flex: 1; /* Cada botón ocupa el mismo ancho */
-    background-color: #f8f9fa; /* Fondo claro */
+   /* background-color: #f8f9fa;  Fondo claro */
     border: 1px solid #ccc; /* Borde gris */
     padding: 10px; /* Espaciado interno */
     font-size: 1rem; /* Tamaño de fuente */

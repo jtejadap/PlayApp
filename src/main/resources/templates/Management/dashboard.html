@@ -55,14 +55,8 @@
                     <img src="https://github.com/mdo.png" alt="" width="32" height="32" class="rounded-circle me-2">
                     <strong th:text="${nombreRestaurante}"></strong>
                 </a>
-                <ul class="dropdown-menu text-small shadow">
-                    <li>
-                        <form sec:authorize="isAuthenticated()" class="col-12" th:action="@{/logout}" method="post">
-                            <button type="submit" class="btn btn-light me-2" value="Sign Out">
-                                Salir
-                            </button>
-                        </form>
-                    </li>
+                <ul class="dropdown-menu text-small shadow"
+                    th:insert="fragments/logout-button :: logoutButton">
                 </ul>
             </div>
         </div>
@@ -90,5 +84,8 @@
     </div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 </main>
+
+<div th:insert="fragments/logout-modal :: logoutModal"></div>
+
 </body>
 </html>

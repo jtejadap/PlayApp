@@ -52,17 +52,13 @@
             <hr>
 
             <div class="dropdown">
-                <a href="#" class="d-flex align-items-center link-body-emphasis dropdown-toggle"
+                <a href="#" class="d-flex align-items-center link-body-emphasis text-decoration-none dropdown-toggle"
                    data-bs-toggle="dropdown">
                     <img src="https://github.com/mdo.png" width="32" height="32" class="rounded-circle me-2">
                     <strong th:text="${nombreRestaurante}"></strong>
                 </a>
-                <ul class="dropdown-menu shadow">
-                    <li>
-                        <form th:action="@{/logout}" method="post">
-                            <button type="submit" class="dropdown-item">Salir</button>
-                        </form>
-                    </li>
+                <ul class="dropdown-menu text-small shadow"
+                    th:insert="fragments/logout-button :: logoutButton">
                 </ul>
             </div>
 
@@ -146,6 +142,8 @@
 
     </div>
 </main>
+
+<div th:insert="fragments/logout-modal :: logoutModal"></div>
 
 <script>
     async function predecir() {

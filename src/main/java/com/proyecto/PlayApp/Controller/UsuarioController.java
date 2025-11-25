@@ -42,6 +42,13 @@ public class UsuarioController {
         model.addAttribute("carrito", numeroItemsCarrito(usuario));
         model.addAttribute("paginas", new PaginationMaker().makePages(items));
         model.addAttribute("pedidos", items);
+
+        String nombreusuario = "";
+        if(usuario != null){
+        nombreusuario = usuarios.buscarUsuario(usuario.getName()).getNombreCompleto();
+        }
+
+        model.addAttribute("nombreUsuario", nombreusuario);
         return "user-orders";
     }
 

@@ -4,6 +4,8 @@ import com.proyecto.PlayApp.dto.ItemDTO;
 import com.proyecto.PlayApp.entity.CarritoItem;
 import com.proyecto.PlayApp.service.CarritoService;
 import com.proyecto.PlayApp.service.PedidoService;
+import com.proyecto.PlayApp.service.UsuarioService;
+
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -20,6 +22,7 @@ import java.util.List;
 @RequestMapping("/cart")
 public class CarritoController {
     private final CarritoService servicio;
+    private final UsuarioService usuarios;
 
 
     @GetMapping("/add/{item}")
@@ -67,6 +70,12 @@ public class CarritoController {
         model.addAttribute("total", total);
         model.addAttribute("carrito", checkout.size());
         model.addAttribute("checkout", checkout);
+        String nombreusuario = "";
+        if(usuario != null){
+        nombreusuario = usuarios.buscarUsuario(usuario.getName()).getNombreCompleto();
+        }
+
+        model.addAttribute("nombreUsuario", nombreusuario);
         return "checkout";
     }
 

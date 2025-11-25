@@ -51,6 +51,11 @@
             </form>
             <a href="/login" sec:authorize="!isAuthenticated()" type="button" class="btn btn-outline-primary me-2">Iniciar</a>
             <a href="/login" sec:authorize="!isAuthenticated()" class="btn btn-primary">Registrarse</a>
+        
+            <span class="navbar-text text-light" style="white-space: nowrap;"
+                th:if="${nombreUsuario != null and !#strings.isEmpty(nombreUsuario)}">
+                Hola, <span th:text="${nombreUsuario}">usuario</span>
+            </span>
         </div>
     </nav>
 </header>

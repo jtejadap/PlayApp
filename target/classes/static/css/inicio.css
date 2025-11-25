@@ -118,26 +118,23 @@ h2 {
 }
 /* ------------------------------------------------ */
 
-
 /* INICIO DE ANIMACIÓN/BRILLO - APLICADO AL ENLACE ACTIVO */
 .nav .nav-link.active {
     font-weight: bold;
-    color: #ffffff !important; /* Forzar blanco puro para el enlace activo */
-    /* Aplicamos la animación */
+    color: #ffffff !important;
     animation: pulso-azul 2s ease-in-out infinite alternate;
 }
 
-/* INDICADOR DE FLECHA (flechita) PARA EL ENLACE ACTIVO */
 .nav .nav-link.active::after {
-    content: '▼'; /* Carácter de flecha hacia abajo */
+    content: '▼';
     position: absolute;
-    bottom: -5px; /* Posicionamos debajo del texto */
+    bottom: -5px;
     left: 50%;
     transform: translateX(-50%);
-    font-size: 10px; /* Tamaño pequeño */
+    font-size: 10px;
     line-height: 1;
-    color: #4da6ff; /* Mismo color azul */
-    text-shadow: 0 0 5px rgba(0, 123, 255, 1); /* Pequeño brillo estático */
+    color: #4da6ff;
+    text-shadow: 0 0 5px rgba(0, 123, 255, 1);
     transition: all 0.4s ease;
 }
 /* FIN DE ANIMACIÓN/BRILLO */

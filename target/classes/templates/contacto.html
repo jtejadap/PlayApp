@@ -29,7 +29,7 @@
         <ul class="nav col-12 col-md-auto mb-2 justify-content-center mb-md-0">
             <li><a href="/" class="nav-link text-light px-2">Inicio</a></li>
             <li><a href="/shop" class="nav-link text-light px-2">Tienda</a></li>
-            <li><a href="/resena" class="nav-link text-light jakarta-bold px-2">Contacto</a></li>
+            <li><a href="/resena" class="nav-link text-light jakarta-bold px-2 active">Contacto</a></li>
         </ul>
 
         <!-- Navbar derecha corregida -->
@@ -59,7 +59,9 @@
             <a href="/login" sec:authorize="!isAuthenticated()" class="btn btn-primary me-2">Registrarse</a>
 
             <!-- Saludo alineado en la misma fila -->
-            <span class="navbar-text text-light" style="white-space: nowrap;">
+            <span class="navbar-text text-light" style="white-space: nowrap;"
+                th:if="${nombreUsuario != null and !#strings.isEmpty(nombreUsuario)}">
+                Hola, <span th:text="${nombreUsuario}">usuario</span>
             </span>
         </div>
     </nav>
@@ -99,17 +101,18 @@
 
     <!-- Reseñas existentes -->
     <div class="review-cards">
-        <th:block th:if="${not #lists.isEmpty(reviews)}">
-            <div th:each="review : ${reviews}" class="review-card">
-                <div class="review-header">
-                    <strong style="color: white;"th:text="${review.nombre}"></strong>
-                    <div class="review-stars">
-                        <span th:text="${'★'.repeat(review.valoracion)}"></span>
-                    </div>
+        <div th:each="review : ${reviews}" class="review-card">
+
+            <div class="review-header">
+                <strong th:text="${review.nombre}"></strong>
+                <div class="review-stars">
+                    <span th:text="${'★'.repeat(review.valoracion)}"></span>
                 </div>
-                <p style="color: white;"th:text="${review.comentario}"></p>
             </div>
-        </th:block>
+
+            <p th:text="${review.comentario}"></p>
+        </div>
+
         <div th:if="${#lists.isEmpty(reviews)}">
             <p>No hay reseñas disponibles aún.</p>
         </div>
@@ -119,35 +122,36 @@
 
 <!-- Sección de Contacto -->
 <section class="section">
-    <h2>Contacto</h2>
+    <h2>Contáctanos</h2>
+    <p style="text-align: center; font-size: 14px; margin-bottom: 20px;">
+        Estamos aquí para ayudarte. Envíanos un mensaje o visítanos.
+    </p>
 
     <div class="contact-info">
         <div class="info-card">
-            <h3>Dirección</h3>
-            <p>Cra. 1, Cartagena de Indias,<br>Provincia de Cartagena, Bolívar
-                Kiosco El Bony, dirección</p>
+            <h3>📍 Dirección</h3>
+            <p>Cra. 1, Cartagena de Indias<br>Bolívar - Kiosco El Bony</p>
         </div>
         <div class="info-card">
-            <h3>Teléfono</h3>
+            <h3>📞 Teléfono</h3>
             <p>+57 323 254 5463</p>
         </div>
     </div>
 
     <!-- Mapa -->
-    <img src="/img/cartagena.avif" alt="" class="map">
+    <img src="/img/cartagena.avif" alt="Ubicación" class="map">
 
-
+    <!-- Notificación de éxito -->
     <div th:if="${mensajeEnviado}" class="alert alert-success">
         <p th:text="${mensajeEnviado}"></p>
     </div>
 
-    <!-- Notificación de éxito -->
-    <div th:if="${param.exito}" style="color: green; margin-bottom: 20px;">
+    <div th:if="${param.exito}" class="alert alert-success">
         ✓ Mensaje enviado correctamente.
     </div>
 
-    <!-- Formulario -->
-    <form method="post" th:action="@{/contacto/enviar}">
+    <!-- Formulario compacto -->
+    <form class="contact-form" method="post" th:action="@{/contacto/enviar}">
         <div class="form-group">
             <label>Nombre:</label>
             <input type="text" name="nombre" required>
@@ -170,14 +174,12 @@
 
         <div class="form-group">
             <label>Mensaje:</label>
-            <textarea name="mensaje" rows="5" required></textarea>
+            <textarea name="mensaje" rows="4" required></textarea>
         </div>
 
         <button type="submit">Enviar Mensaje</button>
     </form>
-
 </section>
-</div>
 
 <!-- Footer -->
 <footer class="py-4 bg-dark text-white text-center">

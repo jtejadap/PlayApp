@@ -21,7 +21,7 @@
         </div>
 
         <ul class="nav col-12 col-md-auto mb-2 justify-content-center mb-md-0">
-            <li><a href="/" class="nav-link text-light px-2 jakarta-bold">Inicio</a></li>
+            <li><a href="/" class="nav-link text-light px-2 jakarta-extrabold active">Inicio</a></li>
             <li><a href="/shop" class="nav-link text-light px-2">Tienda</a></li>
             <li><a href="/resena" class="nav-link text-light px-2">Contacto</a></li>
         </ul>
@@ -52,7 +52,9 @@
             <a href="/login" sec:authorize="!isAuthenticated()" class="btn btn-primary me-2">Registrarse</a>
             
             <!-- Saludo alineado a la derecha del botón "Salir" -->
-            <span class="navbar-text text-light" style="white-space: nowrap;">
+            <span class="navbar-text text-light" style="white-space: nowrap;"
+                th:if="${nombreUsuario != null and !#strings.isEmpty(nombreUsuario)}">
+                Hola, <span th:text="${nombreUsuario}">usuario</span>
             </span>
         </div>
     </nav>

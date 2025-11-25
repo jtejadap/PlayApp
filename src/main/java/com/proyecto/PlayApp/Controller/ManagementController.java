@@ -107,7 +107,7 @@ public class ManagementController {
             Principal session,
             Model model,
             @RequestParam(name = "page", defaultValue = "0") Integer page,
-            @RequestParam(name = "size", defaultValue = "5") Integer size,
+            @RequestParam(name = "size", defaultValue = "10") Integer size,
             @RequestParam(name = "sort", defaultValue = "[{\"campo\":\"timestamp\",\"direccion\":\"desc\"}]") String sort,
             @RequestParam(name = "estado", required = false) Integer estado
     ) {

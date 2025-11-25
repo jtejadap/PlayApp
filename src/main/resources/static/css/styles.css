@@ -1,3 +1,60 @@
 .background-grey{
     background-color: #F6F6F6;
 }
+
+.nav .nav-link {
+    color: #fff;
+    font-weight: 500;
+    padding: 8px 16px;
+    position: relative;
+    transition: all 0.4s ease;
+}
+
+.nav .nav-link.active {
+    font-weight: bold;
+    color: #ffffff !important;
+    animation: pulso-azul 2s ease-in-out infinite alternate;
+}
+
+.nav .nav-link.active::after {
+    content: '▼';
+    position: absolute;
+    bottom: -5px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 10px;
+    line-height: 1;
+    color: #4da6ff;
+    text-shadow: 0 0 5px rgba(0, 123, 255, 1);
+    transition: all 0.4s ease;
+}
+
+@keyframes pulso-azul {
+    0% {
+        color: #fff; /* Comienza en blanco */
+        text-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+    }
+    50% {
+        color: #4da6ff; /* A mitad del ciclo, alcanza el color azul claro */
+        text-shadow:
+            0 0 10px rgba(0, 123, 255, 1), /* Brillo fuerte */
+            0 0 20px rgba(0, 123, 255, 0.8),
+            0 0 30px rgba(0, 123, 255, 0.6);
+    }
+    100% {
+        color: #fff; /* Termina en blanco (el mismo que el 0% para el ciclo infinito) */
+        text-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+    }
+}
+
+.nav .nav-link:hover {
+    color: #4da6ff;
+    text-shadow:
+        0 0 5px rgba(0, 123, 255, 1),
+        0 0 10px rgba(0, 123, 255, 0.9),
+        0 0 20px rgba(0, 123, 255, 0.7),
+        0 0 30px rgba(0, 123, 255, 0.5),
+        0 0 40px rgba(0, 123, 255, 0.3);
+    background-color: transparent;
+    border-radius: 0;
+}

@@ -20,6 +20,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 
 import java.security.Principal;
+import java.util.List;
 
 @Controller
 @RequestMapping("/resena")
@@ -31,17 +32,27 @@ public class ResenaController {
 
     @GetMapping
     public String mostrarFormulario(Model model, Principal usuario) {
-        model.addAttribute("reviews", resenaRepository.findAllByOrderByFechaDesc());
-        model.addAttribute("nuevaResena", new Resena()); // Objeto vacío para el formulario
+
+        List<Resena> todas = resenaRepository.findAllByOrderByFechaDesc();
+
+        // Tomar solo las 2 últimas
+        List<Resena> ultimasDos = todas.stream()
+                .limit(2)
+                .toList();
+
+        model.addAttribute("reviews", ultimasDos);
+        model.addAttribute("nuevaResena", new Resena());
         model.addAttribute("carrito", numeroItemsCarrito(usuario));
+
         String nombreusuario = "";
         if(usuario != null){
-        nombreusuario = usuarios.buscarUsuario(usuario.getName()).getNombreCompleto();
-    }   
+            nombreusuario = usuarios.buscarUsuario(usuario.getName()).getNombreCompleto();
+        }
         model.addAttribute("nombreUsuario", nombreusuario);
-        return "contacto";
 
+        return "contacto";
     }
+
 
     private int numeroItemsCarrito(Principal user){
         if(user == null){

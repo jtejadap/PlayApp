@@ -12,7 +12,7 @@ import java.util.Map;
 
 @Controller
 @RequiredArgsConstructor
-@RequestMapping("/manager/prediccion")
+@RequestMapping("/manager/prediccion")  
 public class PredictionController {
 
     private final WekaPredictionService wekaPredictionService;
@@ -22,12 +22,10 @@ public class PredictionController {
     public ResponseEntity<?> predecir(@RequestBody PrediccionDTO dto) {
 
         double resultado = wekaPredictionService.predecirVenta(
-                dto.getFecha(),
                 dto.getDiaSemana(),
                 dto.getProducto(),
                 dto.getCategoria(),
                 dto.getPrecio(),
-                dto.getCantidadVendida(),
                 dto.getClima(),
                 dto.getTemporada()
         );

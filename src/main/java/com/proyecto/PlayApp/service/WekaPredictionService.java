@@ -30,11 +30,10 @@ public class WekaPredictionService {
     }
 
     private void cargarModelo() throws Exception {
-        InputStream is = getClass().getResourceAsStream("/weka/modelo_ventas_m5p.model");
+        InputStream is = getClass().getResourceAsStream("/weka/playapp.model");
         ObjectInputStream ois = new ObjectInputStream(is);
         modelo = (Classifier) ois.readObject();
         ois.close();
-        log.info("Modelo WEKA cargado correctamente.");
     }
 
     private void cargarEstructura() throws Exception {
@@ -43,43 +42,37 @@ public class WekaPredictionService {
 
         estructura = new Instances(reader);
         estructura.setClassIndex(estructura.numAttributes() - 1);
-
         reader.close();
-        log.info("Estructura ARFF cargada correctamente.");
     }
 
     public double predecirVenta(
-            String fecha,
-            int diaSemana,
+            String diaSemana,
             String producto,
             String categoria,
-            double precio,
-            int cantidadVendida,
+            int precio,
             String clima,
             String temporada
     ) {
+
         try {
-            Instance instancia = new DenseInstance(estructura.numAttributes());
-            instancia.setDataset(estructura);
+        Instance instancia = new DenseInstance(estructura.numAttributes());
+        instancia.setDataset(estructura);
 
-            instancia.setValue(0, normalize(fecha));
-            instancia.setValue(1, diaSemana);
-            instancia.setValue(2, normalize(producto));
-            instancia.setValue(3, normalize(categoria));
-            instancia.setValue(4, precio);
-            instancia.setValue(5, cantidadVendida);
-            instancia.setValue(6, normalize(clima));
-            instancia.setValue(7, normalize(temporada));
+        instancia.setValue(0, diaSemana);
+        instancia.setValue(1, producto);
+        instancia.setValue(2, categoria);
+        instancia.setValue(3, precio);
+        instancia.setValue(4, clima);
+        instancia.setValue(5, temporada);
 
-            return modelo.classifyInstance(instancia);
+        double resultado = modelo.classifyInstance(instancia);
 
-        } catch (Exception e) {
-            log.error("Error al predecir venta", e);
-            throw new RuntimeException("No se pudo realizar la predicción.");
-        }
+        return resultado;
+
+    } catch (Exception e) {
+        e.printStackTrace();
+        throw new RuntimeException("No se pudo realizar la predicción.");
     }
 
-    String normalize(String s) {
-        return s.trim().toLowerCase();
     }
 }

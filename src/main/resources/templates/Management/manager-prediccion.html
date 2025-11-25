@@ -17,7 +17,7 @@
             <a href="/manager/dashboard"
                class="d-flex align-items-center mb-3 link-body-emphasis text-decoration-none">
                 <img src="/img/Logo.png" width="40" height="32" class="me-2">
-                <span class="fs-4 jakarta-bold">PlayApp</span>
+                <span class="fs-4 jakarta-bold">Playapp</span>
             </a>
 
             <hr>
@@ -30,7 +30,10 @@
                 </a></li>
 
                 <li><a href="/manager/orders" class="nav-link link-body-emphasis">
-                    <img src="/img/icons/stickies.svg" width="16" height="16" class="me-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-stickies me-2" viewBox="0 0 16 16">
+                            <path d="M1.5 0A1.5 1.5 0 0 0 0 1.5V13a1 1 0 0 0 1 1V1.5a.5.5 0 0 1 .5-.5H14a1 1 0 0 0-1-1z"/>
+                            <path d="M3.5 2A1.5 1.5 0 0 0 2 3.5v11A1.5 1.5 0 0 0 3.5 16h6.086a1.5 1.5 0 0 0 1.06-.44l4.915-4.914A1.5 1.5 0 0 0 16 9.586V3.5A1.5 1.5 0 0 0 14.5 2zM3 3.5a.5.5 0 0 1 .5-.5h11a.5.5 0 0 1 .5.5V9h-4.5A1.5 1.5 0 0 0 9 10.5V15H3.5a.5.5 0 0 1-.5-.5zm7 11.293V10.5a.5.5 0 0 1 .5-.5h4.293z"/>
+                        </svg>
                     Ordenes
                 </a></li>
 
@@ -74,18 +77,32 @@
         <form id="formPrediccion" class="row g-3">
 
             <div class="col-md-6">
-                <label class="form-label">Fecha</label>
-                <input type="date" class="form-control" id="fecha">
-            </div>
-
-            <div class="col-md-6">
                 <label class="form-label">Día de la Semana</label>
-                <input type="number" min="1" max="7" class="form-control" id="diaSemana">
+                <select class="form-select" id="diaSemana">
+                    <option>Lunes</option>
+                    <option>Martes</option>
+                    <option>Miercoles</option>
+                    <option>Jueves</option>
+                    <option>Viernes</option>
+                    <option>Sabado</option>
+                    <option>Domingo</option>
+                </select>
             </div>
 
             <div class="col-md-6">
                 <label class="form-label">Producto</label>
-                <input type="text" class="form-control" id="producto">
+                <select class="form-select" id="producto" required>
+                    <option value="Cerveza Club Colombia">Cerveza Club Colombia</option>
+                    <option value="Ceviche de camaron">Ceviche de camaron</option>
+                    <option value="Clase de surf">Clase de surf</option>
+                    <option value="Alquiler de moto acuática">Alquiler de moto acuática</option>
+                    <option value="Coco frio">Coco frio</option>
+                    <option value="Coctel de maracuya">Coctel de maracuya</option>
+                    <option value="Pescado frito">Pescado frito</option>
+                    <option value="Ostras frescas">Ostras frescas</option>
+                    <option value="Limonada de coco">Limonada de coco</option>
+                    <option value="Tinto frio">Tinto frio</option>
+                </select>
             </div>
 
             <div class="col-md-6">
@@ -99,12 +116,7 @@
 
             <div class="col-md-6">
                 <label class="form-label">Precio</label>
-                <input type="number" step="0.01" class="form-control" id="precio">
-            </div>
-
-            <div class="col-md-6">
-                <label class="form-label">Cantidad Vendida</label>
-                <input type="number" class="form-control" id="cantidadVendida">
+                <input type="" class="form-control" id="precio">
             </div>
 
             <div class="col-md-6">
@@ -138,12 +150,10 @@
 <script>
     async function predecir() {
         const datos = {
-            fecha: document.getElementById('fecha').value,
-            diaSemana: parseInt(document.getElementById('diaSemana').value),
+            diaSemana: document.getElementById('diaSemana').value,
             producto: document.getElementById('producto').value,
             categoria: document.getElementById('categoria').value,
-            precio: parseFloat(document.getElementById('precio').value),
-            cantidadVendida: parseInt(document.getElementById('cantidadVendida').value),
+            precio: document.getElementById('precio').value,
             clima: document.getElementById('clima').value,
             temporada: document.getElementById('temporada').value
         };
@@ -158,7 +168,7 @@
 
         const resultDiv = document.getElementById('resultado');
         resultDiv.classList.remove('d-none');
-        resultDiv.innerHTML = `<strong>Resultado:</strong> $${json.prediccion.toFixed(2)}`;
+        resultDiv.innerHTML = `<strong>Resultado:</strong> ${json.prediccion.toFixed(2)}`;
     }
 </script>
 

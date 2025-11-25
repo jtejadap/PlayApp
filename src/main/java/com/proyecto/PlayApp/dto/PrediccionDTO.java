@@ -4,13 +4,10 @@ import lombok.Data;
 
 @Data
 public class PrediccionDTO {
-
-    private String fecha;
-    private int diaSemana;
+    private String diaSemana;
     private String producto;
     private String categoria;
-    private double precio;
-    private int cantidadVendida;
+    private int precio;
     private String clima;
     private String temporada;
 }

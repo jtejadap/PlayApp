@@ -145,4 +145,9 @@ public class ManagementController {
         return "redirect:/manager/products";
     }
 
+    @GetMapping("/prediccion")
+    public String mostrarVistaPrediccion(Principal principal, Model model) {
+        model.addAttribute("nombreRestaurante", principal.getName());
+        return "Management/manager-prediccion";
+    }
 }

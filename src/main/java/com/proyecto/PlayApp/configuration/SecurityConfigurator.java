@@ -81,7 +81,7 @@ public class SecurityConfigurator {
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        http
+        http.csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(pathsToUserEndpoints).hasRole("USER")
                         .requestMatchers(pathsToAdminEndpoints).hasRole("ADMIN")
@@ -95,5 +95,5 @@ public class SecurityConfigurator {
                         .permitAll()
                 ).exceptionHandling(ex->ex.accessDeniedHandler(new CustomAccessDeniedHandler()));
         return http.build();
-    }
+        }
 }

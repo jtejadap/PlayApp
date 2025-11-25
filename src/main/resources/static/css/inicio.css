@@ -268,15 +268,22 @@ h2 {
     margin-bottom: 2rem;
 }
 
+.categories-location {
+    background: url('/img/costa-de-isla-vista-aerea.jpg') no-repeat center center;
+    background-size: cover;
+    padding: 4rem 0;
+    text-align: center;
+    border-radius: 8px;
+}
 /* Sección de categorías populares (Reglas del CSS anterior) */
 .categories {
     /* Fondo de imagen de tierra: Asumo que esto se elimina o se ajusta debido al video de fondo */
-    /* background: url('/img/FondoTierra.jpg') no-repeat center center; */
+    /*background: url('/img/costa-de-isla-vista-aerea.jpg') no-repeat center center;*/
     background-size: cover;
-    padding: 4rem 0;
-    color:  #000;
+    padding: 0px !important;
+    color:  #ffffff;
     text-align: center;
-    background-color: rgba(255, 255, 255, 0.9); /* Un fondo temporal si se quita la imagen de tierra */
+    background-color: rgba(255, 255, 255, 0); /* Un fondo temporal si se quita la imagen de tierra */
 }
 
 .categories img {
@@ -292,13 +299,13 @@ h2 {
     margin-top: 15px;
     font-size: 25px;
     font-weight: 500;
-    color:  #000;
+    color:  #ffffff;
 }
 
 .categories h2 {
     font-size: 36px;
     font-weight: 700;
-    color: #000;
+    color: #ffffff;
     margin-bottom: 20px;
 }
 
@@ -380,8 +387,7 @@ h2 {
     background-size: cover;
     background-position: center center;
     background-repeat: no-repeat;
-    padding: 40px 20px;
-    background-color: rgba(0, 0, 0, 0.7); /* Usar fondo semi-transparente como sección */
+    padding: 0px 20px !important;
 }
 
 /* Curva hacia abajo después de la sección */
@@ -499,7 +505,7 @@ button {
 }
 
 button:hover {
-    background: #27ae60; /* Verde más oscuro al hover */
+    background: #27ae5f00; /* Verde más oscuro al hover */
 }
 
 

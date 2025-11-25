@@ -94,6 +94,11 @@
 			<artifactId>sdk-java</artifactId>
 			<version>2.1.7</version>
 		</dependency>
+		<dependency>
+			<groupId>nz.ac.waikato.cms.weka</groupId>
+			<artifactId>weka-stable</artifactId>
+			<version>3.8.6</version>
+		</dependency>
 	</dependencies>
 
 	<build>

@@ -1,256 +1,609 @@
-/* Botones de Log Out */
-.btn-outline-light {
-  border-color: #ffffff;
-  color: #ffffff;
-}
-
-.btn-outline-light:hover {
-  background-color: #ffffff;
-  color: #000000; /* Cambiado a negro para mejor contraste */
-}
-
-/* Ajuste para los elementos a la izquierda */
-.d-flex.align-items-center {
-  justify-content: flex-start;
-}
-
-.video-background {
-  position: fixed;
-  right: 0;
-  bottom: 0;
-  min-width: 100%;
-  min-height: 100%;
-  width: auto;
-  height: auto;
-  z-index: -1000;
-  background-size: cover;
-  overflow: hidden;
-  object-fit: cover;
-}
-
+/* Estilos generales (Combinado y actualizado) */
 body {
-  position: relative;
-  z-index: 1;
-  background: rgba(0, 0, 0, 0.6); /* Fondo más oscuro para mejor legibilidad */
+    font-family: 'Poppins', sans-serif;
+    color: #ffffff; /* Texto blanco por defecto */
+    margin: 0;
+    padding: 0;
+    /* Las propiedades de fondo de body ahora se gestionan en su mayoría por .video-background */
+    position: relative;
+    z-index: 1;
+    background: rgba(0, 0, 0, 0.6); /* Fondo más oscuro para mejor legibilidad */
+}
+
+/* Video de Fondo */
+.video-background {
+    position: fixed;
+    right: 0;
+    bottom: 0;
+    min-width: 100%;
+    min-height: 100%;
+    width: auto;
+    height: auto;
+    z-index: -1000;
+    background-size: cover;
+    overflow: hidden;
+    object-fit: cover;
+}
+
+a {
+    text-decoration: none;
+    color: #007bff;
+}
+a:hover {
+    color: #0056b3;
 }
 
 /* Contenedores principales */
 .container, .section, header, footer {
-  position: relative;
-  z-index: 10;
-}
-
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
+    position: relative;
+    z-index: 10;
 }
 
 .container {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
 }
 
 .section {
-  background-color: rgba(0, 0, 0, 0.7); /* Fondo más oscuro */
-  border-radius: 8px;
-  padding: 30px;
-  margin-bottom: 30px;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+    background-color: rgba(0, 0, 0, 0.7); /* Fondo más oscuro */
+    border-radius: 8px;
+    padding: 30px;
+    margin-bottom: 30px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+    color: white;
 }
 
 h2 {
-  color: #ffffff;
-  margin-bottom: 20px;
-  text-align: center;
-  text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+    color: #ffffff;
+    margin-bottom: 20px;
+    text-align: center;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
 }
 
-/* Sección de reseñas */
+/* Barra de navegación con degradado (Reglas del CSS anterior) */
+.navbar {
+    background: linear-gradient(to bottom, #000000 0%, rgba(0,0,0,0.7) 50%, rgba(0,0,0,0) 100%);
+    position: fixed;
+    width: 100%;
+    z-index: 1000;
+    color: #fff; /* Texto blanco */
+    border: none;
+    transition: background 0.3s ease;
+}
+
+/* Opcional: Efecto de fondo cuando se hace scroll */
+.navbar.scrolled {
+    background: rgba(0,0,0,0.8);
+}
+
+.navbar-brand {
+    color: #fff;
+    font-weight: bold;
+}
+
+/* Enlaces de la barra de navegación */
+.navbar-nav {
+    display: flex;
+    justify-content: center; /* Centra los enlaces */
+    flex-grow: 1;
+}
+
+/* Enlaces de Inicio Tienda y Contacto (Se quitó text-transform: uppercase;) */
+.nav .nav-link {
+    color: #fff;
+    font-weight: 500;
+    padding: 8px 16px;
+    position: relative;
+    transition: all 0.4s ease;
+}
+
+.nav .nav-link.active {
+    font-weight: bold;
+    color: #f8f9fa;
+}
+
+/* Hover de Inicio Tienda y Contacto - Iluminación en azul más intensa */
+.nav .nav-link:hover {
+    color: #4da6ff;
+    text-shadow:
+        0 0 5px rgba(0, 123, 255, 1),
+        0 0 10px rgba(0, 123, 255, 0.9),
+        0 0 20px rgba(0, 123, 255, 0.7),
+        0 0 30px rgba(0, 123, 255, 0.5),
+        0 0 40px rgba(0, 123, 255, 0.3);
+    background-color: transparent;
+    border-radius: 0;
+}
+
+.navbar-toggler {
+    border-color: rgba(255, 255, 255, 0.1);
+}
+
+/* Botones de Log Out (Actualizado) */
+.btn-outline-light {
+    border-color: #ffffff;
+    color: #ffffff;
+}
+
+.btn-outline-light:hover {
+    background-color: #ffffff;
+    color: #000000; /* Cambiado a negro para mejor contraste */
+}
+
+/* Ajuste para los elementos a la izquierda (usuario, log out, carrito) */
+.d-flex.align-items-center {
+    justify-content: flex-start;
+}
+
+.navbar-text, .btn-outline-light, .nav-link.position-relative {
+    margin-right: 15px;
+}
+
+/* Carrusel con forma ajustada (Reglas del CSS anterior) */
+#carouselExampleCaptions {
+    position: relative;
+    width: 100%;
+    height: 80vh;
+}
+
+.carousel-inner {
+    height: 100%;
+}
+
+.carousel-item {
+    height: 100%;
+    background-size: 100% auto;
+    background-position: center;
+}
+
+.carousel-caption {
+    bottom: 20px;
+}
+
+/* Curva de la imagen */
+#carouselExampleCaptions:after {
+    content: '';
+    display: block;
+    position: absolute;
+    bottom: -5px;
+    width: 100%;
+    height: 100px;
+    background: #000;
+    clip-path: ellipse(50% 25% at 50% 100%);
+}
+
+/* Sección de descripción (Reglas del CSS anterior) */
+#description::after {
+    content: '';
+    display: block;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 100%;
+    height: 100px;
+    background: #000;
+    clip-path: ellipse(50% 25% at 50% 0%);
+    z-index: 1;
+}
+
+#description {
+    background-color: #000;
+    color: #fff;
+    padding: 60px 20px;
+    text-align: center;
+}
+
+#description h2 {
+    font-weight: 700;
+    margin-bottom: 20px;
+}
+
+#description p {
+    font-size: 18px;
+    line-height: 1.6;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+/* Contenido Principal (Nuevo) */
+#main-content {
+    background-color: rgba(0, 0, 0, 0.7);
+    padding: 4rem 0;
+    text-align: center;
+}
+
+#main-content h1 {
+    font-size: 3rem;
+    font-weight: bold;
+    color: #3498db; /* Azul más vibrante */
+    margin-bottom: 2rem;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+}
+
+#main-content p {
+    font-size: 1.2rem;
+    color: #ecf0f1; /* Gris muy claro */
+    margin-bottom: 2rem;
+}
+
+/* Sección de categorías populares (Reglas del CSS anterior) */
+.categories {
+    /* Fondo de imagen de tierra: Asumo que esto se elimina o se ajusta debido al video de fondo */
+    /* background: url('/img/FondoTierra.jpg') no-repeat center center; */
+    background-size: cover;
+    padding: 4rem 0;
+    color:  #000;
+    text-align: center;
+    background-color: rgba(255, 255, 255, 0.9); /* Un fondo temporal si se quita la imagen de tierra */
+}
+
+.categories img {
+    transition: transform 0.3s ease-in-out;
+    border-radius: 30px;
+}
+
+.categories img:hover {
+    transform: scale(1.05);
+}
+
+.categories p {
+    margin-top: 15px;
+    font-size: 25px;
+    font-weight: 500;
+    color:  #000;
+}
+
+.categories h2 {
+    font-size: 36px;
+    font-weight: 700;
+    color: #000;
+    margin-bottom: 20px;
+}
+
+
+
+/* Sección de ofertas del día (Reglas del CSS anterior) */
+.offers .card {
+    border: none;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease-in-out;
+}
+
+.offers .card:hover {
+    transform: translateY(-5px);
+}
+
+.offers .card img {
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+}
+
+.offers .card-body {
+    padding: 20px;
+}
+
+.offers .card-title {
+    font-size: 20px;
+    font-weight: bold;
+    color: #007bff;
+}
+
+.offers .card-text {
+    font-size: 16px;
+    color: #555;
+}
+
+/* Sección de suscripción (Reglas del CSS anterior) */
+.subscribe {
+    background-color: #007bff;
+    color: #ffffff;
+    padding: 60px 20px;
+    text-align: center;
+    border-radius: 5px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.subscribe h2 {
+    font-weight: bold;
+    margin-bottom: 20px;
+}
+
+.subscribe p {
+    font-size: 16px;
+    margin-bottom: 30px;
+}
+
+.subscribe input[type="email"] {
+    border-radius: 5px;
+    padding: 10px;
+    font-size: 16px;
+}
+
+.subscribe .btn-success {
+    background-color: #28a745;
+    border-color: #218838;
+}
+
+.subscribe .btn-success:hover {
+    background-color: #218838;
+    border-color: #1e7e34;
+}
+
+/* Sección de mapa de ubicación (Reglas del CSS anterior, ajustadas para el nuevo contexto) */
+.location {
+    position: relative;
+    /* Fondo de imagen de arena: Asumo que esto se elimina o se ajusta debido al video de fondo */
+    /* background-image: url('/img/ArenaDemas.jpg'); */
+    background-size: cover;
+    background-position: center center;
+    background-repeat: no-repeat;
+    padding: 40px 20px;
+    background-color: rgba(0, 0, 0, 0.7); /* Usar fondo semi-transparente como sección */
+}
+
+/* Curva hacia abajo después de la sección */
+#ubicate::after {
+    content: '';
+    display: block;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 100%;
+    height: 100px;
+    background: inherit;
+    clip-path: ellipse(50% 50% at 50% 0%);
+    z-index: 1;
+}
+
+.location iframe {
+    border: none;
+    border-radius: 10px;
+    width: 100%;
+    height: 400px;
+}
+/* Estilo para el título de la sección */
+.location h2 {
+    font-size: 36px;
+    font-weight: 700;
+    color: #ffffff; /* Ajustado a blanco para fondo oscuro */
+    margin-bottom: 20px;
+}
+
+/* Estilo para el subtítulo (párrafo) */
+.location p {
+    font-size: 25px;
+    font-weight: 500;
+    color: #ffffff; /* Ajustado a blanco para fondo oscuro */
+    margin-bottom: 30px;
+}
+
+/* Sección de contacto (Nuevo) */
+.contact-info {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 30px;
+    margin-bottom: 30px;
+    position: relative;
+    z-index: 2;
+}
+
+.info-card {
+    background: rgba(255, 255, 255, 0.95) !important;
+    padding: 20px;
+    border-radius: 8px;
+    text-align: center;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+    border: 1px solid rgba(255,255,255,0.3);
+}
+
+.info-card h3 {
+    color: #2c3e50 !important;
+    margin-bottom: 15px;
+    font-size: 1.4rem;
+}
+
+.info-card p {
+    color: #34495e !important;
+    line-height: 1.6;
+    margin: 0;
+    font-size: 1.1rem;
+}
+
+.map {
+    width: 100%;
+    height: 500px;
+    margin-bottom: 30px;
+    border: none;
+    border-radius: 8px;
+}
+
+/* Formularios (Nuevo) */
+.form-group {
+    margin-bottom: 15px;
+}
+
+label {
+    display: block;
+    margin-bottom: 5px;
+    color: #ffffff; /* Etiquetas blancas */
+}
+
+input, textarea, select {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 16px;
+    background: rgba(255, 255, 255, 0.9);
+}
+
+textarea {
+    height: 120px;
+    resize: vertical;
+}
+
+button {
+    background: #2ecc71; /* Verde más vibrante */
+    color: white;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+    width: 100%;
+    font-weight: bold;
+    transition: background 0.3s;
+}
+
+button:hover {
+    background: #27ae60; /* Verde más oscuro al hover */
+}
+
+
+/* Sección de opiniones (Ajustada y combinada) */
 .reviews {
-  display: grid;
-  gap: 20px;
+    position: relative;
+    /* Las propiedades de background-image ya no son necesarias por el video de fondo */
+    /* background-image: url('/img/Piedras.jpg'); */
+    background-size: cover;
+    background-position: center center;
+    background-repeat: no-repeat;
+    padding: 40px 20px;
+    color: #fff;
+    display: grid; /* Nuevo estilo para grid */
+    gap: 20px; /* Nuevo estilo para grid */
+    background-color: rgba(0, 0, 0, 0.7); /* Asegura un fondo oscuro para la sección */
 }
 
+/* Estilo del título de Opiniones Destacadas */
+.reviews h2 {
+    font-size: 36px;
+    font-weight: 700;
+    text-align: center;
+    max-width: 100%; /* Ajustado */
+    margin: 0 auto 20px;
+}
+
+/* Filtro oscuro (Se mantiene por si acaso, aunque el body ya tiene uno) */
+.reviews::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: -1;
+}
+
+
+/* Estilo de las tarjetas de reseñas (Actualizado) */
+.review-card {
+    margin-bottom: 20px; /* Mantenido por si acaso */
+    background: rgba(255, 255, 255, 0.95); /* Fondo casi blanco para mejor legibilidad */
+    border: 1px solid #eee;
+    padding: 15px;
+    border-radius: 8px;
+    color: #333; /* Texto oscuro */
+    box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+}
+
+.review-header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+    color: #222;
+}
+
+.review-stars {
+    color: #ffd700;
+}
+
+/* Formulario de reseña (Nuevo) */
 .review-form {
-  margin-bottom: 30px;
+    margin-bottom: 30px;
 }
 
 .rating {
-  display: flex;
-  gap: 10px;
-  margin-bottom: 15px;
+    display: flex;
+    gap: 10px;
+    margin-bottom: 15px;
 }
 
 .star-rating {
-  display: flex;
-  flex-direction: row-reverse;
-  gap: 5px;
+    display: flex;
+    flex-direction: row-reverse;
+    gap: 5px;
+    /* Ajuste para centrar las estrellas en el formulario */
+    justify-content: center;
 }
 
 .star-rating input {
-  display: none;
+    display: none;
 }
 
 .star-rating label {
-  font-size: 30px;
-  color: #ddd;
-  cursor: pointer;
+    font-size: 30px;
+    color: #ddd;
+    cursor: pointer;
 }
 
 .star-rating label:hover,
 .star-rating label:hover ~ label,
 .star-rating input:checked ~ label {
-  color: #ffd700;
+    color: #ffd700;
 }
 
-.review-card {
-  background: rgba(0, 0, 0, 0.274); /* Fondo blanco para mejor legibilidad */
-  border: 1px solid #eee;
-  padding: 15px;
-  border-radius: 8px;
-  color: #333; /* Texto oscuro */
+
+/* Footer (Reglas del CSS anterior) */
+footer {
+    background-color: #000;
+    color: #ffffff;
+    padding: 20px 0;
+    text-align: center;
 }
 
-.review-header {
-  display: flex;
-  justify-content: space-between;
-  margin-bottom: 10px;
-  color: #222;
+footer a {
+    color: #ffffff;
 }
 
-.review-stars {
-  color: #ffd700;
+footer a:hover {
+    color: #cccccc;
 }
 
-/* Sección de contacto */
-.contact-info {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 30px;
-  margin-bottom: 30px;
-}
-
-.info-card {
-  background: rgba(255, 255, 255, 0.95); /* Blanco casi sólido */
-  padding: 20px;
-  border-radius: 8px;
-  text-align: center;
-  color: #222; /* Texto oscuro */
-  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
-}
-
-.map {
-  width: 100%;
-  height: 500px;
-  margin-bottom: 30px;
-  border: none;
-  border-radius: 8px;
-}
-
-/* Formularios */
-.form-group {
-  margin-bottom: 15px;
-}
-
-label {
-  display: block;
-  margin-bottom: 5px;
-  color: #ffffff; /* Etiquetas blancas */
-}
-
-input, textarea, select {
-  width: 100%;
-  padding: 10px;
-  border: 1px solid #ddd;
-  border-radius: 4px;
-  font-size: 16px;
-  background: rgba(255, 255, 255, 0.9);
-}
-
-textarea {
-  height: 120px;
-  resize: vertical;
-}
-
-button {
-  background: #2ecc71; /* Verde más vibrante */
-  color: white;
-  padding: 12px 20px;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  font-size: 16px;
-  width: 100%;
-  font-weight: bold;
-  transition: background 0.3s;
-}
-
-button:hover {
-  background: #27ae60; /* Verde más oscuro al hover */
-}
-
+/* Responisive adjustments */
 @media (max-width: 768px) {
-  .contact-info {
-    grid-template-columns: 1fr;
-  }
-}
+    .navbar-nav {
+        text-align: center;
+    }
 
-/* Estilos generales */
-body {
-  font-family: 'Poppins', sans-serif;
-  color: #ffffff; /* Texto blanco por defecto */
-}
+    .navbar-nav .nav-link {
+        margin-bottom: 10px;
+    }
 
-#main-content {
-  background-color: rgba(0, 0, 0, 0.7);
-  padding: 4rem 0;
-  text-align: center;
-}
+    #description {
+        padding: 30px 20px;
+    }
 
-#main-content h1 {
-  font-size: 3rem;
-  font-weight: bold;
-  color: #3498db; /* Azul más vibrante */
-  margin-bottom: 2rem;
-  text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
-}
+    .categories h4 {
+        font-size: 18px;
+    }
 
-#main-content p {
-  font-size: 1.2rem;
-  color: #ecf0f1; /* Gris muy claro */
-  margin-bottom: 2rem;
-}
+    .offers .card {
+        margin-bottom: 20px;
+    }
 
-.section {
-  color: white;
-}
+    .subscribe {
+        padding: 30px 20px;
+    }
 
-/* Info cards mejoradas */
-.info-card {
-  background: rgba(255, 255, 255, 0.95) !important;
-  padding: 20px;
-  border-radius: 8px;
-  text-align: center;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
-  border: 1px solid rgba(255,255,255,0.3);
-}
+    .reviews .review-card {
+        margin-bottom: 20px;
+    }
 
-.info-card h3 {
-  color: #2c3e50 !important;
-  margin-bottom: 15px;
-  font-size: 1.4rem;
-}
-
-.info-card p {
-  color: #34495e !important;
-  line-height: 1.6;
-  margin: 0;
-  font-size: 1.1rem;
-}
-
-.contact-info {
-  position: relative;
-  z-index: 2;
+    .contact-info {
+        grid-template-columns: 1fr;
+    }
 }

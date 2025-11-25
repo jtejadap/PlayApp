@@ -1,15 +1,28 @@
-
-/* Estilos generales */
-body{
+/* Estilos generales (Combinado y actualizado) */
+body {
     font-family: 'Poppins', sans-serif;
-    background-color: #000; /* Fondo de respaldo */
-    color: #fff; /* Texto blanco para contraste */
+    color: #ffffff; /* Texto blanco por defecto */
     margin: 0;
     padding: 0;
-    background-size: cover; /* Asegura que la imagen cubra todo el fondo */
-    background-repeat: no-repeat; /* Evita que la imagen se repita */
-    background-position: center center; /* Centra la imagen */
-    background-attachment: scroll; /* Permite que el fondo se mueva al hacer scroll */
+    /* Las propiedades de fondo de body ahora se gestionan en su mayoría por .video-background */
+    position: relative;
+    z-index: 1;
+    background: rgba(0, 0, 0, 0.6); /* Fondo más oscuro para mejor legibilidad */
+}
+
+/* Video de Fondo */
+.video-background {
+    position: fixed;
+    right: 0;
+    bottom: 0;
+    min-width: 100%;
+    min-height: 100%;
+    width: auto;
+    height: auto;
+    z-index: -1000;
+    background-size: cover;
+    overflow: hidden;
+    object-fit: cover;
 }
 
 a {
@@ -20,15 +33,43 @@ a:hover {
     color: #0056b3;
 }
 
-/* Barra de navegación con degradado */
+/* Contenedores principales */
+.container, .section, header, footer {
+    position: relative;
+    z-index: 10;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.section {
+    background-color: rgba(0, 0, 0, 0.7); /* Fondo más oscuro */
+    border-radius: 8px;
+    padding: 30px;
+    margin-bottom: 30px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+    color: white;
+}
+
+h2 {
+    color: #ffffff;
+    margin-bottom: 20px;
+    text-align: center;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+}
+
+/* Barra de navegación con degradado (Reglas del CSS anterior) */
 .navbar {
     background: linear-gradient(to bottom, #000000 0%, rgba(0,0,0,0.7) 50%, rgba(0,0,0,0) 100%);
     position: fixed;
     width: 100%;
     z-index: 1000;
     color: #fff; /* Texto blanco */
-    border: none; /* Elimina cualquier borde */
-    transition: background 0.3s ease; /* Suaviza la transición de fondo */
+    border: none;
+    transition: background 0.3s ease;
 }
 
 /* Opcional: Efecto de fondo cuando se hace scroll */
@@ -45,32 +86,82 @@ a:hover {
 .navbar-nav {
     display: flex;
     justify-content: center; /* Centra los enlaces */
-    flex-grow: 1; /* Asegura que ocupen todo el espacio disponible */
+    flex-grow: 1;
 }
 
-.navbar-nav .nav-link {
+/* Enlaces de Inicio Tienda y Contacto (Se quitó text-transform: uppercase;) */
+.nav .nav-link {
     color: #fff;
     font-weight: 500;
     padding: 8px 16px;
-    text-transform: uppercase;
+    position: relative;
+    transition: all 0.4s ease;
 }
 
-.navbar-nav .nav-link.active {
+/* --- Animación de Keyframes para el Pulso Azul --- */
+@keyframes pulso-azul {
+    0% {
+        color: #fff; /* Comienza en blanco */
+        text-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+    }
+    50% {
+        color: #4da6ff; /* A mitad del ciclo, alcanza el color azul claro */
+        text-shadow:
+            0 0 10px rgba(0, 123, 255, 1), /* Brillo fuerte */
+            0 0 20px rgba(0, 123, 255, 0.8),
+            0 0 30px rgba(0, 123, 255, 0.6);
+    }
+    100% {
+        color: #fff; /* Termina en blanco (el mismo que el 0% para el ciclo infinito) */
+        text-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+    }
+}
+/* ------------------------------------------------ */
+
+
+/* INICIO DE ANIMACIÓN/BRILLO - APLICADO AL ENLACE ACTIVO */
+.nav .nav-link.active {
     font-weight: bold;
-    color: #f8f9fa;
+    color: #ffffff !important; /* Forzar blanco puro para el enlace activo */
+    /* Aplicamos la animación */
+    animation: pulso-azul 2s ease-in-out infinite alternate;
 }
 
-/* Hover de los enlaces */
-.navbar-nav .nav-link:hover {
-    background-color: rgba(255, 255, 255, 0.1);
-    border-radius: 4px;
+/* INDICADOR DE FLECHA (flechita) PARA EL ENLACE ACTIVO */
+.nav .nav-link.active::after {
+    content: '▼'; /* Carácter de flecha hacia abajo */
+    position: absolute;
+    bottom: -5px; /* Posicionamos debajo del texto */
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 10px; /* Tamaño pequeño */
+    line-height: 1;
+    color: #4da6ff; /* Mismo color azul */
+    text-shadow: 0 0 5px rgba(0, 123, 255, 1); /* Pequeño brillo estático */
+    transition: all 0.4s ease;
+}
+/* FIN DE ANIMACIÓN/BRILLO */
+
+/* Hover de Inicio Tienda y Contacto - Iluminación en azul más intensa (se mantiene fijo para el hover) */
+.nav .nav-link:hover {
+    color: #4da6ff;
+    text-shadow:
+        0 0 5px rgba(0, 123, 255, 1),
+        0 0 10px rgba(0, 123, 255, 0.9),
+        0 0 20px rgba(0, 123, 255, 0.7),
+        0 0 30px rgba(0, 123, 255, 0.5),
+        0 0 40px rgba(0, 123, 255, 0.3);
+    background-color: transparent;
+    border-radius: 0;
+    /* Aseguramos que la animación no interfiera con el hover, deteniendo la animación */
+    animation: none;
 }
 
 .navbar-toggler {
     border-color: rgba(255, 255, 255, 0.1);
 }
 
-/* Botones de Log Out */
+/* Botones de Log Out (Actualizado) */
 .btn-outline-light {
     border-color: #ffffff;
     color: #ffffff;
@@ -78,23 +169,23 @@ a:hover {
 
 .btn-outline-light:hover {
     background-color: #ffffff;
-    color: #343a40;
+    color: #000000; /* Cambiado a negro para mejor contraste */
 }
 
 /* Ajuste para los elementos a la izquierda (usuario, log out, carrito) */
 .d-flex.align-items-center {
-    justify-content: flex-start; /* Alineación a la izquierda de los botones de usuario, log out y carrito */
+    justify-content: flex-start;
 }
 
 .navbar-text, .btn-outline-light, .nav-link.position-relative {
-    margin-right: 15px; /* Espaciado entre los elementos */
+    margin-right: 15px;
 }
 
-/* Carrusel con forma ajustada */
+/* Carrusel con forma ajustada (Reglas del CSS anterior) */
 #carouselExampleCaptions {
     position: relative;
     width: 100%;
-    height: 80vh; /* Ajusta la altura del carrusel */
+    height: 80vh;
 }
 
 .carousel-inner {
@@ -108,7 +199,7 @@ a:hover {
 }
 
 .carousel-caption {
-    bottom: 20px; /* Ajusta la posición de los subtítulos */
+    bottom: 20px;
 }
 
 /* Curva de la imagen */
@@ -120,30 +211,26 @@ a:hover {
     width: 100%;
     height: 100px;
     background: #000;
-    clip-path: ellipse(50% 25% at 50% 100%); /* Ajusta la forma de la curva */
+    clip-path: ellipse(50% 25% at 50% 100%);
 }
 
-/* Sección de descripción */
-
-/* Curva hacia abajo después de la sección */
+/* Sección de descripción (Reglas del CSS anterior) */
 #description::after {
     content: '';
     display: block;
     position: absolute;
-    top: 100%; /* Coloca la curva al final de la sección */
+    top: 100%;
     left: 0;
     width: 100%;
     height: 100px;
-    background: #000; /* Color de la curva, ajusta según tu diseño */
+    background: #000;
     clip-path: ellipse(50% 25% at 50% 0%);
-    z-index: 1; /* Asegúrate de que la curva esté sobre el siguiente contenido */
+    z-index: 1;
 }
 
-
-
 #description {
-    background-color: #000; /* Fondo negro */
-    color: #fff; /* Texto blanco para contraste */
+    background-color: #000;
+    color: #fff;
     padding: 60px 20px;
     text-align: center;
 }
@@ -160,14 +247,36 @@ a:hover {
     margin: 0 auto;
 }
 
+/* Contenido Principal (Nuevo) */
+#main-content {
+    background-color: rgba(0, 0, 0, 0.7);
+    padding: 4rem 0;
+    text-align: center;
+}
 
-/* Sección de categorías populares */
+#main-content h1 {
+    font-size: 3rem;
+    font-weight: bold;
+    color: #3498db; /* Azul más vibrante */
+    margin-bottom: 2rem;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+}
+
+#main-content p {
+    font-size: 1.2rem;
+    color: #ecf0f1; /* Gris muy claro */
+    margin-bottom: 2rem;
+}
+
+/* Sección de categorías populares (Reglas del CSS anterior) */
 .categories {
-    background: url('/img/FondoTierra.jpg') no-repeat center center;
+    /* Fondo de imagen de tierra: Asumo que esto se elimina o se ajusta debido al video de fondo */
+    /* background: url('/img/FondoTierra.jpg') no-repeat center center; */
     background-size: cover;
     padding: 4rem 0;
     color:  #000;
     text-align: center;
+    background-color: rgba(255, 255, 255, 0.9); /* Un fondo temporal si se quita la imagen de tierra */
 }
 
 .categories img {
@@ -187,15 +296,15 @@ a:hover {
 }
 
 .categories h2 {
-    font-size: 36px; /* Cambia el tamaño del texto, ajusta según prefieras */
-    font-weight: 700; /* Define el grosor del texto */
-    color: #000; /* Cambia el color si es necesario */
-    margin-bottom: 20px; /* Ajusta el espacio inferior */
+    font-size: 36px;
+    font-weight: 700;
+    color: #000;
+    margin-bottom: 20px;
 }
 
 
 
-/* Sección de ofertas del día */
+/* Sección de ofertas del día (Reglas del CSS anterior) */
 .offers .card {
     border: none;
     border-radius: 10px;
@@ -227,7 +336,7 @@ a:hover {
     color: #555;
 }
 
-/* Sección de suscripción */
+/* Sección de suscripción (Reglas del CSS anterior) */
 .subscribe {
     background-color: #007bff;
     color: #ffffff;
@@ -263,17 +372,16 @@ a:hover {
     border-color: #1e7e34;
 }
 
-/* Sección de mapa de ubicación */
-
-
-
+/* Sección de mapa de ubicación (Reglas del CSS anterior, ajustadas para el nuevo contexto) */
 .location {
     position: relative;
-    background-image: url('/img/ArenaDemas.jpg'); /* Ruta de la imagen de fondo */
-    background-size: cover; /* Asegura que la imagen cubra toda la sección */
-    background-position: center center; /* Centra la imagen */
-    background-repeat: no-repeat; /* Evita que la imagen se repita */
-    padding: 40px 20px; /* Ajusta el espacio dentro de la sección */
+    /* Fondo de imagen de arena: Asumo que esto se elimina o se ajusta debido al video de fondo */
+    /* background-image: url('/img/ArenaDemas.jpg'); */
+    background-size: cover;
+    background-position: center center;
+    background-repeat: no-repeat;
+    padding: 40px 20px;
+    background-color: rgba(0, 0, 0, 0.7); /* Usar fondo semi-transparente como sección */
 }
 
 /* Curva hacia abajo después de la sección */
@@ -281,59 +389,145 @@ a:hover {
     content: '';
     display: block;
     position: absolute;
-    top: 100%; /* Coloca la curva al final de la sección */
+    top: 100%;
     left: 0;
     width: 100%;
     height: 100px;
-    background: inherit;  /* Color de la curva, ajusta según tu diseño */
+    background: inherit;
     clip-path: ellipse(50% 50% at 50% 0%);
-    z-index: 1; /* Asegúrate de que la curva esté sobre el siguiente contenido */
+    z-index: 1;
 }
 
 .location iframe {
     border: none;
     border-radius: 10px;
-    width: 100%; /* Asegura que el iframe ocupe todo el ancho disponible */
-    height: 400px; /* Ajusta la altura del iframe (cambia según lo necesites) */
+    width: 100%;
+    height: 400px;
 }
 /* Estilo para el título de la sección */
 .location h2 {
-    font-size: 36px; /* Cambia el tamaño del texto del título */
-    font-weight: 700; /* Grosor del texto */
-    color: #000; /* Color del texto, ajusta según el diseño */
-    margin-bottom: 20px; /* Espacio inferior */
+    font-size: 36px;
+    font-weight: 700;
+    color: #ffffff; /* Ajustado a blanco para fondo oscuro */
+    margin-bottom: 20px;
 }
 
 /* Estilo para el subtítulo (párrafo) */
 .location p {
-    font-size: 25px; /* Cambia el tamaño del texto del subtítulo */
-    font-weight: 500; /* Grosor del texto */
-    color: #000; /* Color del texto, ajusta según el diseño */
-    margin-bottom: 30px; /* Espacio inferior */
+    font-size: 25px;
+    font-weight: 500;
+    color: #ffffff; /* Ajustado a blanco para fondo oscuro */
+    margin-bottom: 30px;
+}
+
+/* Sección de contacto (Nuevo) */
+.contact-info {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 30px;
+    margin-bottom: 30px;
+    position: relative;
+    z-index: 2;
+}
+
+.info-card {
+    background: rgba(255, 255, 255, 0.95) !important;
+    padding: 20px;
+    border-radius: 8px;
+    text-align: center;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+    border: 1px solid rgba(255,255,255,0.3);
+}
+
+.info-card h3 {
+    color: #2c3e50 !important;
+    margin-bottom: 15px;
+    font-size: 1.4rem;
+}
+
+.info-card p {
+    color: #34495e !important;
+    line-height: 1.6;
+    margin: 0;
+    font-size: 1.1rem;
+}
+
+.map {
+    width: 100%;
+    height: 500px;
+    margin-bottom: 30px;
+    border: none;
+    border-radius: 8px;
+}
+
+/* Formularios (Nuevo) */
+.form-group {
+    margin-bottom: 15px;
+}
+
+label {
+    display: block;
+    margin-bottom: 5px;
+    color: #ffffff; /* Etiquetas blancas */
+}
+
+input, textarea, select {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 16px;
+    background: rgba(255, 255, 255, 0.9);
+}
+
+textarea {
+    height: 120px;
+    resize: vertical;
+}
+
+button {
+    background: #2ecc71; /* Verde más vibrante */
+    color: white;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+    width: 100%;
+    font-weight: bold;
+    transition: background 0.3s;
+}
+
+button:hover {
+    background: #27ae60; /* Verde más oscuro al hover */
 }
 
 
-/* Sección de opiniones */
+/* Sección de opiniones (Ajustada y combinada) */
 .reviews {
     position: relative;
-    background-image: url('/img/Piedras.jpg'); /* Ruta de la imagen de fondo */
-    background-size: cover; /* La imagen cubre todo el fondo */
-    background-position: center center; /* Centra la imagen */
-    background-repeat: no-repeat; /* Evita que la imagen se repita */
-    padding: 40px 20px; /* Ajusta el espacio dentro de la sección */
-    color: #fff; /* Color de texto blanco para contraste */
+    /* Las propiedades de background-image ya no son necesarias por el video de fondo */
+    /* background-image: url('/img/Piedras.jpg'); */
+    background-size: cover;
+    background-position: center center;
+    background-repeat: no-repeat;
+    padding: 40px 20px;
+    color: #fff;
+    display: grid; /* Nuevo estilo para grid */
+    gap: 20px; /* Nuevo estilo para grid */
+    background-color: rgba(0, 0, 0, 0.7); /* Asegura un fondo oscuro para la sección */
 }
 
 /* Estilo del título de Opiniones Destacadas */
 .reviews h2 {
-    font-size: 36px; /* Cambia el tamaño del título, ajusta según tu preferencia */
-    font-weight: 700; /* Cambia el grosor de la fuente si lo deseas */
-    text-align: center; /* Centra el texto */
-    max-width: 80%; /* Ajusta el ancho máximo del título */
-    margin: 0 auto 20px; /* Centra y añade un margen inferior */
+    font-size: 36px;
+    font-weight: 700;
+    text-align: center;
+    max-width: 100%; /* Ajustado */
+    margin: 0 auto 20px;
 }
 
-/* Filtro oscuro */
+/* Filtro oscuro (Se mantiene por si acaso, aunque el body ya tiene uno) */
 .reviews::before {
     content: '';
     position: absolute;
@@ -341,36 +535,70 @@ a:hover {
     left: 0;
     right: 0;
     bottom: 0;
-    background: rgba(0, 0, 0, 0.5); /* Fondo oscuro con opacidad */
-    z-index: -1; /* Coloca el filtro detrás del contenido */
+    background: rgba(0, 0, 0, 0.5);
+    z-index: -1;
 }
 
 
-/* Estilo de las tarjetas de reseñas */
-.reviews .review-card {
-    margin-bottom: 20px;
-    background-color: #fff; /* Fondo blanco para las tarjetas */
-    border-radius: 10px;
-    padding: 20px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    color: #333; /* Texto negro dentro de las tarjetas */
+/* Estilo de las tarjetas de reseñas (Actualizado) */
+.review-card {
+    margin-bottom: 20px; /* Mantenido por si acaso */
+    background: rgba(255, 255, 255, 0.95); /* Fondo casi blanco para mejor legibilidad */
+    border: 1px solid #eee;
+    padding: 15px;
+    border-radius: 8px;
+    color: #333; /* Texto oscuro */
+    box-shadow: 0 2px 4px rgba(0,0,0,0.3);
 }
 
-/* Estilos adicionales para las reseñas */
-.reviews .blockquote {
-    margin: 0;
+.review-header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+    color: #222;
 }
 
-.reviews .stars span {
-    font-size: 20px;
-    margin-right: 2px;
-    color: #f1c40f; /* Color dorado para las estrellas */
+.review-stars {
+    color: #ffd700;
+}
+
+/* Formulario de reseña (Nuevo) */
+.review-form {
+    margin-bottom: 30px;
+}
+
+.rating {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 15px;
+}
+
+.star-rating {
+    display: flex;
+    flex-direction: row-reverse;
+    gap: 5px;
+    /* Ajuste para centrar las estrellas en el formulario */
+    justify-content: center;
+}
+
+.star-rating input {
+    display: none;
+}
+
+.star-rating label {
+    font-size: 30px;
+    color: #ddd;
+    cursor: pointer;
+}
+
+.star-rating label:hover,
+.star-rating label:hover ~ label,
+.star-rating input:checked ~ label {
+    color: #ffd700;
 }
 
 
-
-
-/* Footer */
+/* Footer (Reglas del CSS anterior) */
 footer {
     background-color: #000;
     color: #ffffff;
@@ -414,5 +642,9 @@ footer a:hover {
 
     .reviews .review-card {
         margin-bottom: 20px;
+    }
+
+    .contact-info {
+        grid-template-columns: 1fr;
     }
 }

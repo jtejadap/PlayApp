@@ -73,6 +73,7 @@ public class ManagementController {
 
         if (!imagen.isEmpty()) {
             producto.setImagen(new Binary(BsonBinarySubType.BINARY, imagen.getBytes()));
+            producto.setImagenContentType(imagen.getContentType());
         }
         servicio.crearProducto(producto, userInSession.getName());
         model.addAttribute("success", "Producto añadido al catalogo con exito");
@@ -97,6 +98,7 @@ public class ManagementController {
     ) throws IOException {
         if (!imagen.isEmpty()) {
             producto.setImagen(new Binary(BsonBinarySubType.BINARY, imagen.getBytes()));
+            producto.setImagenContentType(imagen.getContentType());
         }
         servicio.actualizarProducto(id, producto);
         return "redirect:/manager/products";

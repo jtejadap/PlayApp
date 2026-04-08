@@ -23,6 +23,7 @@ public class Producto {
     private Integer tipo;
     private Integer categoria;
     private Binary imagen;
+    private String imagenContentType;
     private Usuario entidad;
 
     public String obtenerNombreCategoria() {
@@ -48,6 +49,9 @@ public class Producto {
             return "/img/blank-product.jpg";
         }
 
-        return "data:image/jpeg;base64," + Base64.getEncoder().encodeToString(imagen.getData());
+        String contentType = imagenContentType != null && !imagenContentType.isBlank()
+                ? imagenContentType
+                : "image/jpeg";
+        return "data:" + contentType + ";base64," + Base64.getEncoder().encodeToString(imagen.getData());
     }
 }

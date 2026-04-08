@@ -20,6 +20,9 @@ public class SeedDatabase implements CommandLineRunner {
         boolean usuariosEmpty = usuarioRepository.count() == 0;
         boolean productosEmpty = productoRepository.count() == 0;
         boolean pedidosEmpty = pedidoRepository.count() == 0;
+        boolean productosSinImagen = !productosEmpty && productoRepository.findAll().stream().anyMatch(producto ->
+                producto.getImagen() == null || producto.getImagenContentType() == null || producto.getImagenContentType().isBlank()
+        );
 
         if (usuariosEmpty) {
             System.out.println("🚨 No Entidades found in the database.");
@@ -38,9 +41,21 @@ public class SeedDatabase implements CommandLineRunner {
         } else {
             System.out.println("✅ Pedidos found: " + pedidoRepository.count());
         }
-        if(usuariosEmpty && productosEmpty && pedidosEmpty){
-            System.out.println("Clean Database found proceed with Seeder");
-            // randonDataService.seedDatabase();
+        if (usuariosEmpty || productosEmpty || pedidosEmpty || productosSinImagen) {
+            System.out.println("Missing initial data detected, running seeder.");
+
+            if (usuariosEmpty) {
+                randonDataService.generateUsuarios("ROLE_ADMIN", 10);
+                randonDataService.generateUsuarios("ROLE_USER", 1000);
+            }
+
+            if (productosEmpty || productosSinImagen) {
+                randonDataService.generateProductosForAllUsers();
+            }
+
+            if (pedidosEmpty) {
+                randonDataService.generatePedidosForUsersWithRoleUser(100);
+            }
         }
     }
 }

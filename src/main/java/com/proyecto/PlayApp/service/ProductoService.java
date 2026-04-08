@@ -85,7 +85,10 @@ public class ProductoService {
         producto.setDescripcion(formulario.getDescripcion());
         producto.setTipo(formulario.getTipo());
         producto.setCategoria(formulario.getCategoria());
-        producto.setImagen(formulario.getImagen());
+        if (formulario.getImagen() != null) {
+            producto.setImagen(formulario.getImagen());
+            producto.setImagenContentType(formulario.getImagenContentType());
+        }
 
         return productos.save(producto);
     }

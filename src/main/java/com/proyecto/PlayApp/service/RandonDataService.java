@@ -7,12 +7,15 @@ import com.proyecto.PlayApp.repository.PedidoRepository;
 import com.proyecto.PlayApp.repository.ProductoRepository;
 import com.proyecto.PlayApp.repository.UsuarioRepository;
 import lombok.RequiredArgsConstructor;
+import org.bson.types.Binary;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.aggregation.Aggregation;
 import org.springframework.data.mongodb.core.aggregation.AggregationResults;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -24,6 +27,8 @@ import static org.springframework.data.mongodb.core.aggregation.Aggregation.samp
 @Service
 @RequiredArgsConstructor
 public class RandonDataService {
+    private static final int TOTAL_PRODUCTOS = 10;
+    private static final int TOTAL_PEDIDOS = 100;
     private final MongoTemplate mongoTemplate;
     private final PasswordEncoder passwordEncoder;
     private final UsuarioRepository usuarioRepository;
@@ -35,12 +40,24 @@ public class RandonDataService {
     private final Random random = new Random();
     private static final LocalDate START_DATE = LocalDate.of(2020, 1, 1);
     private static final LocalDate END_DATE = LocalDate.now();
+    private static final List<ProductoBase> PRODUCTOS_COSTEROS = List.of(
+            new ProductoBase("Pescado frito", "Pescado frito con ensalada fresca y arroz de coco.", 32000.0, 25.0, 4, 1, "static/img/catalogo/pescado-frito.jpg"),
+            new ProductoBase("Arroz de coco", "Arroz de coco tradicional del Caribe colombiano.", 12000.0, 40.0, 1, 1, "static/img/catalogo/arroz-coco.jpg"),
+            new ProductoBase("Patacones con hogao", "Patacones crujientes acompanados con hogao casero.", 14000.0, 35.0, 1, 1, "static/img/catalogo/patacones-hogao.jpg"),
+            new ProductoBase("Ceviche de camaron", "Ceviche de camaron fresco con limon y galletas saladas.", 28000.0, 20.0, 4, 1, "static/img/catalogo/ceviche-camaron.webp"),
+            new ProductoBase("Arepa de huevo", "Arepa de huevo cartagenera recien preparada.", 9000.0, 30.0, 1, 1, "static/img/catalogo/arepa-huevo.jpg"),
+            new ProductoBase("Mojarra con patacones", "Mojarra frita servida con patacones y ensalada.", 35000.0, 18.0, 4, 1, "static/img/catalogo/mojarra-patacones.webp"),
+            new ProductoBase("Limonada de coco", "Bebida fria de coco y limon ideal para la playa.", 10000.0, 50.0, 4, 2, "static/img/catalogo/limonada-coco.jpg"),
+            new ProductoBase("Coco frio", "Coco frio natural servido al instante.", 8000.0, 45.0, 4, 2, "static/img/catalogo/coco-frio.jpg"),
+            new ProductoBase("Jugo de maracuya", "Jugo natural de maracuya bien frio.", 9000.0, 45.0, 4, 2, "static/img/catalogo/jugo-maracuya.jpg"),
+            new ProductoBase("Cerveza nacional", "Cerveza fria para disfrutar frente al mar.", 7000.0, 60.0, 1, 2, "static/img/catalogo/cerveza-nacional.webp")
+    );
 
     public void seedDatabase(){
         generateUsuarios("ROLE_ADMIN", 10);
         generateUsuarios("ROLE_USER", 1000);
-        generateProductosForAllUsers(5);
-        generatePedidosForUsersWithRoleUser(15);
+        generateProductosForAllUsers();
+        generatePedidosForUsersWithRoleUser(TOTAL_PEDIDOS);
     }
 
     public void generateUsuarios(String rol, int cantidad) {
@@ -50,8 +67,9 @@ public class RandonDataService {
         }
         for (int i = 0; i < cantidad; i += batchsize) {
             List<Usuario> usuarios = new ArrayList<>();
+            int registrosLote = Math.min(batchsize, cantidad - i);
 
-            for (int j = 0; j < batchsize; j++) {
+            for (int j = 0; j < registrosLote; j++) {
                 Usuario usuario = Usuario.builder()
                         .nombreCompleto(faker.name().fullName())
                         .correo(generateUniqueEmail(faker))
@@ -73,62 +91,78 @@ public class RandonDataService {
         return username.toLowerCase() + "@" + faker.internet().domainName();
     }
 
-    public void generateProductosForAllUsers(int productosPerUser) {
+    public void generateProductosForAllUsers() {
         List<Usuario> usuarios = usuarioRepository.findByRolContaining("ROLE_ADMIN");
+        if (usuarios.isEmpty()) {
+            System.out.println("No hay administradores para asociar productos.");
+            return;
+        }
+
+        Map<String, Producto> productosExistentes = new HashMap<>();
+        for (Producto producto : productoRepository.findAll()) {
+            productosExistentes.put(producto.getNombre(), producto);
+        }
+
         List<Producto> allProductos = new ArrayList<>();
 
-        for (Usuario usuario : usuarios) {
-            for (int i = 0; i < productosPerUser; i++) {
-                Producto producto = new Producto();
-                producto.setNombre(faker.commerce().productName());
-                producto.setDescripcion(faker.lorem().sentence());
-                producto.setPrecio(Double.parseDouble(faker.commerce().price().replace(",", ".")));
-                producto.setStock((double) faker.number().numberBetween(1, 100));
-                producto.setTipo(faker.number().numberBetween(1, 5));
-                producto.setCategoria(faker.number().numberBetween(1, 4));
-                producto.setImagen(null); // or generate a Binary image if needed
-                producto.setEntidad(usuario);
-                allProductos.add(producto);
-            }
+        for (int i = 0; i < TOTAL_PRODUCTOS; i++) {
+            ProductoBase productoBase = PRODUCTOS_COSTEROS.get(i);
+            Usuario usuario = usuarios.get(i % usuarios.size());
+            Producto producto = productosExistentes.getOrDefault(productoBase.nombre(), new Producto());
+            producto.setNombre(productoBase.nombre());
+            producto.setDescripcion(productoBase.descripcion());
+            producto.setPrecio(productoBase.precio());
+            producto.setStock(productoBase.stock());
+            producto.setTipo(productoBase.tipo());
+            producto.setCategoria(productoBase.categoria());
+            producto.setImagen(loadImage(productoBase.imagePath()));
+            producto.setImagenContentType(detectContentType(productoBase.imagePath()));
+            producto.setEntidad(usuario);
+            allProductos.add(producto);
         }
 
         productoRepository.saveAll(allProductos);
-        System.out.println("Se generaron  registros para los productos.");
+        System.out.println("Se generaron " + allProductos.size() + " productos costeros para PlayApp.");
     }
 
-    public void generatePedidosForUsersWithRoleUser(int pedidosPerUser) {
+    public void generatePedidosForUsersWithRoleUser(int totalPedidos) {
         List<Usuario> usuarios = usuarioRepository.findByRolContaining("ROLE_USER");
+        if (usuarios.isEmpty()) {
+            System.out.println("No hay usuarios con ROLE_USER para generar pedidos.");
+            return;
+        }
+
         List<Pedido> batchPedidos = new ArrayList<>(BATCH_SIZE);
 
-        for (Usuario user : usuarios) {
-            for (int i = 0; i < pedidosPerUser; i++) {
-                DetallesDTO generateFakeCarrito = generateFakeCarrito();
-                double total = generateFakeCarrito.getCarrito().stream().mapToDouble(PedidoItem::getSubtotal).sum();
-                LocalDateTime date = generateRandomDateTimeBetween(START_DATE, END_DATE);
+        for (int i = 0; i < totalPedidos; i++) {
+            Usuario user = usuarios.get(i % usuarios.size());
+            DetallesDTO generateFakeCarrito = generateFakeCarrito();
+            double total = generateFakeCarrito.getCarrito().stream().mapToDouble(PedidoItem::getSubtotal).sum();
+            LocalDateTime date = generateRandomDateTimeBetween(START_DATE, END_DATE);
 
-                Pedido pedido = Pedido.builder()
-                        .estado(faker.number().numberBetween(0, 3))
-                        .total(total)
-                        .timestamp(date)
-                        .carrito(generateFakeCarrito.getCarrito())
-                        .restaurantes(generateFakeCarrito.getRestaurantes())
-                        .cliente(user)
-                        .pago(generateFakePago(total,date,user.getId()))
-                        .envio(generateFakeEnvio(date,user.getId()))
-                        .build();
+            Pedido pedido = Pedido.builder()
+                    .estado(faker.number().numberBetween(0, 3))
+                    .total(total)
+                    .timestamp(date)
+                    .carrito(generateFakeCarrito.getCarrito())
+                    .restaurantes(generateFakeCarrito.getRestaurantes())
+                    .cliente(user)
+                    .pago(generateFakePago(total,date,user.getId()))
+                    .envio(generateFakeEnvio(date,user.getId()))
+                    .build();
 
-                batchPedidos.add(pedido);
-                if (batchPedidos.size() >= BATCH_SIZE) {
-                    pedidoRepository.saveAll(batchPedidos);
-                    batchPedidos.clear();
-                    System.out.println("Se generaron "+BATCH_SIZE +" registros para los pedidos.");
-                }
+            batchPedidos.add(pedido);
+            if (batchPedidos.size() >= BATCH_SIZE) {
+                pedidoRepository.saveAll(batchPedidos);
+                batchPedidos.clear();
+                System.out.println("Se generaron " + BATCH_SIZE + " registros para los pedidos.");
             }
         }
+
         if (!batchPedidos.isEmpty()) {
             pedidoRepository.saveAll(batchPedidos);
         }
-        System.out.println("Se generaron registros para los Pedidos.");
+        System.out.println("Se generaron " + totalPedidos + " registros para los pedidos.");
     }
 
     private DetallesDTO generateFakeCarrito() {
@@ -189,5 +223,39 @@ public class RandonDataService {
         return LocalDateTime.of(randomDate, randomTime);
     }
 
+    private Binary loadImage(String imagePath) {
+        try {
+            ClassPathResource resource = new ClassPathResource(imagePath);
+            return new Binary(resource.getInputStream().readAllBytes());
+        } catch (IOException e) {
+            System.out.println("No se pudo cargar la imagen del producto: " + imagePath);
+            return null;
+        }
+    }
+
+    private String detectContentType(String imagePath) {
+        String normalized = imagePath.toLowerCase(Locale.ROOT);
+        if (normalized.endsWith(".webp")) {
+            return "image/webp";
+        }
+        if (normalized.endsWith(".png")) {
+            return "image/png";
+        }
+        if (normalized.endsWith(".jpg") || normalized.endsWith(".jpeg")) {
+            return "image/jpeg";
+        }
+        return "application/octet-stream";
+    }
+
+    private record ProductoBase(
+            String nombre,
+            String descripcion,
+            Double precio,
+            Double stock,
+            Integer tipo,
+            Integer categoria,
+            String imagePath
+    ) {
+    }
 
 }

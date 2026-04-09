@@ -27,6 +27,11 @@ import static org.springframework.data.mongodb.core.aggregation.Aggregation.samp
 @Service
 @RequiredArgsConstructor
 public class RandonDataService {
+    private static final String DEFAULT_ADMIN_NAME = "dondedani";
+    private static final String DEFAULT_ADMIN_EMAIL = "dondearri@gmail.com";
+    private static final String DEFAULT_ADMIN_PASSWORD = "1234";
+    private static final int TOTAL_ADMINS = 10;
+    private static final int TOTAL_USERS = 10;
     private static final int TOTAL_PRODUCTOS = 10;
     private static final int TOTAL_PEDIDOS = 100;
     private final MongoTemplate mongoTemplate;
@@ -54,35 +59,41 @@ public class RandonDataService {
     );
 
     public void seedDatabase(){
-        generateUsuarios("ROLE_ADMIN", 10);
-        generateUsuarios("ROLE_USER", 1000);
+        generateUsuarios("ROLE_ADMIN", TOTAL_ADMINS);
+        generateUsuarios("ROLE_USER", TOTAL_USERS);
         generateProductosForAllUsers();
         generatePedidosForUsersWithRoleUser(TOTAL_PEDIDOS);
     }
 
     public void generateUsuarios(String rol, int cantidad) {
-        int batchsize = 5;
-        if(cantidad > 100){
-            batchsize = 100;
-        }
-        for (int i = 0; i < cantidad; i += batchsize) {
-            List<Usuario> usuarios = new ArrayList<>();
-            int registrosLote = Math.min(batchsize, cantidad - i);
+        List<Usuario> usuarios = new ArrayList<>();
 
-            for (int j = 0; j < registrosLote; j++) {
-                Usuario usuario = Usuario.builder()
-                        .nombreCompleto(faker.name().fullName())
-                        .correo(generateUniqueEmail(faker))
-                        .password(passwordEncoder.encode("Password123"))
-                        .rol(rol)
-                        .build();
-                usuarios.add(usuario);
+        if ("ROLE_ADMIN".equals(rol)) {
+            usuarios.add(Usuario.builder()
+                    .nombreCompleto(DEFAULT_ADMIN_NAME)
+                    .correo(DEFAULT_ADMIN_EMAIL)
+                    .password(passwordEncoder.encode(DEFAULT_ADMIN_PASSWORD))
+                    .rol(rol)
+                    .build());
+        }
+
+        while (usuarios.size() < cantidad) {
+            String correo = generateUniqueEmail(faker);
+            if ("ROLE_ADMIN".equals(rol) && DEFAULT_ADMIN_EMAIL.equalsIgnoreCase(correo)) {
+                continue;
             }
 
-            mongoTemplate.insertAll(usuarios);
-            System.out.println("Se insertaron " + usuarios.size() + " registros de tipo: " +rol);
+            Usuario usuario = Usuario.builder()
+                    .nombreCompleto(faker.name().fullName())
+                    .correo(correo)
+                    .password(passwordEncoder.encode("Password123"))
+                    .rol(rol)
+                    .build();
+            usuarios.add(usuario);
         }
 
+        mongoTemplate.insertAll(usuarios);
+        System.out.println("Se insertaron " + usuarios.size() + " registros de tipo: " +rol);
         System.out.println("Se generaron " + cantidad + " registros de tipo: " + rol);
     }
 

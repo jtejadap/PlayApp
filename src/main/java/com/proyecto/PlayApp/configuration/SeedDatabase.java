@@ -11,6 +11,8 @@ import org.springframework.stereotype.Component;
 @Component
 @RequiredArgsConstructor
 public class SeedDatabase implements CommandLineRunner {
+    private static final int TOTAL_ADMINS = 10;
+    private static final int TOTAL_USERS = 10;
     private final UsuarioRepository usuarioRepository;
     private final ProductoRepository productoRepository;
     private final PedidoRepository pedidoRepository;
@@ -45,8 +47,8 @@ public class SeedDatabase implements CommandLineRunner {
             System.out.println("Missing initial data detected, running seeder.");
 
             if (usuariosEmpty) {
-                randonDataService.generateUsuarios("ROLE_ADMIN", 10);
-                randonDataService.generateUsuarios("ROLE_USER", 1000);
+                randonDataService.generateUsuarios("ROLE_ADMIN", TOTAL_ADMINS);
+                randonDataService.generateUsuarios("ROLE_USER", TOTAL_USERS);
             }
 
             if (productosEmpty || productosSinImagen) {

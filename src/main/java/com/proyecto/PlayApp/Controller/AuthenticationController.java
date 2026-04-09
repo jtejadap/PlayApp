@@ -7,6 +7,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 public class AuthenticationController {
@@ -18,38 +19,46 @@ public class AuthenticationController {
     }
 
     @GetMapping("/login")
-    public String showLogin(){
+    public String showLogin(Model model) {
+        if (!model.containsAttribute("formulario")) {
+            model.addAttribute("formulario", new Usuario());
+        }
+        if (!model.containsAttribute("selectedRole")) {
+            model.addAttribute("selectedRole", "USER");
+        }
         return "login";
     }
 
     @PostMapping("/register")
-    public String createNewUser(@ModelAttribute("formulario") Usuario formulario, Model model) {
+    public String createNewUser(@ModelAttribute("formulario") Usuario formulario,
+                                @RequestParam(name = "roleSelection", defaultValue = "USER") String roleSelection,
+                                Model model) {
         try {
-            usuarioService.crearUsuario(formulario);
-            model.addAttribute("registroExitoso", "Usuario registrado exitosamente. Ahora puedes iniciar sesión.");
-            return "login"; // Permanecer en la página de registro para mostrar el mensaje de éxito
+            usuarioService.crearUsuarioPorRol(formulario, roleSelection);
+            model.addAttribute("formulario", new Usuario());
+            model.addAttribute("selectedRole", roleSelection);
+            model.addAttribute("registroExitoso", "Registro completado. Ahora puedes iniciar sesion.");
         } catch (Exception e) {
-            model.addAttribute("error", "Hubo un problema al registrar el usuario. Inténtalo de nuevo.");
-            return "login";
-        }
-    }
-
-    @GetMapping("/signup")
-    public String showManagerForm(Model model) {
-        model.addAttribute("restaurante", new Usuario());
-        return "Management/register-manager"; // Asegúrate de que esta vista es accesible sin autenticación
-    }
-
-    @PostMapping("/signup")
-    public String createNewRestaurant(@ModelAttribute("formulario") Usuario formulario, Model model) {
-        try {
-            usuarioService.createRestaurant(formulario);
-            model.addAttribute("registroExitoso", "Registro completado. ¡Ahora puedes iniciar sesión!");
-        } catch (IllegalArgumentException e) {
-            model.addAttribute("error", e.getMessage());
+            model.addAttribute("formulario", formulario);
+            model.addAttribute("selectedRole", roleSelection);
+            model.addAttribute("error", e instanceof IllegalArgumentException
+                    ? e.getMessage()
+                    : "Hubo un problema al registrar la cuenta. Intentalo de nuevo.");
         }
         return "login";
     }
 
+    @GetMapping("/signup")
+    public String showManagerForm(Model model) {
+        if (!model.containsAttribute("formulario")) {
+            model.addAttribute("formulario", new Usuario());
+        }
+        model.addAttribute("selectedRole", "ADMIN");
+        return "login";
+    }
 
+    @PostMapping("/signup")
+    public String createNewRestaurant(@ModelAttribute("formulario") Usuario formulario, Model model) {
+        return createNewUser(formulario, "ADMIN", model);
+    }
 }

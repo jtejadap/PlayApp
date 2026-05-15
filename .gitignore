@@ -43,3 +43,7 @@ backup-mongo/
 
 ### Local toolchain ###
 .tools/
+
+### Local runtime logs ###
+playapp-start.out.log
+playapp-start.err.log

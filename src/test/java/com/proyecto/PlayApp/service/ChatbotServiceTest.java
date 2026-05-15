@@ -1,4 +1,4 @@
-﻿package com.proyecto.PlayApp.service;
+package com.proyecto.PlayApp.service;
 
 import com.proyecto.PlayApp.dto.ChatSendRequest;
 import com.proyecto.PlayApp.dto.ChatSendResponse;

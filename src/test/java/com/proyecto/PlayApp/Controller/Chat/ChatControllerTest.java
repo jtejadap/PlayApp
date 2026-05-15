@@ -1,4 +1,4 @@
-﻿package com.proyecto.PlayApp.Controller.Chat;
+package com.proyecto.PlayApp.Controller.Chat;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.proyecto.PlayApp.dto.ChatHistoryResponse;

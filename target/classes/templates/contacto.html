@@ -7,6 +7,7 @@
     <link th:href="@{/css/bootstrap.min.css}" rel="stylesheet">
     <link rel="stylesheet" href="/css/importJakartaFont.css">
     <link rel="stylesheet" href="/css/contacto.css">
+    <link rel="stylesheet" href="/css/chat-widget.css">
     <link rel="icon" href="/img/Logo.png" type="image/png">
 </head>
 
@@ -189,6 +190,8 @@
         <li class="list-inline-carritoItem"><a href="#" class="text-white">Política de privacidad</a></li>
     </ul>
 </footer>
+<div th:replace="~{fragments/chat-widget :: playappChatWidget}"></div>
+<script src="/js/chat-widget.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

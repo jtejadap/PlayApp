@@ -12,8 +12,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.Comparator;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -24,10 +26,12 @@ public class ChatbotService {
     private static final String ROLE_USER = "user";
     private static final String ROLE_ASSISTANT = "assistant";
     private static final String FALLBACK_REPLY = "Ahora mismo tengo una dificultad temporal para responder. Intenta de nuevo en unos segundos, por favor.";
+    private static final int CONTEXT_MESSAGES = 4;
 
     private final ChatSessionRepository chatSessionRepository;
     private final ChatMessageRepository chatMessageRepository;
     private final GeminiService geminiService;
+    private final ChatIntentService chatIntentService;
 
     public ChatSendResponse sendMessage(ChatSendRequest request) {
         validateRequest(request);
@@ -42,10 +46,11 @@ public class ChatbotService {
         userMessage.setTimestamp(now);
         chatMessageRepository.save(userMessage);
 
+        ChatIntentService.IntentResolution intentResolution = chatIntentService.resolve(userMessage.getContent(), request.getUserId());
         ChatMessage assistantMessage = new ChatMessage();
         assistantMessage.setSessionId(session.getId());
         assistantMessage.setRole(ROLE_ASSISTANT);
-        assistantMessage.setContent(generateAssistantReply(userMessage.getContent()));
+        assistantMessage.setContent(resolveAssistantReply(intentResolution, session.getId(), userMessage.getContent()));
         assistantMessage.setTimestamp(LocalDateTime.now());
         chatMessageRepository.save(assistantMessage);
 
@@ -108,12 +113,35 @@ public class ChatbotService {
         }
     }
 
-    private String generateAssistantReply(String userMessage) {
+    private String resolveAssistantReply(ChatIntentService.IntentResolution intentResolution, String sessionId, String userMessage) {
+        if (intentResolution.handled()) {
+            return intentResolution.response();
+        }
+        String context = buildShortContext(sessionId);
+        return generateAssistantReply(userMessage, context);
+    }
+
+    private String generateAssistantReply(String userMessage, String context) {
+        String prompt = context == null || context.isBlank()
+                ? userMessage
+                : "Contexto breve del chat:\n" + context + "\n\nMensaje actual del usuario:\n" + userMessage;
         try {
-            return geminiService.generateReply(userMessage);
+            return geminiService.generateReply(prompt);
         } catch (Exception ex) {
             log.warn("Fallo al generar respuesta con Gemini. Se devolvera fallback.", ex);
             return FALLBACK_REPLY;
         }
+    }
+
+    private String buildShortContext(String sessionId) {
+        List<ChatMessage> fullHistory = chatMessageRepository.findBySessionIdOrderByTimestampAsc(sessionId).stream()
+                .sorted(Comparator.comparing(ChatMessage::getTimestamp, Comparator.nullsLast(Comparator.naturalOrder())))
+                .toList();
+        int startIndex = Math.max(0, fullHistory.size() - CONTEXT_MESSAGES);
+        List<ChatMessage> recent = fullHistory.subList(startIndex, fullHistory.size());
+
+        return recent.stream()
+                .map(item -> item.getRole() + ": " + item.getContent())
+                .collect(Collectors.joining("\n"));
     }
 }

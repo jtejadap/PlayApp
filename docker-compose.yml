@@ -1,0 +1,54 @@
+name: playapp-local
+
+services:
+  mongo:
+    image: mongo:7
+    restart: unless-stopped
+    ports:
+      - "${PLAYAPP_MONGO_PORT:-27018}:27017"
+    environment:
+      MONGO_INITDB_DATABASE: ${MONGODB_DATABASE:-playappdb}
+    volumes:
+      - playapp_mongo_data:/data/db
+    healthcheck:
+      test: ["CMD", "mongosh", "--quiet", "--eval", "db.adminCommand('ping').ok"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  redis:
+    image: redis:7-alpine
+    restart: unless-stopped
+    command: ["redis-server", "--appendonly", "yes"]
+    ports:
+      - "${PLAYAPP_REDIS_PORT:-6380}:6379"
+    volumes:
+      - playapp_redis_data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  app:
+    profiles: ["app"]
+    build:
+      context: .
+    restart: unless-stopped
+    env_file:
+      - ./config/application-secrets.env
+    environment:
+      MONGODB_URI: mongodb://mongo:27017/${MONGODB_DATABASE:-playappdb}
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
+    depends_on:
+      mongo:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    ports:
+      - "${PLAYAPP_APP_PORT:-8080}:8080"
+
+volumes:
+  playapp_mongo_data:
+  playapp_redis_data:

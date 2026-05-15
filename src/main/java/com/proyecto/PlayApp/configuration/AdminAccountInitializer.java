@@ -2,8 +2,8 @@ package com.proyecto.PlayApp.configuration;
 
 import com.proyecto.PlayApp.entity.Usuario;
 import com.proyecto.PlayApp.repository.UsuarioRepository;
-import com.proyecto.PlayApp.service.ReporteService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.core.annotation.Order;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -13,19 +13,21 @@ import org.springframework.stereotype.Component;
 @Order(0)
 @RequiredArgsConstructor
 public class AdminAccountInitializer implements CommandLineRunner {
-    private static final String ADMIN_PASSWORD = "admin123";
-
     private final UsuarioRepository usuarios;
     private final PasswordEncoder passwordEncoder;
+    @Value("${playapp.admin.email:adminplayapp01@gmail.com}")
+    private String adminEmail;
+    @Value("${playapp.admin.password:admin123}")
+    private String adminPassword;
 
     @Override
     public void run(String... args) {
-        Usuario admin = usuarios.findUsuarioByCorreo(ReporteService.ADMIN_GLOBAL_CORREO);
+        Usuario admin = usuarios.findUsuarioByCorreo(adminEmail);
         if (admin == null) {
             usuarios.save(Usuario.builder()
                     .nombreCompleto("Administrador PlayApp")
-                    .correo(ReporteService.ADMIN_GLOBAL_CORREO)
-                    .password(passwordEncoder.encode(ADMIN_PASSWORD))
+                    .correo(adminEmail)
+                    .password(passwordEncoder.encode(adminPassword))
                     .rol("ROLE_ADMIN")
                     .build());
             return;
@@ -35,8 +37,8 @@ public class AdminAccountInitializer implements CommandLineRunner {
                 ? "Administrador PlayApp"
                 : admin.getNombreCompleto());
         admin.setRol("ROLE_ADMIN");
-        if (admin.getPassword() == null || !passwordEncoder.matches(ADMIN_PASSWORD, admin.getPassword())) {
-            admin.setPassword(passwordEncoder.encode(ADMIN_PASSWORD));
+        if (admin.getPassword() == null || !passwordEncoder.matches(adminPassword, admin.getPassword())) {
+            admin.setPassword(passwordEncoder.encode(adminPassword));
         }
         usuarios.save(admin);
     }

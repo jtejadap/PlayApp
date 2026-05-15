@@ -14,6 +14,7 @@ import com.proyecto.PlayApp.repository.ReporteRepository;
 import com.proyecto.PlayApp.repository.UsuarioRepository;
 import lombok.RequiredArgsConstructor;
 import org.bson.Document;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -22,10 +23,11 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ReporteService {
     private static final int LIMITE_TOP = 10;
-    public static final String ADMIN_GLOBAL_CORREO = "adminplayapp01@gmail.com";
 
     private final ReporteRepository reportes;
     private final UsuarioRepository usuarios;
+    @Value("${playapp.admin.email:adminplayapp01@gmail.com}")
+    private String adminGlobalCorreo;
 
     public ReportePedidosDTO reportePedidos(String correoAdmin) {
         String restauranteId = restauranteIdSiAplica(correoAdmin);
@@ -94,7 +96,7 @@ public class ReporteService {
     }
 
     public boolean esAdminGlobal(String correoAdmin) {
-        return ADMIN_GLOBAL_CORREO.equalsIgnoreCase(correoAdmin);
+        return adminGlobalCorreo.equalsIgnoreCase(correoAdmin);
     }
 
     private List<RestauranteTopDTO> restaurantesConMasPedidos(int limite, String restauranteId) {

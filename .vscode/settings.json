@@ -1,0 +1,16 @@
+{
+  "java.configuration.updateBuildConfiguration": "interactive",
+  "java.jdt.ls.java.home": "${workspaceFolder}\\.tools\\jdk-21",
+  "java.compile.nullAnalysis.mode": "automatic",
+  "java.debug.settings.onBuildFailureProceed": true,
+  "java.server.launchMode": "Standard",
+  "maven.executable.path": "${workspaceFolder}/mvnw.cmd",
+  "files.exclude": {
+    "**/target": true
+  },
+  "search.exclude": {
+    "**/target": true
+  },
+  "terminal.integrated.cwd": "${workspaceFolder}",
+  "editor.formatOnSave": true
+}

@@ -1,0 +1,5 @@
+target
+.git
+.vscode
+config/application-secrets.env
+backup-mongo

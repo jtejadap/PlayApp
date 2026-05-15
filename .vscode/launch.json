@@ -1,0 +1,15 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "type": "java",
+      "name": "PlayApp (Spring Boot)",
+      "request": "launch",
+      "mainClass": "com.proyecto.PlayApp.ProyectoApplication",
+      "cwd": "${workspaceFolder}",
+      "preLaunchTask": "PlayApp: Start Local Stack",
+      "envFile": "${workspaceFolder}/config/application-secrets.env",
+      "args": "--server.port=8080"
+    }
+  ]
+}

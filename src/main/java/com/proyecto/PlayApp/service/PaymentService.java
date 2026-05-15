@@ -3,6 +3,7 @@ package com.proyecto.PlayApp.service;
 import java.math.BigDecimal;
 import java.util.Collections;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import com.mercadopago.MercadoPagoConfig;
@@ -16,11 +17,23 @@ import com.mercadopago.resources.preference.Preference;
 
 @Service
 public class PaymentService {
+    private final String mpAccessToken;
+    private final String playAppBaseUrl;
+
+    public PaymentService(
+            @Value("${playapp.payment.mp.access-token:}") String mpAccessToken,
+            @Value("${playapp.payment.base-url:http://localhost:8080}") String playAppBaseUrl) {
+        this.mpAccessToken = mpAccessToken;
+        this.playAppBaseUrl = normalizeBaseUrl(playAppBaseUrl);
+    }
 
     public String crearPreferencia(String title, BigDecimal amount, int quantity, String ordenId)
         throws MPException, MPApiException {
+        if (mpAccessToken == null || mpAccessToken.isBlank()) {
+            throw new IllegalStateException("Falta MP_ACCESS_TOKEN para crear preferencias de pago.");
+        }
 
-        MercadoPagoConfig.setAccessToken("APP_USR-3404440688881887-112017-2822c3f4ff28fc67d00836b270dc7fa6-3005390419");
+        MercadoPagoConfig.setAccessToken(mpAccessToken);
 
         PreferenceItemRequest item =
                 PreferenceItemRequest.builder()
@@ -32,9 +45,9 @@ public class PaymentService {
 
         PreferenceBackUrlsRequest backUrls =
                 PreferenceBackUrlsRequest.builder()
-                        .success("https://abram-wonted-sharita.ngrok-free.dev/payment/proceed?estado=SUCCESS&orden=" + ordenId)
-                        .pending("https://abram-wonted-sharita.ngrok-free.dev/payment/proceed?estado=PENDING&orden=" + ordenId)
-                        .failure("https://abram-wonted-sharita.ngrok-free.dev/payment/proceed?estado=FAILED&orden=" + ordenId)
+                        .success(playAppBaseUrl + "/payment/proceed?estado=SUCCESS&orden=" + ordenId)
+                        .pending(playAppBaseUrl + "/payment/proceed?estado=PENDING&orden=" + ordenId)
+                        .failure(playAppBaseUrl + "/payment/proceed?estado=FAILED&orden=" + ordenId)
                         .build();
 
         PreferenceRequest preferenceRequest =
@@ -56,5 +69,12 @@ public class PaymentService {
             throw ex;
         }
 
+    }
+
+    private String normalizeBaseUrl(String baseUrl) {
+        if (baseUrl == null || baseUrl.isBlank()) {
+            return "http://localhost:8080";
+        }
+        return baseUrl.endsWith("/") ? baseUrl.substring(0, baseUrl.length() - 1) : baseUrl;
     }
 }

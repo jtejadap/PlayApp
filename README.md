@@ -1,34 +1,123 @@
-# Playapp
-[![Spring Boot](https://img.shields.io/badge/Springboot-6AAD3D)](https://spring.io/projects/spring-boot)
-[![Redis](https://img.shields.io/badge/Redis-FF4C41)](https://redis.io/)
-[![MySQL](https://img.shields.io/badge/MySQL-3E6E93)](https://www.mysql.com/downloads/)
-[![Docker](https://img.shields.io/badge/Docker-0F4AC3)](https://www.docker.com/)
-## ¿Que es Playapp?
-Es una aplicacion web  que busca brindar acceso a la compra de productos y servicios en las playas de cartagena con precios justos con el fin de mitigar el impacto de las estafas.
-## ¿Que necesito para ejecutarlo?
+# PlayApp
 
-- IDE Configurado con Spring Boot
-- Java JDK version 21
-- MySQL
-- Redis
-- Docker
+Proyecto Spring Boot 3 + Java 21 con MongoDB y Redis.
 
-## ¿Como lo ejecuto?
+## Objetivo de esta sincronizacion local
 
-1. Descargar codigo fuente y abrir proyecto en el IDE
-2. Configurar e iniciar servicio de Redis
-    1. Modificar los parametros de conexión a redis en el archivo "application.properties" con la información de su servidor Redis.
-    2. Iniciar servicio de Redis, esto se puede hacer desde docker(mirar siguiente sección).
-3. Compilar y ejecutar el proyecto con la ayuda de su IDE de preferencia
+Esta configuracion esta pensada para que **todo quede aislado por proyecto**:
 
-### si no tengo Redis ¿como lo instalo?
-La forma mas sencilla de usar redis es descargando la imagen publicada en dockerhub con el siguiente comando:
+- Docker con nombre de proyecto propio: `playapp-local`
+- Volumenes Docker propios: `playapp_mongo_data`, `playapp_redis_data`
+- Variables de entorno solo en `config/application-secrets.env`
+- VS Code configurado en `.vscode/` para este workspace
+- Sin cambios en configuraciones globales de Git, Docker Desktop o VS Code
 
-```bash
-docker run -d --name redis -p 6379:6379 redis:7.4
+## Requisitos
+
+- Java 21 (opcional si usas el instalador local `scripts/setup-java21.ps1`)
+- Docker Desktop + Docker Compose
+- Git (opcional para conectar a GitHub)
+
+## Java 21 local (sin tocar tu Java global)
+
+Instala JDK 21 portable dentro de este repo:
+
+```powershell
+powershell -ExecutionPolicy Bypass -File .\scripts\setup-java21.ps1
 ```
-* Tenga encuenta que para descargar la imagen tiene que iniciar sesión con su perfil de dockerhub, esto lo puede hacer con el siguiente comando (reemplaze "user", con su usuario de docker):
 
-```bash
-docker login -u <user>
-```  
+Se instala en `.tools/jdk-21` y se usa solo para PlayApp.
+
+## 1) Configurar variables locales
+
+Archivo base:
+
+`config/application-secrets.env.example`
+
+Copia a:
+
+`config/application-secrets.env`
+
+Variables importantes:
+
+- `MONGODB_URI`
+- `MONGODB_DATABASE`
+- `REDIS_HOST`
+- `REDIS_PORT`
+- `MP_ACCESS_TOKEN`
+- `PLAYAPP_BASE_URL`
+- `PLAYAPP_ADMIN_EMAIL`
+- `PLAYAPP_ADMIN_PASSWORD`
+
+Puertos recomendados para no chocar con otros proyectos:
+
+- Mongo local del proyecto: `27018`
+- Redis local del proyecto: `6380`
+- App local: `8080`
+
+## 2) Levantar Mongo y Redis solo para PlayApp
+
+```powershell
+powershell -ExecutionPolicy Bypass -File .\scripts\dev-up.ps1
+```
+
+Para detener:
+
+```powershell
+powershell -ExecutionPolicy Bypass -File .\scripts\dev-down.ps1
+```
+
+## 3) Ejecutar la app local
+
+```powershell
+powershell -ExecutionPolicy Bypass -File .\scripts\start-playapp.ps1
+```
+
+El script:
+
+- carga `config/application-secrets.env`
+- levanta `mongo` y `redis` del `docker-compose.yml` (si Docker esta disponible)
+- si detecta Java 21, inicia Spring Boot local
+- si NO detecta Java 21 (por ejemplo Java 17), cambia automaticamente a modo Docker (mongo + redis + app)
+
+## 4) Ejecutar todo en Docker (incluyendo app)
+
+```powershell
+docker-compose --profile app up -d --build
+```
+
+## 5) VS Code (solo workspace)
+
+Se incluyeron archivos en `.vscode/`:
+
+- `settings.json`
+- `tasks.json`
+- `launch.json`
+- `extensions.json`
+
+No afectan otros proyectos.
+
+## 6) GitHub (sin tocar global)
+
+Si quieres conectar este repo local a GitHub:
+
+```powershell
+git remote add origin https://github.com/jtejadap/PlayApp.git
+git branch -M main
+```
+
+Luego revisa antes de push:
+
+```powershell
+git status
+```
+
+## Seguridad
+
+Se removieron secretos hardcodeados del codigo:
+
+- credenciales de correo en `application.properties`
+- token de MercadoPago en `PaymentService`
+- URL fija de ngrok para callbacks de pago
+
+Ahora todo viene por variables locales del proyecto.

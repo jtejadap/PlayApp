@@ -1,5 +1,5 @@
 HELP.md
-##target/
+target/
 !.mvn/wrapper/maven-wrapper.jar
 !**/src/main/**/target/
 !**/src/test/**/target/
@@ -29,8 +29,17 @@ build/
 !**/src/main/**/build/
 !**/src/test/**/build/
 
-### VS Code ###
-.vscode/
+### Local environment files ###
+.env
+.env.*
+config/application-secrets.env
+config/*.local.env
 
 ### Local database backups ###
 backup-mongo/
+
+### Docker local data ###
+.docker/
+
+### Local toolchain ###
+.tools/

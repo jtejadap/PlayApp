@@ -1,14 +1,18 @@
-# Usa Java 21 en lugar de Java 17
-FROM eclipse-temurin:21-jdk-alpine
+FROM eclipse-temurin:21-jdk-alpine AS build
+WORKDIR /workspace
 
-# Establece el directorio de trabajo dentro del contenedor
+COPY .mvn/ .mvn/
+COPY mvnw mvnw
+COPY pom.xml pom.xml
+RUN chmod +x mvnw && ./mvnw -q -DskipTests dependency:go-offline
+
+COPY src/ src/
+RUN ./mvnw -q -DskipTests package
+
+FROM eclipse-temurin:21-jre-alpine
 WORKDIR /app
 
-# Copia el archivo JAR de Spring Boot al contenedor
-COPY target/PlayApp-0.0.1-SNAPSHOT.jar /app/PlayApp-0.0.1-SNAPSHOT.jar
+COPY --from=build /workspace/target/PlayApp-0.0.1-SNAPSHOT.jar app.jar
 
-# Expone el puerto 8080
 EXPOSE 8080
-
-# Comando para ejecutar la aplicación Spring Boot
-CMD ["java", "-jar", "/app/PlayApp-0.0.1-SNAPSHOT.jar"]
+ENTRYPOINT ["java", "-jar", "/app/app.jar"]

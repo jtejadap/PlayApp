@@ -8,6 +8,7 @@ import com.proyecto.PlayApp.entity.ChatSession;
 import com.proyecto.PlayApp.repository.ChatMessageRepository;
 import com.proyecto.PlayApp.repository.ChatSessionRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -16,15 +17,17 @@ import java.util.NoSuchElementException;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class ChatbotService {
     private static final int MAX_MESSAGE_LENGTH = 1000;
     private static final String DEFAULT_STATUS = "ACTIVE";
     private static final String ROLE_USER = "user";
     private static final String ROLE_ASSISTANT = "assistant";
-    private static final String MOCK_REPLY = "Hola, soy el asistente de PlayApp. Estoy listo para ayudarte con productos, precios y pedidos.";
+    private static final String FALLBACK_REPLY = "Ahora mismo tengo una dificultad temporal para responder. Intenta de nuevo en unos segundos, por favor.";
 
     private final ChatSessionRepository chatSessionRepository;
     private final ChatMessageRepository chatMessageRepository;
+    private final GeminiService geminiService;
 
     public ChatSendResponse sendMessage(ChatSendRequest request) {
         validateRequest(request);
@@ -42,7 +45,7 @@ public class ChatbotService {
         ChatMessage assistantMessage = new ChatMessage();
         assistantMessage.setSessionId(session.getId());
         assistantMessage.setRole(ROLE_ASSISTANT);
-        assistantMessage.setContent(MOCK_REPLY);
+        assistantMessage.setContent(generateAssistantReply(userMessage.getContent()));
         assistantMessage.setTimestamp(LocalDateTime.now());
         chatMessageRepository.save(assistantMessage);
 
@@ -102,6 +105,15 @@ public class ChatbotService {
         }
         if (request.getMessage().trim().length() > MAX_MESSAGE_LENGTH) {
             throw new IllegalArgumentException("El mensaje supera el maximo permitido de " + MAX_MESSAGE_LENGTH + " caracteres");
+        }
+    }
+
+    private String generateAssistantReply(String userMessage) {
+        try {
+            return geminiService.generateReply(userMessage);
+        } catch (Exception ex) {
+            log.warn("Fallo al generar respuesta con Gemini. Se devolvera fallback.", ex);
+            return FALLBACK_REPLY;
         }
     }
 }

@@ -14,7 +14,9 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Locale;
 import java.util.NoSuchElementException;
+import java.text.Normalizer;
 import java.util.stream.Collectors;
 
 @Service
@@ -25,8 +27,8 @@ public class ChatbotService {
     private static final String DEFAULT_STATUS = "ACTIVE";
     private static final String ROLE_USER = "user";
     private static final String ROLE_ASSISTANT = "assistant";
-    private static final String FALLBACK_REPLY = "Ahora mismo tengo una dificultad temporal para responder. Intenta de nuevo en unos segundos, por favor.";
-    private static final String GEMINI_CONFIG_REPLY = "El asistente IA esta deshabilitado por configuracion de Gemini. Actualiza GEMINI_API_KEY en config/application-secrets.env y reinicia PlayApp.";
+    private static final String FALLBACK_REPLY = "Puedo ayudarte con productos, precios, pedidos y preguntas frecuentes. Escribe por ejemplo: precios, recomendar, estado de pedido o metodos de pago.";
+    private static final String GEMINI_UNAVAILABLE_REPLY = "En este momento estoy en modo asistente local. Igual puedo ayudarte con precios, recomendaciones y pedidos.";
     private static final int CONTEXT_MESSAGES = 4;
 
     private final ChatSessionRepository chatSessionRepository;
@@ -143,10 +145,7 @@ public class ChatbotService {
             return geminiService.generateReply(prompt);
         } catch (Exception ex) {
             log.warn("Fallo al generar respuesta con Gemini. Se devolvera fallback.", ex);
-            if (ex.getMessage() != null && ex.getMessage().contains("GEMINI_API_KEY")) {
-                return GEMINI_CONFIG_REPLY;
-            }
-            return FALLBACK_REPLY;
+            return buildLocalFallbackReply(userMessage, ex.getMessage());
         }
     }
 
@@ -160,5 +159,40 @@ public class ChatbotService {
         return recent.stream()
                 .map(item -> item.getRole() + ": " + item.getContent())
                 .collect(Collectors.joining("\n"));
+    }
+
+    private String buildLocalFallbackReply(String userMessage, String errorMessage) {
+        String normalized = normalize(userMessage);
+        if (containsAny(normalized, "hola", "buenas", "buenos dias", "buenas tardes", "buenas noches")) {
+            return GEMINI_UNAVAILABLE_REPLY + " Dime que necesitas y te guio paso a paso.";
+        }
+        if (containsAny(normalized, "gracias", "ok", "vale", "listo")) {
+            return "Con gusto. Si quieres, ahora te puedo mostrar precios, productos recomendados o estado de pedidos.";
+        }
+        if (containsAny(normalized, "ayuda", "help", "soporte", "no se")) {
+            return "Claro. Puedo ayudarte en 4 frentes: 1) FAQ 2) recomendaciones 3) precios 4) pedidos. Escribe una opcion.";
+        }
+        if (errorMessage != null && errorMessage.contains("GEMINI_API_KEY")) {
+            return GEMINI_UNAVAILABLE_REPLY + " Para preguntas abiertas, por ahora escribe consultas concretas como: precios de pescado, recomendar productos o estado de pedido.";
+        }
+        return FALLBACK_REPLY;
+    }
+
+    private String normalize(String value) {
+        if (value == null) {
+            return "";
+        }
+        String noAccents = Normalizer.normalize(value, Normalizer.Form.NFD)
+                .replaceAll("\\p{M}", "");
+        return noAccents.toLowerCase(Locale.ROOT).trim();
+    }
+
+    private boolean containsAny(String message, String... values) {
+        for (String item : values) {
+            if (message.contains(item)) {
+                return true;
+            }
+        }
+        return false;
     }
 }

@@ -26,6 +26,7 @@ public class ChatbotService {
     private static final String ROLE_USER = "user";
     private static final String ROLE_ASSISTANT = "assistant";
     private static final String FALLBACK_REPLY = "Ahora mismo tengo una dificultad temporal para responder. Intenta de nuevo en unos segundos, por favor.";
+    private static final String GEMINI_CONFIG_REPLY = "El asistente IA esta deshabilitado por configuracion de Gemini. Actualiza GEMINI_API_KEY en config/application-secrets.env y reinicia PlayApp.";
     private static final int CONTEXT_MESSAGES = 4;
 
     private final ChatSessionRepository chatSessionRepository;
@@ -142,6 +143,9 @@ public class ChatbotService {
             return geminiService.generateReply(prompt);
         } catch (Exception ex) {
             log.warn("Fallo al generar respuesta con Gemini. Se devolvera fallback.", ex);
+            if (ex.getMessage() != null && ex.getMessage().contains("GEMINI_API_KEY")) {
+                return GEMINI_CONFIG_REPLY;
+            }
             return FALLBACK_REPLY;
         }
     }

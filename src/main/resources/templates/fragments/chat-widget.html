@@ -1,0 +1,40 @@
+﻿<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<body>
+<div th:fragment="playappChatWidget" class="playapp-chat-root" aria-live="polite">
+    <button type="button" class="playapp-chat-toggle" id="playapp-chat-toggle" aria-expanded="false" aria-controls="playapp-chat-window">
+        <span class="playapp-chat-toggle-icon">AI</span>
+        <span class="playapp-chat-toggle-label">Chat</span>
+    </button>
+
+    <section class="playapp-chat-window" id="playapp-chat-window" aria-hidden="true">
+        <header class="playapp-chat-header">
+            <div>
+                <strong>Asistente PlayApp</strong>
+                <p>Te ayudo con productos, precios y pedidos.</p>
+            </div>
+            <button type="button" class="playapp-chat-close" id="playapp-chat-close" aria-label="Cerrar chat">x</button>
+        </header>
+
+        <main class="playapp-chat-messages" id="playapp-chat-messages"></main>
+
+        <div class="playapp-chat-typing" id="playapp-chat-typing" hidden>
+            <span></span><span></span><span></span>
+        </div>
+
+        <p class="playapp-chat-error" id="playapp-chat-error" hidden>Ahora no fue posible responder, intenta de nuevo.</p>
+
+        <form class="playapp-chat-form" id="playapp-chat-form" novalidate>
+            <textarea
+                    id="playapp-chat-input"
+                    class="playapp-chat-input"
+                    rows="1"
+                    maxlength="1000"
+                    placeholder="Escribe tu mensaje..."
+                    aria-label="Escribe tu mensaje"></textarea>
+            <button type="submit" class="playapp-chat-send" id="playapp-chat-send">Enviar</button>
+        </form>
+    </section>
+</div>
+</body>
+</html>

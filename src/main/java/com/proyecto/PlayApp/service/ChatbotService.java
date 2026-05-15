@@ -34,7 +34,11 @@ public class ChatbotService {
     private final ChatIntentService chatIntentService;
 
     public ChatSendResponse sendMessage(ChatSendRequest request) {
-        validateRequest(request);
+        if (request == null) {
+            throw new IllegalArgumentException("El cuerpo de la solicitud es obligatorio");
+        }
+        String sanitizedMessage = sanitizeMessage(request.getMessage());
+        validateRequest(sanitizedMessage);
 
         ChatSession session = resolveSession(request.getSessionId(), request.getUserId());
         LocalDateTime now = LocalDateTime.now();
@@ -42,7 +46,7 @@ public class ChatbotService {
         ChatMessage userMessage = new ChatMessage();
         userMessage.setSessionId(session.getId());
         userMessage.setRole(ROLE_USER);
-        userMessage.setContent(request.getMessage().trim());
+        userMessage.setContent(sanitizedMessage);
         userMessage.setTimestamp(now);
         chatMessageRepository.save(userMessage);
 
@@ -50,7 +54,7 @@ public class ChatbotService {
         ChatMessage assistantMessage = new ChatMessage();
         assistantMessage.setSessionId(session.getId());
         assistantMessage.setRole(ROLE_ASSISTANT);
-        assistantMessage.setContent(resolveAssistantReply(intentResolution, session.getId(), userMessage.getContent()));
+        assistantMessage.setContent(resolveAssistantReply(intentResolution, session.getId(), sanitizedMessage));
         assistantMessage.setTimestamp(LocalDateTime.now());
         chatMessageRepository.save(assistantMessage);
 
@@ -101,16 +105,25 @@ public class ChatbotService {
         return chatSessionRepository.save(session);
     }
 
-    private void validateRequest(ChatSendRequest request) {
-        if (request == null) {
-            throw new IllegalArgumentException("El cuerpo de la solicitud es obligatorio");
-        }
-        if (request.getMessage() == null || request.getMessage().isBlank()) {
+    private void validateRequest(String sanitizedMessage) {
+        if (sanitizedMessage == null || sanitizedMessage.isBlank()) {
             throw new IllegalArgumentException("El mensaje no puede estar vacio");
         }
-        if (request.getMessage().trim().length() > MAX_MESSAGE_LENGTH) {
+        if (sanitizedMessage.length() > MAX_MESSAGE_LENGTH) {
             throw new IllegalArgumentException("El mensaje supera el maximo permitido de " + MAX_MESSAGE_LENGTH + " caracteres");
         }
+    }
+
+    private String sanitizeMessage(String message) {
+        if (message == null) {
+            return null;
+        }
+        return message
+                .replaceAll("<[^>]*>", "")
+                .replaceAll("[\\u0000-\\u0008\\u000B\\u000C\\u000E-\\u001F\\u007F]", "")
+                .replace("<", "")
+                .replace(">", "")
+                .trim();
     }
 
     private String resolveAssistantReply(ChatIntentService.IntentResolution intentResolution, String sessionId, String userMessage) {

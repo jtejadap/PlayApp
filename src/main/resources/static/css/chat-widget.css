@@ -8,9 +8,9 @@
 
 .playapp-chat-toggle {
     border: 0;
-    border-radius: 50%;
-    width: 76px;
-    height: 76px;
+    border-radius: 16px;
+    width: 94px;
+    height: 94px;
     padding: 0;
     color: #ffffff;
     background: transparent;
@@ -18,15 +18,15 @@
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    overflow: hidden;
+    overflow: visible;
 }
 
 .playapp-chat-toggle-image {
     width: 100%;
     height: 100%;
-    object-fit: cover;
-    border-radius: 50%;
-    border: 2px solid #b6f0e6;
+    object-fit: contain;
+    border-radius: 0;
+    border: 0;
 }
 
 .playapp-chat-toggle-label {
@@ -196,6 +196,11 @@
     .playapp-chat-window {
         width: calc(100vw - 24px);
         height: min(76vh, 580px);
+    }
+
+    .playapp-chat-toggle {
+        width: 84px;
+        height: 84px;
     }
 
 }

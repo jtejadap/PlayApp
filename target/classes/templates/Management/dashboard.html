@@ -3,15 +3,83 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Productos</title>
+    <title>Dashboard</title>
     <link th:href="@{/css/bootstrap.min.css}" rel="stylesheet">
     <link rel="stylesheet" href="/css/importJakartaFont.css">
     <link rel="icon" href="/img/Logo.png" type="image/png">
+    <style>
+        html,
+        body {
+            height: 100%;
+            overflow: hidden;
+        }
+        .admin-shell {
+            height: 100vh;
+            overflow: hidden;
+        }
+        .admin-sidebar {
+            height: 100vh;
+            overflow: hidden;
+        }
+        .dashboard-main {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+        .dashboard-header {
+            flex: 0 0 auto;
+        }
+        .dashboard-content {
+            flex: 1 1 auto;
+            overflow-y: auto;
+            overflow-x: hidden;
+            padding: 0 .25rem 1rem 0;
+        }
+        .metric-card {
+            border: 1px solid #dee2e6;
+            border-radius: 8px;
+            padding: 1rem;
+            min-height: 116px;
+            background: #fff;
+        }
+        .metric-label {
+            color: #6c757d;
+            font-size: .875rem;
+            margin-bottom: .35rem;
+        }
+        .metric-value {
+            font-size: clamp(1.35rem, 2vw, 2rem);
+            font-weight: 700;
+            overflow-wrap: anywhere;
+        }
+        .report-panel {
+            border: 1px solid #dee2e6;
+            border-radius: 8px;
+            padding: 1rem;
+            background: #fff;
+            height: 100%;
+        }
+        .chart-box {
+            height: 320px;
+            min-height: 320px;
+            overflow: hidden;
+        }
+        .chart-box canvas {
+            display: block;
+            width: 100% !important;
+            height: 250px !important;
+        }
+        .table-wrap {
+            max-height: 285px;
+            overflow: auto;
+        }
+    </style>
 </head>
 <body class="container-fluid jakarta-regular">
-<main class="row flex-nowrap">
+<main class="row flex-nowrap admin-shell">
     <div class="col-3 border-end p-0">
-        <div class="d-flex flex-column flex-shrink-0 p-3 bg-body-tertiary min-vh-100">
+        <div class="d-flex flex-column flex-shrink-0 p-3 bg-body-tertiary admin-sidebar">
             <a href="/manager/dashboard"
                class="d-flex align-carritoItems-center mb-3 mb-md-0 me-md-auto link-body-emphasis text-decoration-none">
                 <img src="/img/Logo.png" class="bi pe-none me-2" width="40" height="32" alt="home"/>
@@ -61,8 +129,8 @@
             </div>
         </div>
     </div>
-    <div class="col-9">
-        <div class="row">
+    <div class="col-9 dashboard-main">
+        <div class="row dashboard-header">
             <nav aria-label="breadcrumb">
                 <ol class="breadcrumb breadcrumb-chevron p-3 bg-body-tertiary rounded-3">
                     <li class="breadcrumb-carritoItem">
@@ -72,17 +140,266 @@
                         </a>
                     </li>
                     <li class="breadcrumb-carritoItem active" aria-current="page">
-                        Dashboard
+                        <span th:text="${dashboardGeneral} ? 'Dashboard general' : 'Dashboard de restaurante'">Dashboard</span>
                     </li>
                 </ol>
             </nav>
         </div>
-        <div class="row">
-			<iframe title="Playapp-15k" width="1024" height="1060" src="https://app.powerbi.com/view?r=eyJrIjoiZWI3ZGZlOGUtZjJiOC00YzFmLTg4OWEtNzUwMmI0MjFjNGNmIiwidCI6IjlkMTJiZjNmLWU0ZjYtNDdhYi05MTJmLTFhMmYwZmM0OGFhNCIsImMiOjR9" frameborder="0" allowFullScreen="true"></iframe>		   
+        <div class="dashboard-content">
+        <div class="row mb-3">
+            <div class="col-12">
+                <div class="alert alert-info mb-0" role="status">
+                    <span th:if="${dashboardGeneral}">Estas viendo el tablero general de PlayApp.</span>
+                    <span th:unless="${dashboardGeneral}">Estas viendo solo la informacion de tu restaurante o entidad.</span>
+                </div>
+            </div>
+        </div>
+        <div class="row g-3 mb-3">
+            <div class="col-12 col-md-4 col-xl-2">
+                <div class="metric-card">
+                    <div class="metric-label">Pedidos</div>
+                    <div id="totalPedidos" class="metric-value">0</div>
+                </div>
+            </div>
+            <div class="col-12 col-md-4 col-xl-2">
+                <div class="metric-card">
+                    <div class="metric-label">Ingresos</div>
+                    <div id="ingresosTotales" class="metric-value">$0</div>
+                </div>
+            </div>
+            <div class="col-12 col-md-4 col-xl-2">
+                <div class="metric-card">
+                    <div class="metric-label">Productos</div>
+                    <div id="totalProductos" class="metric-value">0</div>
+                </div>
+            </div>
+            <div class="col-12 col-md-4 col-xl-2">
+                <div class="metric-card">
+                    <div class="metric-label">Inventario</div>
+                    <div id="valorInventario" class="metric-value">$0</div>
+                </div>
+            </div>
+            <div class="col-12 col-md-4 col-xl-2">
+                <div class="metric-card">
+                    <div class="metric-label">Restaurantes</div>
+                    <div id="totalRestaurantes" class="metric-value">0</div>
+                </div>
+            </div>
+            <div class="col-12 col-md-4 col-xl-2">
+                <div class="metric-card">
+                    <div class="metric-label">Calificacion</div>
+                    <div id="calificacionPromedio" class="metric-value">0.0</div>
+                </div>
+            </div>
         </div>
 
+        <div id="dashboardError" class="alert alert-danger d-none" role="alert"></div>
+
+        <div class="row g-3">
+            <div class="col-12 col-xl-8">
+                <div class="report-panel chart-box">
+                    <h2 class="h5">Ingresos mensuales</h2>
+                    <canvas id="ingresosChart"></canvas>
+                </div>
+            </div>
+            <div class="col-12 col-xl-4">
+                <div class="report-panel chart-box">
+                    <h2 class="h5">Pedidos por estado</h2>
+                    <canvas id="estadosChart"></canvas>
+                </div>
+            </div>
+            <div class="col-12 col-xl-4">
+                <div class="report-panel chart-box">
+                    <h2 class="h5">Metodos de pago</h2>
+                    <canvas id="metodosChart"></canvas>
+                </div>
+            </div>
+            <div class="col-12 col-xl-4">
+                <div class="report-panel">
+                    <h2 class="h5">Productos mas vendidos</h2>
+                    <div class="table-wrap">
+                        <table class="table table-sm align-middle">
+                            <thead>
+                            <tr>
+                                <th>Producto</th>
+                                <th class="text-end">Vendidos</th>
+                                <th class="text-end">Ingresos</th>
+                            </tr>
+                            </thead>
+                            <tbody id="productosTopBody"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 col-xl-4">
+                <div class="report-panel">
+                    <h2 class="h5">Restaurantes top</h2>
+                    <div class="table-wrap">
+                        <table class="table table-sm align-middle">
+                            <thead>
+                            <tr>
+                                <th>Restaurante</th>
+                                <th class="text-end">Pedidos</th>
+                                <th class="text-end">Ingresos</th>
+                            </tr>
+                            </thead>
+                            <tbody id="restaurantesTopBody"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12">
+                <div class="report-panel">
+                    <h2 class="h5">Productos por categoria</h2>
+                    <div class="table-wrap">
+                        <table class="table table-sm align-middle">
+                            <thead>
+                            <tr>
+                                <th>Categoria</th>
+                                <th class="text-end">Productos</th>
+                                <th class="text-end">Stock</th>
+                                <th class="text-end">Valor inventario</th>
+                            </tr>
+                            </thead>
+                            <tbody id="categoriasBody"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        </div>
     </div>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <script>
+        const pesos = new Intl.NumberFormat('es-CO', { style: 'currency', currency: 'COP', maximumFractionDigits: 0 });
+        const numero = new Intl.NumberFormat('es-CO', { maximumFractionDigits: 1 });
+        const charts = {};
+
+        async function obtenerJSON(url) {
+            const response = await fetch(url, { headers: { 'Accept': 'application/json' } });
+            if (!response.ok) {
+                throw new Error(`No se pudo cargar ${url}`);
+            }
+            return response.json();
+        }
+
+        function setTexto(id, valor) {
+            document.getElementById(id).textContent = valor;
+        }
+
+        function filas(id, datos, render) {
+            const body = document.getElementById(id);
+            body.innerHTML = datos.length
+                ? datos.map(render).join('')
+                : '<tr><td colspan="4" class="text-muted">Sin datos registrados</td></tr>';
+        }
+
+        function pintarGrafica(id, tipo, labels, data, label) {
+            const ctx = document.getElementById(id);
+            if (charts[id]) {
+                charts[id].data.labels = labels;
+                charts[id].data.datasets[0].data = data;
+                charts[id].update('none');
+                return;
+            }
+            charts[id] = new Chart(ctx, {
+                type: tipo,
+                data: {
+                    labels,
+                    datasets: [{
+                        label,
+                        data,
+                        borderColor: '#0d6efd',
+                        backgroundColor: ['#0d6efd', '#198754', '#ffc107', '#dc3545', '#6f42c1', '#20c997'],
+                        tension: .25
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { legend: { display: tipo !== 'line' } },
+                    scales: tipo === 'line' ? { y: { beginAtZero: true } } : {}
+                }
+            });
+        }
+
+        async function cargarDashboard() {
+            const error = document.getElementById('dashboardError');
+            try {
+                const [pedidos, productos, restaurantes] = await Promise.all([
+                    obtenerJSON('/api/reportes/pedidos'),
+                    obtenerJSON('/api/reportes/productos'),
+                    obtenerJSON('/api/reportes/restaurantes')
+                ]);
+
+                setTexto('totalPedidos', numero.format(pedidos.totalPedidos));
+                setTexto('ingresosTotales', pesos.format(pedidos.ingresosTotales));
+                setTexto('totalProductos', numero.format(productos.totalProductos));
+                setTexto('valorInventario', pesos.format(productos.valorTotalInventario));
+                setTexto('totalRestaurantes', numero.format(restaurantes.totalRestaurantes));
+                setTexto('calificacionPromedio', numero.format(restaurantes.calificacionPromedio));
+
+                pintarGrafica(
+                    'ingresosChart',
+                    'line',
+                    pedidos.ingresosMensuales.map(item => item.periodo),
+                    pedidos.ingresosMensuales.map(item => item.ingresos),
+                    'Ingresos'
+                );
+                pintarGrafica(
+                    'estadosChart',
+                    'doughnut',
+                    pedidos.pedidosPorEstado.map(item => item.nombre),
+                    pedidos.pedidosPorEstado.map(item => item.cantidad),
+                    'Pedidos'
+                );
+                pintarGrafica(
+                    'metodosChart',
+                    'bar',
+                    pedidos.pedidosPorMetodoPago.map(item => item.nombre),
+                    pedidos.pedidosPorMetodoPago.map(item => item.cantidad),
+                    'Pedidos'
+                );
+
+                filas('productosTopBody', pedidos.productosMasVendidos, item => `
+                    <tr>
+                        <td>${item.nombre || 'Sin producto'}</td>
+                        <td class="text-end">${numero.format(item.cantidadVendida)}</td>
+                        <td class="text-end">${pesos.format(item.ingresos)}</td>
+                    </tr>
+                `);
+
+                filas('restaurantesTopBody', restaurantes.restaurantesConMayoresIngresos, item => `
+                    <tr>
+                        <td>${item.nombre || 'Sin restaurante'}</td>
+                        <td class="text-end">${numero.format(item.pedidos)}</td>
+                        <td class="text-end">${pesos.format(item.ingresos)}</td>
+                    </tr>
+                `);
+
+                filas('categoriasBody', productos.productosPorCategoria, item => `
+                    <tr>
+                        <td>${item.categoriaNombre}</td>
+                        <td class="text-end">${numero.format(item.productos)}</td>
+                        <td class="text-end">${numero.format(item.stock)}</td>
+                        <td class="text-end">${pesos.format(item.valorInventario)}</td>
+                    </tr>
+                `);
+
+                error.classList.add('d-none');
+            } catch (e) {
+                error.textContent = 'No fue posible actualizar las estadisticas. Revisa la sesion de administrador o la conexion con MongoDB.';
+                error.classList.remove('d-none');
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            cargarDashboard();
+            setInterval(cargarDashboard, 15000);
+        });
+    </script>
 </main>
 
 <div th:insert="fragments/logout-modal :: logoutModal"></div>

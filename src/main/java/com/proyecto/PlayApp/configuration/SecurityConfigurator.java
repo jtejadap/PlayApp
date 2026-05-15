@@ -40,6 +40,7 @@ public class SecurityConfigurator {
 
     public String[] pathsToAdminEndpoints = {
             "/manager/**",
+            "/api/reportes/**",
     };
 
 

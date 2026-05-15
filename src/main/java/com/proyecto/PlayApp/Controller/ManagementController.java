@@ -25,10 +25,12 @@ import java.security.Principal;
 public class ManagementController {
     private final ProductoService servicio;
     private final PedidoService pedidos;
+    private final ReporteService reportes;
 
     @GetMapping("/dashboard")
     public String viewAdminPage(Principal principal, Model model) {
         model.addAttribute("nombreRestaurante", principal.getName());
+        model.addAttribute("dashboardGeneral", reportes.esAdminGlobal(principal.getName()));
         return "Management/dashboard";
     }
 

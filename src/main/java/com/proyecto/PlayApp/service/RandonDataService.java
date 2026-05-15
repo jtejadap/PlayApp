@@ -68,7 +68,7 @@ public class RandonDataService {
     public void generateUsuarios(String rol, int cantidad) {
         List<Usuario> usuarios = new ArrayList<>();
 
-        if ("ROLE_ADMIN".equals(rol)) {
+        if ("ROLE_ADMIN".equals(rol) && usuarioRepository.findUsuarioByCorreo(DEFAULT_ADMIN_EMAIL) == null) {
             usuarios.add(Usuario.builder()
                     .nombreCompleto(DEFAULT_ADMIN_NAME)
                     .correo(DEFAULT_ADMIN_EMAIL)
@@ -98,8 +98,12 @@ public class RandonDataService {
     }
 
     private String generateUniqueEmail(Faker faker) {
-        String username = faker.name().username().replaceAll("[^a-zA-Z0-9]", "");
-        return username.toLowerCase() + "@" + faker.internet().domainName();
+        String correo;
+        do {
+            String username = faker.name().username().replaceAll("[^a-zA-Z0-9]", "");
+            correo = username.toLowerCase() + "@" + faker.internet().domainName();
+        } while (usuarioRepository.findUsuarioByCorreo(correo) != null);
+        return correo;
     }
 
     public void generateProductosForAllUsers() {

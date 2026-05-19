@@ -6,6 +6,7 @@ import com.proyecto.PlayApp.dto.ChatSendRequest;
 import com.proyecto.PlayApp.dto.ChatSendResponse;
 import com.proyecto.PlayApp.repository.UsuarioRepository;
 import com.proyecto.PlayApp.service.ChatbotService;
+import com.proyecto.PlayApp.service.UsuarioService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -41,6 +42,9 @@ class ChatControllerTest {
 
     @MockBean
     private UsuarioRepository usuarioRepository;
+
+    @MockBean
+    private UsuarioService usuarioService;
 
     @Test
     void send_shouldReturnOk() throws Exception {

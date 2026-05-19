@@ -17,7 +17,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.ArgumentMatchers.nullable;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -43,6 +43,12 @@ class ChatbotServiceTest {
     @BeforeEach
     void setUp() {
         chatbotService = new ChatbotService(chatSessionRepository, chatMessageRepository, geminiService, chatIntentService);
+    }
+
+    @Test
+    void sendMessage_shouldSanitizeAndPersistUserAndAssistantMessages() {
+        ChatSendRequest request = new ChatSendRequest();
+        request.setMessage("  <b>Hola</b>\u0000 ");
 
         when(chatSessionRepository.save(any(ChatSession.class))).thenAnswer(invocation -> {
             ChatSession session = invocation.getArgument(0);
@@ -52,14 +58,8 @@ class ChatbotServiceTest {
             return session;
         });
         when(chatMessageRepository.save(any(ChatMessage.class))).thenAnswer(invocation -> invocation.getArgument(0));
-    }
 
-    @Test
-    void sendMessage_shouldSanitizeAndPersistUserAndAssistantMessages() {
-        ChatSendRequest request = new ChatSendRequest();
-        request.setMessage("  <b>Hola</b>\u0000 ");
-
-        when(chatIntentService.resolve(eq("Hola"), anyString()))
+        when(chatIntentService.resolve(eq("Hola"), nullable(String.class)))
                 .thenReturn(ChatIntentService.IntentResolution.handled("faq", "Respuesta de reglas"));
 
         ChatSendResponse response = chatbotService.sendMessage(request);

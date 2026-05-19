@@ -131,6 +131,13 @@ public class ChatbotService {
 
     private String resolveAssistantReply(ChatIntentService.IntentResolution intentResolution, String sessionId, String userMessage) {
         if (intentResolution.handled()) {
+            if (intentResolution.preferNaturalResponse() && intentResolution.modelContext() != null && !intentResolution.modelContext().isBlank()) {
+                return generateGroundedReply(
+                        userMessage,
+                        intentResolution.modelContext(),
+                        intentResolution.response()
+                );
+            }
             return intentResolution.response();
         }
         String context = buildShortContext(sessionId);
@@ -138,15 +145,48 @@ public class ChatbotService {
     }
 
     private String generateAssistantReply(String userMessage, String context) {
-        String prompt = context == null || context.isBlank()
-                ? userMessage
-                : "Contexto breve del chat:\n" + context + "\n\nMensaje actual del usuario:\n" + userMessage;
+        String prompt = buildGeneralAssistantPrompt(userMessage, context);
         try {
             return geminiService.generateReply(prompt);
         } catch (Exception ex) {
             log.warn("Fallo al generar respuesta con Gemini. Se devolvera fallback.", ex);
             return buildLocalFallbackReply(userMessage, ex.getMessage());
         }
+    }
+
+    private String generateGroundedReply(String userMessage, String factualContext, String fallbackResponse) {
+        String prompt = """
+                Eres el asistente de PlayApp.
+                Responde en espanol claro, breve y amable.
+                Regla critica: usa SOLO la informacion del contexto factual. No inventes productos, precios ni disponibilidad.
+                Si el contexto no alcanza para responder algo, dilo explicitamente.
+                Devuelve listas cortas cuando aplique.
+
+                Contexto factual:
+                """ + factualContext + "\n\nMensaje del usuario:\n" + userMessage;
+        try {
+            return geminiService.generateReply(prompt);
+        } catch (Exception ex) {
+            log.warn("Fallo respuesta natural con contexto factual. Se usa fallback local.", ex);
+            return fallbackResponse;
+        }
+    }
+
+    private String buildGeneralAssistantPrompt(String userMessage, String context) {
+        StringBuilder prompt = new StringBuilder();
+        prompt.append("Eres el asistente de PlayApp. ")
+                .append("Responde en espanol, de forma breve y util. ")
+                .append("No inventes productos ni precios.\n\n");
+
+        if (context != null && !context.isBlank()) {
+            prompt.append("Contexto breve del chat:\n")
+                    .append(context)
+                    .append("\n\n");
+        }
+
+        prompt.append("Mensaje actual del usuario:\n")
+                .append(userMessage);
+        return prompt.toString();
     }
 
     private String buildShortContext(String sessionId) {

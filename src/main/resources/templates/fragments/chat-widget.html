@@ -1,7 +1,10 @@
-﻿<!DOCTYPE html>
-<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <body>
-<div th:fragment="playappChatWidget" class="playapp-chat-root" aria-live="polite">
+<div th:fragment="playappChatWidget"
+     class="playapp-chat-root"
+     aria-live="polite"
+     th:attr="data-chat-user-id=${#authorization.expression('isAuthenticated()') ? #authentication.name : 'anonymous'}">
     <button type="button" class="playapp-chat-toggle" id="playapp-chat-toggle" aria-expanded="false" aria-controls="playapp-chat-window">
         <img class="playapp-chat-toggle-image" src="/img/chatbot-button-v2.png" alt="Abrir chat PlayApp">
         <span class="playapp-chat-toggle-label">Chat</span>

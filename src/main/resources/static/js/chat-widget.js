@@ -1,6 +1,6 @@
-﻿(() => {
+(() => {
     const MAX_MESSAGE_LENGTH = 1000;
-    const SESSION_STORAGE_KEY = "playapp_chat_session_id";
+    const SESSION_STORAGE_PREFIX = "playapp_chat_session_id";
 
     const root = document.querySelector(".playapp-chat-root");
     if (!root) {
@@ -17,7 +17,16 @@
     const typingIndicator = document.getElementById("playapp-chat-typing");
     const errorElement = document.getElementById("playapp-chat-error");
 
-    let sessionId = localStorage.getItem(SESSION_STORAGE_KEY);
+    const normalizeUserId = (value) => {
+        const normalized = (value || "anonymous").trim().toLowerCase();
+        return normalized || "anonymous";
+    };
+
+    const currentUserId = normalizeUserId(root.dataset.chatUserId);
+    const storageKey = `${SESSION_STORAGE_PREFIX}_${currentUserId}`;
+    const requestUserId = currentUserId === "anonymous" ? null : currentUserId;
+
+    let sessionId = localStorage.getItem(storageKey);
     let loadedHistoryForSession = null;
     let isChatOpen = false;
 
@@ -105,7 +114,7 @@
             });
             loadedHistoryForSession = sessionId;
         } catch (error) {
-            localStorage.removeItem(SESSION_STORAGE_KEY);
+            localStorage.removeItem(storageKey);
             sessionId = null;
             loadedHistoryForSession = null;
             messagesContainer.innerHTML = "";
@@ -143,7 +152,8 @@
                 },
                 body: JSON.stringify({
                     sessionId,
-                    message
+                    message,
+                    userId: requestUserId
                 })
             });
 
@@ -154,7 +164,7 @@
 
             sessionId = payload.sessionId || sessionId;
             if (sessionId) {
-                localStorage.setItem(SESSION_STORAGE_KEY, sessionId);
+                localStorage.setItem(storageKey, sessionId);
             }
             appendMessage("assistant", payload.reply || "Ahora no pude responder, intenta de nuevo.", payload.timestamp);
         } catch (error) {

@@ -9,6 +9,8 @@ import com.proyecto.PlayApp.repository.ChatMessageRepository;
 import com.proyecto.PlayApp.repository.ChatSessionRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -42,8 +44,9 @@ public class ChatbotService {
         }
         String sanitizedMessage = sanitizeMessage(request.getMessage());
         validateRequest(sanitizedMessage);
+        String effectiveUserId = resolveEffectiveUserId(request.getUserId());
 
-        ChatSession session = resolveSession(request.getSessionId(), request.getUserId());
+        ChatSession session = resolveSession(request.getSessionId(), effectiveUserId);
         LocalDateTime now = LocalDateTime.now();
 
         ChatMessage userMessage = new ChatMessage();
@@ -53,7 +56,7 @@ public class ChatbotService {
         userMessage.setTimestamp(now);
         chatMessageRepository.save(userMessage);
 
-        ChatIntentService.IntentResolution intentResolution = chatIntentService.resolve(userMessage.getContent(), request.getUserId());
+        ChatIntentService.IntentResolution intentResolution = chatIntentService.resolve(userMessage.getContent(), effectiveUserId);
         ChatMessage assistantMessage = new ChatMessage();
         assistantMessage.setSessionId(session.getId());
         assistantMessage.setRole(ROLE_ASSISTANT);
@@ -72,8 +75,12 @@ public class ChatbotService {
             throw new IllegalArgumentException("sessionId es obligatorio");
         }
 
-        chatSessionRepository.findById(sessionId)
+        String effectiveUserId = resolveEffectiveUserId(null);
+        ChatSession session = chatSessionRepository.findById(sessionId)
                 .orElseThrow(() -> new NoSuchElementException("Sesion de chat no encontrada"));
+        if (!canAccessSession(session, effectiveUserId)) {
+            throw new NoSuchElementException("Sesion de chat no encontrada");
+        }
 
         List<ChatHistoryResponse.ChatHistoryMessage> messages = chatMessageRepository
                 .findBySessionIdOrderByTimestampAsc(sessionId)
@@ -91,6 +98,9 @@ public class ChatbotService {
         if (sessionId != null && !sessionId.isBlank()) {
             ChatSession existing = chatSessionRepository.findById(sessionId).orElse(null);
             if (existing != null) {
+                if (!canAccessSession(existing, userId)) {
+                    return createSession(userId);
+                }
                 if ((existing.getUserId() == null || existing.getUserId().isBlank())
                         && userId != null && !userId.isBlank()) {
                     existing.setUserId(userId.trim());
@@ -99,6 +109,10 @@ public class ChatbotService {
             }
         }
 
+        return createSession(userId);
+    }
+
+    private ChatSession createSession(String userId) {
         LocalDateTime now = LocalDateTime.now();
         ChatSession session = new ChatSession();
         session.setUserId(userId == null || userId.isBlank() ? null : userId.trim());
@@ -106,6 +120,28 @@ public class ChatbotService {
         session.setLastMessageAt(now);
         session.setStatus(DEFAULT_STATUS);
         return chatSessionRepository.save(session);
+    }
+
+    private boolean canAccessSession(ChatSession session, String userId) {
+        String owner = session.getUserId();
+        if (owner == null || owner.isBlank()) {
+            return userId == null || userId.isBlank();
+        }
+        return owner.equalsIgnoreCase(userId == null ? "" : userId.trim());
+    }
+
+    private String resolveEffectiveUserId(String requestUserId) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication != null && authentication.isAuthenticated()
+                && authentication.getName() != null && !authentication.getName().isBlank()
+                && !"anonymousUser".equalsIgnoreCase(authentication.getName())) {
+            return authentication.getName().trim().toLowerCase(Locale.ROOT);
+        }
+
+        if (requestUserId != null && !requestUserId.isBlank()) {
+            return requestUserId.trim().toLowerCase(Locale.ROOT);
+        }
+        return null;
     }
 
     private void validateRequest(String sanitizedMessage) {

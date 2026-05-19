@@ -7,10 +7,7 @@
     right: 20px;
     bottom: calc(20px + env(safe-area-inset-bottom, 0px));
     z-index: var(--playapp-chat-zindex);
-    display: flex;
-    flex-direction: column;
-    align-items: flex-end;
-    gap: 12px;
+    display: block;
     isolation: isolate;
     pointer-events: none;
     font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
@@ -50,16 +47,40 @@
     cursor: pointer;
     transition: transform 0.22s ease, filter 0.22s ease, box-shadow 0.22s ease;
     will-change: transform;
+    position: relative;
+    z-index: 2;
 }
 
 .playapp-chat-toggle:hover {
-    transform: translateY(-2px) scale(1.02);
+    transform: translateY(-2px) scale(1.04);
     filter: brightness(1.03);
     box-shadow: 0 14px 30px rgba(0, 0, 0, 0.34);
 }
 
 .playapp-chat-root.playapp-chat-open .playapp-chat-toggle {
-    transform: scale(0.96);
+    transform: scale(0.98);
+}
+
+.playapp-chat-toggle::after {
+    content: "";
+    position: absolute;
+    inset: -6px;
+    border-radius: 20px;
+    background: radial-gradient(circle, rgba(0, 168, 132, 0.28) 0%, rgba(0, 168, 132, 0.12) 38%, transparent 70%);
+    opacity: 0;
+    transform: scale(0.92);
+    transition: opacity 0.24s ease, transform 0.24s ease;
+    pointer-events: none;
+}
+
+.playapp-chat-toggle:hover::after {
+    opacity: 1;
+    transform: scale(1);
+}
+
+.playapp-chat-root.playapp-chat-open .playapp-chat-toggle::after {
+    opacity: 0.75;
+    transform: scale(1.04);
 }
 
 .playapp-chat-toggle-image {
@@ -76,6 +97,9 @@
 }
 
 .playapp-chat-window {
+    position: absolute;
+    right: 0;
+    bottom: calc(100% + 12px);
     width: min(390px, calc(100vw - 24px));
     height: min(72vh, 580px);
     max-height: calc(100dvh - 132px);
@@ -88,11 +112,11 @@
     flex-direction: column;
     border: 1px solid rgba(1, 117, 97, 0.24);
     opacity: 0;
-    transform: translateY(16px) scale(0.985);
+    transform: translateY(14px) scale(0.975);
     transform-origin: bottom right;
     visibility: hidden;
     pointer-events: none;
-    transition: opacity 0.22s ease, transform 0.26s cubic-bezier(0.22, 1, 0.36, 1), visibility 0s linear 0.26s;
+    transition: opacity 0.22s ease, transform 0.28s cubic-bezier(0.22, 1, 0.36, 1), visibility 0s linear 0.28s;
     will-change: transform, opacity;
 }
 
@@ -101,7 +125,7 @@
     transform: translateY(0) scale(1);
     visibility: visible;
     pointer-events: auto;
-    transition: opacity 0.2s ease, transform 0.24s cubic-bezier(0.22, 1, 0.36, 1), visibility 0s;
+    transition: opacity 0.2s ease, transform 0.26s cubic-bezier(0.22, 1, 0.36, 1), visibility 0s;
 }
 
 .playapp-chat-header {
@@ -292,6 +316,8 @@
     }
 
     .playapp-chat-window {
+        right: 0;
+        bottom: calc(100% + 10px);
         width: min(100vw - 24px, 400px);
         height: min(76vh, 600px);
         max-height: calc(100dvh - 110px);

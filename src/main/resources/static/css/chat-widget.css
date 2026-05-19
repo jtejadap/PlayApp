@@ -1,17 +1,43 @@
-﻿.playapp-chat-root {
+:root {
+    --playapp-chat-zindex: 2140;
+}
+
+.playapp-chat-root {
     position: fixed;
     right: 20px;
-    bottom: 20px;
-    z-index: 1200;
+    bottom: calc(20px + env(safe-area-inset-bottom, 0px));
+    z-index: var(--playapp-chat-zindex);
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 12px;
+    isolation: isolate;
+    pointer-events: none;
     font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
 }
 
+.playapp-chat-root * {
+    box-sizing: border-box;
+}
+
+.playapp-chat-root button,
+.playapp-chat-root textarea {
+    font: inherit;
+}
+
+.playapp-chat-toggle,
+.playapp-chat-window {
+    pointer-events: auto;
+}
+
 .playapp-chat-toggle {
+    appearance: none;
     border: 0;
     border-radius: 16px;
     width: 94px;
     height: 94px;
     padding: 0;
+    margin: 0;
     color: #ffffff;
     background: transparent;
     box-shadow: 0 10px 24px rgba(0, 0, 0, 0.28);
@@ -19,6 +45,19 @@
     align-items: center;
     justify-content: center;
     overflow: visible;
+    cursor: pointer;
+    transition: transform 0.22s ease, filter 0.22s ease, box-shadow 0.22s ease;
+    will-change: transform;
+}
+
+.playapp-chat-toggle:hover {
+    transform: translateY(-2px) scale(1.02);
+    filter: brightness(1.03);
+    box-shadow: 0 14px 30px rgba(0, 0, 0, 0.34);
+}
+
+.playapp-chat-root.playapp-chat-open .playapp-chat-toggle {
+    transform: scale(0.96);
 }
 
 .playapp-chat-toggle-image {
@@ -27,31 +66,39 @@
     object-fit: contain;
     border-radius: 0;
     border: 0;
+    display: block;
 }
 
 .playapp-chat-toggle-label {
     display: none;
 }
 
-.playapp-chat-toggle:hover {
-    filter: brightness(1.05);
-}
-
 .playapp-chat-window {
-    width: min(380px, calc(100vw - 24px));
-    height: min(72vh, 560px);
-    margin-top: 10px;
+    width: min(390px, calc(100vw - 24px));
+    height: min(72vh, 580px);
+    max-height: calc(100dvh - 132px);
     border-radius: 18px;
     overflow: hidden;
     box-shadow: 0 18px 36px rgba(0, 0, 0, 0.28);
     background: #e5ddd5;
-    display: none;
+    display: flex;
     flex-direction: column;
     border: 1px solid rgba(1, 117, 97, 0.24);
+    opacity: 0;
+    transform: translateY(16px) scale(0.985);
+    transform-origin: bottom right;
+    visibility: hidden;
+    pointer-events: none;
+    transition: opacity 0.22s ease, transform 0.26s cubic-bezier(0.22, 1, 0.36, 1), visibility 0s linear 0.26s;
+    will-change: transform, opacity;
 }
 
 .playapp-chat-root.playapp-chat-open .playapp-chat-window {
-    display: flex;
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    visibility: visible;
+    pointer-events: auto;
+    transition: opacity 0.2s ease, transform 0.24s cubic-bezier(0.22, 1, 0.36, 1), visibility 0s;
 }
 
 .playapp-chat-header {
@@ -71,16 +118,28 @@
 }
 
 .playapp-chat-close {
-    background: transparent;
+    appearance: none;
+    width: auto;
+    min-width: 40px;
+    height: 40px;
     border: 0;
+    background: transparent;
     color: #ffffff;
     font-size: 28px;
     line-height: 1;
+    cursor: pointer;
+    border-radius: 8px;
+    padding: 0;
+}
+
+.playapp-chat-close:hover {
+    background: rgba(255, 255, 255, 0.12);
 }
 
 .playapp-chat-messages {
     flex: 1;
     overflow-y: auto;
+    overscroll-behavior: contain;
     padding: 12px;
     display: flex;
     flex-direction: column;
@@ -143,8 +202,14 @@
 }
 
 @keyframes playapp-chat-bounce {
-    0%, 80%, 100% { transform: translateY(0); opacity: 0.45; }
-    40% { transform: translateY(-5px); opacity: 1; }
+    0%, 80%, 100% {
+        transform: translateY(0);
+        opacity: 0.45;
+    }
+    40% {
+        transform: translateY(-5px);
+        opacity: 1;
+    }
 }
 
 .playapp-chat-error {
@@ -164,7 +229,10 @@
 }
 
 .playapp-chat-input {
+    appearance: none;
+    width: auto;
     flex: 1;
+    margin: 0;
     border: 1px solid #cfd6dd;
     border-radius: 10px;
     resize: none;
@@ -172,35 +240,62 @@
     max-height: 110px;
     padding: 10px;
     font-size: 14px;
+    line-height: 1.35;
+    background: #ffffff;
+    color: #1f1f1f;
+}
+
+.playapp-chat-input:focus {
+    outline: 2px solid rgba(0, 168, 132, 0.28);
+    border-color: rgba(0, 168, 132, 0.72);
 }
 
 .playapp-chat-send {
+    appearance: none;
+    width: auto;
     border: 0;
     border-radius: 10px;
     background: #00a884;
     color: #ffffff;
     font-weight: 600;
     padding: 9px 12px;
+    cursor: pointer;
+    white-space: nowrap;
+}
+
+.playapp-chat-send:hover {
+    background: #009779;
 }
 
 .playapp-chat-send:disabled {
     opacity: 0.6;
+    cursor: not-allowed;
 }
 
 @media (max-width: 768px) {
     .playapp-chat-root {
         right: 12px;
-        bottom: 12px;
+        bottom: calc(12px + env(safe-area-inset-bottom, 0px));
     }
 
     .playapp-chat-window {
-        width: calc(100vw - 24px);
-        height: min(76vh, 580px);
+        width: min(100vw - 24px, 400px);
+        height: min(76vh, 600px);
+        max-height: calc(100dvh - 110px);
+        transform-origin: bottom center;
     }
 
     .playapp-chat-toggle {
-        width: 84px;
-        height: 84px;
+        width: 86px;
+        height: 86px;
     }
+}
 
+@media (prefers-reduced-motion: reduce) {
+    .playapp-chat-toggle,
+    .playapp-chat-window,
+    .playapp-chat-typing span {
+        transition: none;
+        animation: none;
+    }
 }

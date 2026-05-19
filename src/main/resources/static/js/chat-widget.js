@@ -19,6 +19,7 @@
 
     let sessionId = localStorage.getItem(SESSION_STORAGE_KEY);
     let loadedHistoryForSession = null;
+    let isChatOpen = false;
 
     const sanitizeInput = (value) => value
         .replace(/[\u0000-\u0008\u000B\u000C\u000E-\u001F\u007F]/g, "")
@@ -26,6 +27,7 @@
         .trim();
 
     const toggleChat = (isOpen) => {
+        isChatOpen = isOpen;
         root.classList.toggle("playapp-chat-open", isOpen);
         toggleButton.setAttribute("aria-expanded", String(isOpen));
         windowElement.setAttribute("aria-hidden", String(!isOpen));
@@ -170,6 +172,20 @@
     });
 
     closeButton.addEventListener("click", () => toggleChat(false));
+
+    document.addEventListener("keydown", (event) => {
+        if (event.key === "Escape" && isChatOpen) {
+            toggleChat(false);
+            toggleButton.focus();
+        }
+    });
+
+    document.addEventListener("click", (event) => {
+        const target = event.target;
+        if (isChatOpen && target instanceof Node && !root.contains(target)) {
+            toggleChat(false);
+        }
+    });
 
     form.addEventListener("submit", async (event) => {
         event.preventDefault();
